@@ -1,0 +1,23 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: magnet-eureka
+  sleuth:
+    sampler:
+      percentage: 1.0
+eureka:
+  instance:
+    hostname: localhost
+  server:
+    enableSelfPreservation: false
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+logging:
+  file: log/${spring.application.name}.log
+management:
+  security:
+    enabled: false

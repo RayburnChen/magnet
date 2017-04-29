@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>magnet-athena</artifactId>
+	<packaging>war</packaging>
+
+	<name>magnet-athena</name>
+	<description>Athena project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.nfa</groupId>
+		<artifactId>magnet</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	
+	<dependencies>
+		<!-- Magnet Api -->
+		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+
+</project>

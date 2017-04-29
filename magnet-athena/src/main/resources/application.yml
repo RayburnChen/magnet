@@ -1,0 +1,34 @@
+spring:
+  profiles: dev
+  application:
+    name: magnet-athena
+---
+spring:
+  profiles: local
+  application:
+    name: magnet-athena
+  data:
+    mongodb:
+      database: athena
+      host: localhost
+      port: 27017
+      repositories:
+        enabled: true
+  sleuth:
+    sampler:
+      percentage: 1.0
+server:
+  port: 8110
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 20
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+logging:
+  file: log/${spring.application.name}.log
+management:
+  security:
+    enabled: false

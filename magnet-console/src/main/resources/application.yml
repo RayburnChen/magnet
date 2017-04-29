@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: magnet-console
+  data:
+    mongodb:
+      database: console
+      host: localhost
+      port: 27017
+      repositories:
+        enabled: true
+  sleuth:
+    sampler:
+      percentage: 1.0
+server:
+  port: 8080
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 20
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+logging:
+  file: log/${spring.application.name}.log
+management:
+  security:
+    enabled: false
+

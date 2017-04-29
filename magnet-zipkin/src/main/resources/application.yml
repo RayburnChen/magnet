@@ -1,0 +1,9 @@
+server:
+  port: 9411
+spring:
+  application:
+    name: magnet-zipkin
+  sleuth:
+    enabled: false
+logging:
+  file: log/${spring.application.name}.log
