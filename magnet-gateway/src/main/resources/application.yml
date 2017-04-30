@@ -1,9 +1,9 @@
 spring:
   application:
-    name: magnet-console
+    name: magnet-gateway
   data:
     mongodb:
-      database: console
+      database: gateway
       host: localhost
       port: 27017
       repositories:

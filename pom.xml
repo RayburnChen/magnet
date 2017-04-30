@@ -25,10 +25,10 @@
 		<module>magnet-api</module>
 		<module>magnet-athena</module>
 		<module>magnet-config</module>
-		<module>magnet-console</module>
 		<module>magnet-eureka</module>
 		<module>magnet-lucia</module>
 		<module>magnet-zipkin</module>
+		<module>magnet-gateway</module>
 	</modules>
 
 	<dependencyManagement>
