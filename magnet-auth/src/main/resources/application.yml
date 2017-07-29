@@ -1,0 +1,17 @@
+security:
+  oauth2:
+    client:
+      client-id: magnet-client
+      client-secret: passw0rd
+spring:
+  application:
+    name: magnet-auth
+  data:
+    mongodb:
+      database: auth
+      host: localhost
+      port: 27017
+      repositories:
+        enabled: true
+server:
+  port: 8090

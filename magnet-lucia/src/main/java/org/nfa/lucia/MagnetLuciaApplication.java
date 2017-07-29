@@ -16,21 +16,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableDiscoveryClient
 @EnableFeignClients(clients = AthenaController.class)
 @EnableSwagger2
-@EnableBinding(MagnetSink.class)
+//@EnableBinding(MagnetSink.class)
 public class MagnetLuciaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetLuciaApplication.class, args);
 	}
 	
-	@StreamListener(MagnetSink.INPUT)
-	public void processEvent(User user) {
-		System.out.println("Get magnet event:" + user.toString());
-	}
-	
-	@StreamListener(MagnetSink.BUS)
-	public void processEvent(String event) {
-		System.out.println("Get bus event:" + event);
-	}
+//	@StreamListener(MagnetSink.INPUT)
+//	public void processEvent(User user) {
+//		System.out.println("Get magnet event:" + user.toString());
+//	}
+//	
+//	@StreamListener(MagnetSink.BUS)
+//	public void processEvent(String event) {
+//		System.out.println("Get bus event:" + event);
+//	}
 
 }
