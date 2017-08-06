@@ -14,9 +14,6 @@ spring:
       port: 27017
       repositories:
         enabled: true
-  sleuth:
-    sampler:
-      percentage: 1.0
 server:
   port: 8110
 eureka:
