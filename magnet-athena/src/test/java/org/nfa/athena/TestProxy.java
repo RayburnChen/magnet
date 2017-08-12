@@ -7,15 +7,29 @@ import java.lang.reflect.Proxy;
 import org.junit.Test;
 
 public class TestProxy {
-	
-	// spring data
-	// invoke oject
+
+	/*
+	 * Spring data proxy repository to PartTreeMongoQuery And generate Query
+	 * according to method names and input params
+	 * org.springframework.data.mongodb.repository.query.AbstractMongoQuery
+	 * org.springframework.data.mongodb.repository.query.PartTreeMongoQuery
+	 */
+
+	/*
+	 * invoke object The denamic proxy object generate by JDK
+	 */
+
+	/*
+	 * theory of Proxy.newProxyInstance 
+	 * Class<?> cl = getProxyClass0(loader, * interfaces); 
+	 * Constructor<?> cons = cl.getConstructor(constructorParams);
+	 * return cons.newInstance(new Object[]{invocationHandler});
+	 */
 
 	@Test
 	public void testProxy() {
-		ProxyHandler proxyHandler = new ProxyHandler();
-		Working first = (Working) proxyHandler.newProxyInstance(new AchieveFirstGoal());
-		Working second = (Working) proxyHandler.newProxyInstance(new AchieveSecondGoal());
+		Working first = (Working) ProxyHandler.newProxyInstance(new AchieveFirstGoal());
+		Working second = (Working) ProxyHandler.newProxyInstance(new AchieveSecondGoal());
 		first.working();
 		second.working();
 	}
@@ -32,7 +46,7 @@ public class TestProxy {
 		}
 
 	}
-	
+
 	public class AchieveSecondGoal implements Working {
 
 		@Override
@@ -42,13 +56,17 @@ public class TestProxy {
 
 	}
 
-	public class ProxyHandler implements InvocationHandler {
+	public static class ProxyHandler implements InvocationHandler {
 
-		private Object realHandler;
+		private final Object realHandler;
 
-		public Object newProxyInstance(Object realHandler) {
+		public ProxyHandler(Object realHandler) {
+			super();
 			this.realHandler = realHandler;
-			return Proxy.newProxyInstance(realHandler.getClass().getClassLoader(), realHandler.getClass().getInterfaces(), this);
+		}
+
+		public static Object newProxyInstance(Object realHandler) {
+			return Proxy.newProxyInstance(realHandler.getClass().getClassLoader(), realHandler.getClass().getInterfaces(), new ProxyHandler(realHandler));
 		}
 
 		@Override
