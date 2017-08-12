@@ -28,8 +28,8 @@ public class TestProxy {
 
 	@Test
 	public void testProxy() {
-		Working first = (Working) ProxyHandler.newProxyInstance(new AchieveFirstGoal());
-		Working second = (Working) ProxyHandler.newProxyInstance(new AchieveSecondGoal());
+		Working first = (Working) ProxyHandler.newProxyInstance(new AchieveGoal01());
+		Working second = (Working) ProxyHandler.newProxyInstance(new AchieveGoal02());
 		first.working();
 		second.working();
 	}
@@ -38,20 +38,20 @@ public class TestProxy {
 		public void working();
 	}
 
-	public class AchieveFirstGoal implements Working {
+	public class AchieveGoal01 implements Working {
 
 		@Override
 		public void working() {
-			System.err.println("TestProxy.AchieveFirstGoal.working()");
+			System.out.println("TestProxy.AchieveGoal01.working()");
 		}
 
 	}
 
-	public class AchieveSecondGoal implements Working {
+	public class AchieveGoal02 implements Working {
 
 		@Override
 		public void working() {
-			System.err.println("TestProxy.AchieveSecondGoal.working()");
+			System.out.println("TestProxy.AchieveGoal02.working()");
 		}
 
 	}
@@ -72,9 +72,9 @@ public class TestProxy {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			System.out.println(proxy.getClass());
-			System.out.println("Start TestProxy.ProxyHandler.invoke()");
+			System.out.println("Start");
 			Object result = method.invoke(realHandler, args);
-			System.out.println("End TestProxy.ProxyHandler.invoke()");
+			System.out.println("End");
 			return result;
 		}
 
