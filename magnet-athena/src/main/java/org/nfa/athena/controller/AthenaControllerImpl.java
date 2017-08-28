@@ -1,5 +1,7 @@
 package org.nfa.athena.controller;
 
+import java.lang.management.ManagementFactory;
+
 import org.nfa.athena.AthenaController;
 import org.nfa.athena.User;
 import org.nfa.athena.dao.UserRepository;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sun.management.OperatingSystemMXBean;
+
+@SuppressWarnings("restriction")
 @Service
 public class AthenaControllerImpl implements AthenaController {
 	
@@ -22,6 +27,9 @@ public class AthenaControllerImpl implements AthenaController {
 
 	@Override
 	public User oneUser() {
+		OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
+				.getOperatingSystemMXBean();
+		log.info("getFreePhysicalMemorySize {}", osmxb.getFreePhysicalMemorySize());
 		log.info("oneUser");
 		return userRepository.findAll().get(0);
 	}
