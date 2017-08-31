@@ -10,15 +10,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void init(WebSecurity web) {
-//		web.ignoring().antMatchers("/greeting/oneUser");
+		web.ignoring().antMatchers("/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 //		http.antMatcher("/**").authorizeRequests().anyRequest().authenticated();
-		http.antMatcher("/**").authorizeRequests()
-			.antMatchers("/greeting/oneUserByName").permitAll()
-			.anyRequest().authenticated();
+//		http.antMatcher("/**").authorizeRequests()
+//			.antMatchers("/greeting/oneUserByName").permitAll()
+//			.anyRequest().authenticated();
 	}
 
 }

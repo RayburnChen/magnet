@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nfa.athena.dao.UserRepository;
 import org.nfa.stream.MagnetSource;
-import org.nfa.athena.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.support.MessageBuilder;
