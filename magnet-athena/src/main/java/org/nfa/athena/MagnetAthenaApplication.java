@@ -1,5 +1,7 @@
 package org.nfa.athena;
 
+import org.nfa.athena.config.AsynchronousConfig;
+import org.nfa.athena.config.WebSecurityConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -13,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 //@EnableBinding(MagnetSource.class)
 @EnableResourceServer
-@Import({WebSecurityConfiguration.class})
+@Import({WebSecurityConfiguration.class, AsynchronousConfig.class})
 public class MagnetAthenaApplication {
 
 	public static void main(String[] args) {

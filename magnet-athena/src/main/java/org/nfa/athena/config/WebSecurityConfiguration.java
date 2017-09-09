@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
