@@ -29,6 +29,7 @@ logging:
 management:
   security:
     enabled: false
+    roles: SUPERUSER
 endpoints:
   shutdown:
     enabled: true
