@@ -1,10 +1,13 @@
 package org.nfa.athena.controller;
 
+import javax.annotation.PostConstruct;
+
 import org.nfa.athena.User;
 import org.nfa.athena.dao.UserRepository;
 import org.nfa.athena.service.CallAsyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/greeting")
-public class AthenaControllerImpl {
+public class AthenaControllerImpl implements InitializingBean {
 	
 	private static Logger log = LoggerFactory.getLogger(AthenaControllerImpl.class);
 
@@ -25,7 +28,7 @@ public class AthenaControllerImpl {
 	
 	@Autowired
 	private CallAsyncService callAsyncService;
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser() {
 		log.info("oneUser");
@@ -34,8 +37,6 @@ public class AthenaControllerImpl {
 		return userRepository.findAll().get(0);
 	}
 	
-	
-
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })
 	public User oneUserByName(@RequestParam("name") String name) {
 		log.info("oneUserByName {}", name);
@@ -63,4 +64,14 @@ public class AthenaControllerImpl {
 		return null;
 	}
 	
+	@PostConstruct
+	public void init() {
+		log.info("@PostConstruct {}", callAsyncService);
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		log.info("afterPropertiesSet {}", callAsyncService);
+	}
+
 }
