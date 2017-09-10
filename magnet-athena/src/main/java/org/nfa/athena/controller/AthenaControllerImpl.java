@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @RequestMapping(value = "/greeting")
@@ -39,6 +41,8 @@ public class AthenaControllerImpl implements InitializingBean {
 	
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })
 	public User oneUserByName(@RequestParam("name") String name) {
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		log.info(requestAttributes.getRequest().getServletPath());
 		log.info("oneUserByName {}", name);
 		User user = userRepository.findOneByName(name);
 		return user;
