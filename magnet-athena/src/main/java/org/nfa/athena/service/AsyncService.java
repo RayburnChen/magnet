@@ -50,7 +50,7 @@ public class AsyncService<T, R> {
 		});
 	}
 
-	private AsyncService<T, R> afterDoing(Supplier<T> c) {
+	private synchronized AsyncService<T, R> afterDoing(Supplier<T> c) {
 		results.add(EXECUTOR.submit(new Callable<T>() {
 			@Override
 			public T call() throws Exception {
@@ -60,7 +60,7 @@ public class AsyncService<T, R> {
 		return this;
 	}
 
-	public R getResult() {
+	public synchronized R getResult() {
 		return callback.apply(results.stream().map(r -> get(r)));
 	}
 
