@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.nfa.athena.User;
 import org.nfa.athena.dao.UserRepository;
-import org.nfa.athena.service.CallAsyncService;
+import org.nfa.athena.service.AsyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -22,23 +22,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @RestController
 @RequestMapping(value = "/greeting")
 public class AthenaControllerImpl implements InitializingBean {
-	
+
 	private static Logger log = LoggerFactory.getLogger(AthenaControllerImpl.class);
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private CallAsyncService callAsyncService;
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser() {
 		log.info("oneUser");
-		callAsyncService.asyncMethod();
-		log.info("AthenaControllerImpl.oneUser()");
-		return userRepository.findAll().get(0);
+		return AsyncService.callback(() -> userRepository.findAll().get(0)).after(() -> null).execute();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })
 	public User oneUserByName(@RequestParam("name") String name) {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -67,15 +62,15 @@ public class AthenaControllerImpl implements InitializingBean {
 		Assert.notNull(null, "My exception Assert.isNull");
 		return null;
 	}
-	
+
 	@PostConstruct
 	public void init() {
-		log.info("@PostConstruct {}", callAsyncService);
+		log.info("@PostConstruct {}", userRepository);
 	}
-	
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		log.info("afterPropertiesSet {}", callAsyncService);
+		log.info("afterPropertiesSet {}", userRepository);
 	}
 
 }
