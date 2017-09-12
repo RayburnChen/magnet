@@ -31,7 +31,7 @@ public class AthenaControllerImpl implements InitializingBean {
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser() {
 		log.info("oneUser");
-		return AsyncService.callback(() -> userRepository.findAll().get(0)).after(() -> null).execute();
+		return AsyncService.callback(s -> userRepository.findAll().get(0)).after(() -> null).getResult();
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })

@@ -10,76 +10,66 @@ import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-public class AsyncService<R> {
+public class AsyncService<T, R> {
 
 	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(8);
 
-	private List<Callable<?>> tasks = new LinkedList<>();
-	private List<Future<?>> results = new LinkedList<>();
-	private final Supplier<R> callback;
+	private List<Future<T>> results = new LinkedList<>();
+	private final Function<Stream<T>, R> callback;
 
-	private AsyncService(Supplier<R> callback) {
+	private AsyncService(Function<Stream<T>, R> callback) {
 		super();
 		this.callback = callback;
 	}
 
-	public static <R> AsyncService<R> callback(Supplier<R> callback) {
-		return new AsyncService<R>(callback);
+	public static <T, R> AsyncService<T, R> callback(Function<Stream<T>, R> callback) {
+		return new AsyncService<T, R>(callback);
 	}
 
-	public <V> AsyncService<R> after(Supplier<V> c) {
-		tasks.add(new Callable<V>() {
+	public AsyncService<T, R> after(Supplier<T> c) {
+		return afterDoing(c);
+	}
+
+	public <I> AsyncService<T, R> after(Function<I, T> f, I in) {
+		return afterDoing(() -> f.apply(in));
+	}
+
+	public <I> AsyncService<T, R> after(Consumer<I> c, I in) {
+		return afterDoing(() -> {
+			c.accept(in);
+			return null;
+		});
+	}
+
+	public <I> AsyncService<T, R> after(Consumer<I> c) {
+		return afterDoing(() -> {
+			c.accept(null);
+			return null;
+		});
+	}
+
+	private AsyncService<T, R> afterDoing(Supplier<T> c) {
+		results.add(EXECUTOR.submit(new Callable<T>() {
 			@Override
-			public V call() throws Exception {
+			public T call() throws Exception {
 				return c.get();
 			}
-		});
+		}));
 		return this;
 	}
 
-	public <V, T> AsyncService<R> after(Function<T, V> f, T in) {
-		tasks.add(new Callable<V>() {
-			@Override
-			public V call() throws Exception {
-				return f.apply(in);
-			}
-		});
-		return this;
+	public R getResult() {
+		return callback.apply(results.stream().map(r -> get(r)));
 	}
 
-	public <V, T> AsyncService<R> after(Consumer<T> c, T in) {
-		tasks.add(new Callable<V>() {
-			@Override
-			public V call() throws Exception {
-				c.accept(in);
-				return null;
-			}
-		});
-		return this;
-	}
-
-	public <V, T> AsyncService<R> after(Consumer<T> c) {
-		tasks.add(new Callable<V>() {
-			@Override
-			public V call() throws Exception {
-				c.accept(null);
-				return null;
-			}
-		});
-		return this;
-	}
-
-	public R execute() {
-		tasks.forEach(t -> results.add(EXECUTOR.submit(t)));
-		results.forEach(r -> {
-			try {
-				r.get();
-			} catch (InterruptedException | ExecutionException e) {
-				throw new RuntimeException(e);
-			}
-		});
-		return callback.get();
+	private T get(Future<T> r) {
+		try {
+			return r.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
