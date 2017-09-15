@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class AsyncService<T, R> {
 
-	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(8);
+	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	private List<Future<T>> results = new LinkedList<>();
 	private final Function<Stream<T>, R> callback;
