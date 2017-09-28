@@ -13,7 +13,7 @@ public class TestCountDownLatch {
 		final CountDownLatch startSignal = new CountDownLatch(1);
 		final CountDownLatch doneSignal = new CountDownLatch(N);
 		final Random r = new Random();
-		for (int i = 0; i < N; ++i)
+		for (int i = 0; i < N; ++i) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -28,6 +28,7 @@ public class TestCountDownLatch {
 					doneSignal.countDown();
 				}
 			}).start();
+		}
 		System.out.println("All workers start!");
 		startSignal.countDown();
 		try {

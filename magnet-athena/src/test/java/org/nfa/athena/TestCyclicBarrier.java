@@ -14,7 +14,7 @@ public class TestCyclicBarrier {
 		final AtomicInteger counter = new AtomicInteger(N * 5);
 		final CyclicBarrier barrier = new CyclicBarrier(N);
 		final Random r = new Random();
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; i++) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -30,6 +30,7 @@ public class TestCyclicBarrier {
 					}
 				}
 			}).start();
+		}
 		do {
 			try {
 				Thread.sleep(5000);
