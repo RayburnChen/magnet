@@ -23,6 +23,7 @@ public class TestCountDownLatch {
 						Thread.sleep(r.nextInt(5000));
 						System.out.println(Thread.currentThread().getName() + " done!");
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 					doneSignal.countDown();
 				}
