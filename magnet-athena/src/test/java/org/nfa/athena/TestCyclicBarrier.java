@@ -11,7 +11,7 @@ public class TestCyclicBarrier {
 	@Test
 	public void test() {
 		final int N = 5;
-		final AtomicInteger counter = new AtomicInteger(N * 5);
+		final AtomicInteger counter = new AtomicInteger(N * 3);
 		final CyclicBarrier barrier = new CyclicBarrier(N);
 		final Random r = new Random();
 		for (int i = 0; i < N; i++) {
