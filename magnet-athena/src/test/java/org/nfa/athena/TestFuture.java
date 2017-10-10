@@ -3,12 +3,14 @@ package org.nfa.athena;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
 public class TestFuture {
 
-	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	// size = 1
+	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(1);
 
 	@Test
 	public void test() {
@@ -30,7 +32,16 @@ public class TestFuture {
 
 		@Override
 		public String call() throws Exception {
+			
+			// case 1 normal
 			EXECUTOR.submit(new MinorThread());
+			
+			// case 2 dead lock
+			// EXECUTOR.submit(new MinorThread()).get();
+			
+			// case 3 throw time out exception
+			// EXECUTOR.submit(new MinorThread()).get(3, TimeUnit.SECONDS);
+			
 			return "MainThread Done";
 		}
 
@@ -42,7 +53,7 @@ public class TestFuture {
 		public String call() throws Exception {
 			Thread.sleep(3000L);
 			System.out.println("MinorThread Done");
-			return null;
+			return "MinorThread Result";
 		}
 
 	}
