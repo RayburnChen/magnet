@@ -1,12 +1,13 @@
 package org.nfa.lucia;
 
-import org.nfa.athena.AthenaController;
+import org.nfa.athena.AthenaClient;
 import org.nfa.athena.User;
 import org.nfa.stream.MagnetSink;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
@@ -14,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(clients = AthenaController.class)
+@EnableFeignClients(clients = AthenaClient.class, defaultConfiguration = FeignClientsConfiguration.class)
 @EnableSwagger2
 //@EnableBinding(MagnetSink.class)
 public class MagnetLuciaApplication {

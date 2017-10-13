@@ -1,6 +1,6 @@
 package org.nfa.lucia.controller;
 
-import org.nfa.athena.AthenaController;
+import org.nfa.athena.AthenaClient;
 import org.nfa.athena.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class LuciaController {
 	private DiscoveryClient discoveryClient;
 
 	@Autowired
-	private AthenaController athenaController;
+	private AthenaClient athenaClient;
 
 	@RequestMapping(method = RequestMethod.GET, value = { "", "/" }, produces = "text/html; charset=utf-8")
 	public String welcome(@RequestHeader HttpHeaders headers) {
@@ -33,11 +33,11 @@ public class LuciaController {
 	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser", produces = "application/json; charset=utf-8")
 	public User athenaUser(@RequestParam(value = "name", required = false) String name, @RequestHeader HttpHeaders headers) {
 		System.out.println(discoveryClient.getInstances("magnet-athena").get(0).getUri().toString());
-		athenaController.oneUser();
-		System.out.println("call oneUserByName method: " + athenaController.oneUserByName(name));
-		System.out.println("call oneUserByNamePath method: " + athenaController.oneUserByNamePath(name));
+		User user = athenaClient.oneUser();
+//		System.out.println("call oneUserByName method: " + athenaController.oneUserByName(name));
+//		System.out.println("call oneUserByNamePath method: " + athenaController.oneUserByNamePath(name));
 //		greetingController.exception();
-		return athenaController.oneUserByName(name);
+		return user;
 	}
 
 	// Need to add @RequestLine("GET /users") to the interface

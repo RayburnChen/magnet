@@ -9,7 +9,7 @@ public class TestMethod {
 
 	@Test
 	public void test() {
-		Method[] ms = AthenaController.class.getMethods();
+		Method[] ms = AthenaClient.class.getMethods();
 		for (int i = 0; i < ms.length; i++) {
 			System.out.println(ms[i].getName() + "  isDefault " + isDefault(ms[i]));
 		}

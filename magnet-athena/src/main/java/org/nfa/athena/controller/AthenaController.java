@@ -21,9 +21,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @RequestMapping(value = "/greeting")
-public class AthenaControllerImpl implements InitializingBean {
+public class AthenaController implements InitializingBean {
 
-	private static Logger log = LoggerFactory.getLogger(AthenaControllerImpl.class);
+	private static Logger log = LoggerFactory.getLogger(AthenaController.class);
 
 	@Autowired
 	private UserRepository userRepository;

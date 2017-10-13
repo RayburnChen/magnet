@@ -16,9 +16,6 @@ spring:
       port: 27017
       repositories:
         enabled: true
-  sleuth:
-    sampler:
-      percentage: 1.0
 logging:
   file: log/${spring.application.name}.log
 eureka:
@@ -29,6 +26,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
 management:
   security:
     enabled: false
