@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LuciaController {
 	
-	private static Logger log = LoggerFactory.getLogger(LuciaController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LuciaController.class);
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
@@ -26,7 +26,7 @@ public class LuciaController {
 
 	@RequestMapping(method = RequestMethod.GET, value = { "", "/" }, produces = "text/html; charset=utf-8")
 	public String welcome(@RequestHeader HttpHeaders headers) {
-		log.info("welcome");
+		LOG.info("welcome");
 		return "welcome";
 	}
 

@@ -1,5 +1,6 @@
-package org.nfa.auth;
+package org.nfa.auth.config;
 
+import org.nfa.auth.MagnetAuthApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
