@@ -1,6 +1,7 @@
 package org.nfa.athena;
 
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 import java.util.WeakHashMap;
 
 import org.junit.Test;
@@ -39,6 +40,11 @@ public class TestTryCatch {
 			c += "d";
 			return c + "e";
 		}
+	}
+	
+	@Test
+	public void testUUID() {
+		System.out.println("TestTryCatch.testUUID " + UUID.randomUUID());
 	}
 
 }
