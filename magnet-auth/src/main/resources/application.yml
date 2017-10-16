@@ -3,6 +3,8 @@ security:
     client:
       client-id: magnet-client
       client-secret: passw0rd
+      scope:
+        read, write
 spring:
   application:
     name: magnet-auth
