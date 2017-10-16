@@ -1,6 +1,10 @@
 package org.nfa.athena;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
@@ -45,6 +49,18 @@ public class TestTryCatch {
 	@Test
 	public void testUUID() {
 		System.out.println("TestTryCatch.testUUID " + UUID.randomUUID());
+	}
+	
+	@Test
+	public void testListAdd() {
+		User user = new User();
+		user.setValues(new ArrayList<>());
+		List<String> first = Arrays.asList("first");
+		List<String> second = new LinkedList<>();
+		second.add("second");
+		user.getValues().addAll(first);
+		user.getValues().addAll(second);
+		System.out.println(user);
 	}
 
 }
