@@ -14,6 +14,9 @@ public class MagnetAuthApplication {
 	// org.springframework.boot.autoconfigure.security.oauth2.authserver.OAuth2AuthorizationServerConfiguration
 	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
 
+	// grant type = password
+	// org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter
+	
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetAuthApplication.class, args);
 	}
