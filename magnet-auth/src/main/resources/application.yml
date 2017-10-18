@@ -5,6 +5,8 @@ security:
       client-secret: passw0rd
       scope:
         read, write
+    authorization:
+      check-token-access: permitAll()
 spring:
   application:
     name: magnet-auth
