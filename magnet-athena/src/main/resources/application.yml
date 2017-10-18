@@ -26,6 +26,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 security:
   oauth2:
+    client:
+      client-id: magnet-client
+      client-secret: passw0rd
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
 logging:

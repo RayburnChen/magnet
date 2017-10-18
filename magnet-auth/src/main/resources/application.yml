@@ -6,7 +6,7 @@ security:
       scope:
         read, write
     authorization:
-      check-token-access: permitAll()
+      check-token-access: isAuthenticated()
 spring:
   application:
     name: magnet-auth
