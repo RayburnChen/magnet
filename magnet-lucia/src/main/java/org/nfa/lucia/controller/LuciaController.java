@@ -24,13 +24,19 @@ public class LuciaController {
 	@Autowired
 	private AthenaClient athenaClient;
 
-	@RequestMapping(method = RequestMethod.GET, value = { "", "/" }, produces = "text/html; charset=utf-8")
+	@RequestMapping
 	public String welcome(@RequestHeader HttpHeaders headers) {
 		LOG.info("welcome");
 		return "welcome";
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser", produces = "application/json; charset=utf-8")
+	@RequestMapping("/login")
+	public String login(@RequestHeader HttpHeaders headers) {
+		LOG.info("login");
+		return "login success";
+	}
+
+	@RequestMapping("/athenaUser")
 	public User athenaUser(@RequestParam(value = "name", required = false) String name, @RequestHeader HttpHeaders headers) {
 		System.out.println(discoveryClient.getInstances("magnet-athena").get(0).getUri().toString());
 		User user = athenaClient.oneUser();

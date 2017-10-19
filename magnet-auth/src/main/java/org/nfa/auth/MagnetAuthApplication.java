@@ -18,12 +18,21 @@ public class MagnetAuthApplication {
 	// org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter
 	
 	/*
-	curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=88350ea4-cbf7-485f-a8ad-8d11ce3d7522 -d scope=write
+	 
+	// get token
+	curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=3c2c3bee-35ae-4af4-bc97-cf7ee4415a7d -d scope=write
 
-	curl localhost:8110/greeting/oneUser -H "Authorization: Bearer 9dc9d55a-bbce-46d5-b09d-c505af67df20"
+	// call resource server
+	curl localhost:8110/greeting/oneUser -H "Authorization: Bearer 27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6"
+	// resource server check token
+	curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6
 
-	curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=9dc9d55a-bbce-46d5-b09d-c505af67df20
-	*/
+	// client server use user credential to authorize resource
+	curl user:3c2c3bee-35ae-4af4-bc97-cf7ee4415a7d@localhost:8090/oauth/authorize -d client_id=magnet-client -d response_type=code -d redirect_uri=www.baidu.com
+
+	 */
+	
+	// RemoteTokenServices.loadAuthentication
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetAuthApplication.class, args);

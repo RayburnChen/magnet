@@ -26,13 +26,29 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
+security:
+  oauth2:
+    client:
+      client-id: magnet-client
+      client-secret: passw0rd
+#      authentication-scheme: 
+      clientAuthenticationScheme: form
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
+    resource:
+      token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
+#    sso:
+#      login-path: http://www.baidu.com
+hystrix: 
+  command: 
+    default: 
+      execution: 
+        isolation: 
+#          strategy: THREAD
+          strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 3000
+            timeoutInMilliseconds: 5000
 management:
   security:
     enabled: false

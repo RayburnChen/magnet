@@ -31,6 +31,7 @@ security:
       client-secret: passw0rd
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
 management:
