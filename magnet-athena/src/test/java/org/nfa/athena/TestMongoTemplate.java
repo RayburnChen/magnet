@@ -17,9 +17,9 @@ public class TestMongoTemplate {
 
 	@Test
 	public void testScripts() {
-		String script = "db.getCollection('users').find({})";
+		String script = "function(x)    { return x; }";
 		Object result = MongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "directly execute script");
-		System.out.println("TestMongoTemplate.testScripts()" + result.toString());
+		System.out.println("TestMongoTemplate scriptOps result:" + result.toString());
 	}
 
 }

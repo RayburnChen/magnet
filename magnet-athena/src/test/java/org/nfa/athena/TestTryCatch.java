@@ -1,6 +1,7 @@
 package org.nfa.athena;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -61,6 +62,13 @@ public class TestTryCatch {
 		user.getValues().addAll(first);
 		user.getValues().addAll(second);
 		System.out.println(user);
+	}
+	
+	@Test
+	public void testBigDecimal() {
+		String aa = null;
+		BigDecimal big = new BigDecimal(aa);
+		System.out.println("TestTryCatch.testBigDecimal()" + big.toPlainString());
 	}
 
 }
