@@ -13,12 +13,12 @@ import org.springframework.data.mongodb.core.script.ExecutableMongoScript;
 public class TestMongoTemplate {
 	
 	@Autowired
-	private MongoTemplate MongoTemplate;
+	private MongoTemplate mongoTemplate;
 
 	@Test
 	public void testScripts() {
 		String script = "function(x)    { return x; }";
-		Object result = MongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "directly execute script");
+		Object result = mongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "directly execute script");
 		System.out.println("TestMongoTemplate scriptOps result:" + result.toString());
 	}
 
