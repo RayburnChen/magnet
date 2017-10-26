@@ -10,7 +10,7 @@ import org.junit.Test;
 public class TestReentrantLock {
 
 	private int result = 0;
-	private int count = 100;
+	private int count = 10;
 	private ReentrantLock lock = new ReentrantLock();
 
 	@Test
@@ -18,10 +18,11 @@ public class TestReentrantLock {
 		List<Thread> list = new ArrayList<>(count);
 		for (int i = 0; i < count; i++) {
 			Thread th = new Thread(new Runnable() {
-
 				@Override
 				public void run() {
+					System.out.println(Thread.currentThread().toString() + " start");
 					lock.lock();
+					System.out.println(Thread.currentThread().toString() + " lock");
 					try {
 						int num = result;
 						try {
@@ -32,6 +33,7 @@ public class TestReentrantLock {
 						result = num + 1;
 					} finally {
 						lock.unlock();
+						System.out.println(Thread.currentThread().toString() + " unlock");
 					}
 				}
 			});
