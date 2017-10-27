@@ -24,6 +24,9 @@ public class User implements Serializable {
 	@Field
 	private List<String> values;
 
+	@Field
+	private UserType userType;
+
 	public String getId() {
 		return id;
 	}
@@ -56,9 +59,18 @@ public class User implements Serializable {
 		this.values = values;
 	}
 
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", password=" + password + ", values=" + values + "]";
+		return "User [id=" + id + ", name=" + name + ", password=" + password + ", values=" + values + ", userType="
+				+ userType + "]";
 	}
 
 }
