@@ -9,15 +9,15 @@ import org.junit.Test;
 
 public class TestAtomic {
 
-	private AtomicReference<User> atomicUser;
 	private static final int THREAD_COUNT = 5;
 
 	@Test
 	public void testAtomicReference() {
+
 		User initUser = new User();
 		initUser.setName("owen");
 		initUser.setAge(1);
-		atomicUser = new AtomicReference<>(initUser);
+		AtomicReference<User> atomicUser = new AtomicReference<>(initUser);
 
 		System.out.println("AtomicReference User is " + atomicUser.get().toString());
 
@@ -52,9 +52,8 @@ public class TestAtomic {
 			}
 		});
 
-		System.out.println("AtomicReference User Done ");
+		System.out.println("AtomicReference Done ");
 
 	}
-
 
 }
