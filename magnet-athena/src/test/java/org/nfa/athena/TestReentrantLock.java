@@ -17,24 +17,21 @@ public class TestReentrantLock {
 	public void testReentrantLock() {
 		List<Thread> list = new ArrayList<>(count);
 		for (int i = 0; i < count; i++) {
-			Thread th = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					System.out.println(Thread.currentThread().toString() + " start");
-					lock.lock();
-					System.out.println(Thread.currentThread().toString() + " lock");
+			Thread th = new Thread(() -> {
+				System.out.println(Thread.currentThread().toString() + " start");
+				lock.lock();
+				System.out.println(Thread.currentThread().toString() + " lock");
+				try {
+					int num = result;
 					try {
-						int num = result;
-						try {
-							TimeUnit.MILLISECONDS.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						result = num + 1;
-					} finally {
-						lock.unlock();
-						System.out.println(Thread.currentThread().toString() + " unlock");
+						TimeUnit.MILLISECONDS.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
+					result = num + 1;
+				} finally {
+					lock.unlock();
+					System.out.println(Thread.currentThread().toString() + " unlock");
 				}
 			});
 			list.add(th);
