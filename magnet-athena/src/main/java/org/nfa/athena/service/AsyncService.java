@@ -7,67 +7,66 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-public class AsyncService<T, R> {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+public class AsyncService<T> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AsyncService.class);
+	private static final long TIMEOUT_SECONDS = 10L;
+	private static final ExecutorService EXECUTOR = Executors
+			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	private List<Future<T>> results = new LinkedList<>();
-	private final Function<Stream<T>, R> callback;
 
-	private AsyncService(Function<Stream<T>, R> callback) {
+	private AsyncService() {
 		super();
-		this.callback = callback;
 	}
 
-	public static <T, R> AsyncService<T, R> callback(Function<Stream<T>, R> callback) {
-		return new AsyncService<T, R>(callback);
+	public static <T> AsyncService<T> build() {
+		return new AsyncService<T>();
 	}
 
-	public AsyncService<T, R> after(Supplier<T> c) {
-		return afterDoing(c);
-	}
-
-	public <I> AsyncService<T, R> after(Function<I, T> f, I in) {
-		return afterDoing(() -> f.apply(in));
-	}
-
-	public <I> AsyncService<T, R> after(Consumer<I> c, I in) {
-		return afterDoing(() -> {
-			c.accept(in);
+	public Future<T> add(Runnable runnable) {
+		return addDoing(() -> {
+			runnable.run();
 			return null;
 		});
 	}
 
-	public <I> AsyncService<T, R> after(Consumer<I> c) {
-		return afterDoing(() -> {
-			c.accept(null);
-			return null;
-		});
+	public Future<T> add(Supplier<T> supplier) {
+		return addDoing(supplier);
 	}
 
-	private AsyncService<T, R> afterDoing(Supplier<T> c) {
-		results.add(EXECUTOR.submit(new Callable<T>() {
+	private Future<T> addDoing(Supplier<T> c) {
+		Future<T> future = EXECUTOR.submit(new Callable<T>() {
 			@Override
 			public T call() throws Exception {
-				return c.get();
+				// prevent memory leak
+				// add AUTH
+				T t = c.get();
+				// clear AUTH
+				return t;
 			}
-		}));
-		return this;
+		});
+		results.add(future);
+		return future;
 	}
 
-	public R getResult() {
-		return callback.apply(results.stream().map(r -> get(r)));
+	public List<T> getResult() {
+		return results.stream().map(r -> get(r)).filter(r -> null != r).collect(Collectors.toList());
 	}
 
 	private T get(Future<T> r) {
 		try {
-			return r.get();
-		} catch (InterruptedException | ExecutionException e) {
+			return r.get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			LOGGER.error("Dependency Service is not available" + e.toString(), e);
 			throw new RuntimeException(e);
 		}
 	}
