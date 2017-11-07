@@ -35,13 +35,20 @@ public class AthenaController implements InitializingBean {
 		log.info("oneUser");
 		log.info("HttpHeaders ", headers);
 		AsyncService<User> async = AsyncService.build();
-		async.add(()-> userRepository.findAll().get(0));
+		async.add(() -> userRepository.findAll().get(0));
 		return async.getResult().stream().findAny().orElse(null);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })
+	public User insertUser(@RequestBody User user) {
+		log.info("insertUser {}", user);
+		return userRepository.insert(user);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName" })
 	public User oneUserByName(@RequestParam("name") String name) {
-		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
+				.getRequestAttributes();
 		log.info(requestAttributes.getRequest().getServletPath());
 		log.info("oneUserByName {}", name);
 		User user = userRepository.findOneByName(name);
@@ -53,12 +60,6 @@ public class AthenaController implements InitializingBean {
 		log.info("oneUserByNamePath {}", name);
 		User user = userRepository.findOneByName(name);
 		return user;
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = { "/oneUserByName" })
-	public User insertUser(@RequestBody User user) {
-		log.info("insertUser {}", user);
-		return userRepository.insert(user);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/exception" })

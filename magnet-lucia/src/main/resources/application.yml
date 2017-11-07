@@ -40,25 +40,35 @@ security:
       preferTokenInfo: true
 #    sso:
 #      login-path: http://www.baidu.com
+feign:
+  hystrix:
+    enabled: true
+magnet-athena:
+  ribbon:
+    OkToRetryOnAllOperations: false
+    MaxAutoRetries: 0
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
 hystrix: 
+  shareSecurityContext: true
   command: 
-#    magnet-athena: 
-#      execution: 
-#        isolation: 
-#          strategy: SEMAPHORE
-#          thread:
-#            timeoutInMilliseconds: 2000
-#        timeout:
-#          enabled: true
-    default: 
+    "AthenaClient#oneUserByNamePath(String)": 
       execution: 
         isolation: 
           strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 2000
+            timeoutInMilliseconds: 5000
         timeout:
           enabled: true
-          
+    default: 
+      execution: 
+        isolation: 
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 5000
+        timeout:
+          enabled: true
 management:
   security:
     enabled: false

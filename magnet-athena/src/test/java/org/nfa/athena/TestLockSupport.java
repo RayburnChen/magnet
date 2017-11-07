@@ -17,7 +17,7 @@ public class TestLockSupport {
 			System.out.println("Thread.interrupted: " + Thread.interrupted());
 		});
 		thread.start();
-		TimeUnit.SECONDS.sleep(2L);
+		TimeUnit.SECONDS.sleep(3L);
 		LockSupport.unpark(thread);// thread.interrupt();
 		thread.join();
 	}

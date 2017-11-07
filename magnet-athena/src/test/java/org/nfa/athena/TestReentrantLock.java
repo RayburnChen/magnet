@@ -24,7 +24,7 @@ public class TestReentrantLock {
 				try {
 					int num = result;
 					try {
-						TimeUnit.MILLISECONDS.sleep(10);
+						TimeUnit.SECONDS.sleep(10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
