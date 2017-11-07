@@ -42,13 +42,23 @@ security:
 #      login-path: http://www.baidu.com
 hystrix: 
   command: 
+#    magnet-athena: 
+#      execution: 
+#        isolation: 
+#          strategy: SEMAPHORE
+#          thread:
+#            timeoutInMilliseconds: 2000
+#        timeout:
+#          enabled: true
     default: 
       execution: 
         isolation: 
-#          strategy: THREAD
           strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 5000
+            timeoutInMilliseconds: 2000
+        timeout:
+          enabled: true
+          
 management:
   security:
     enabled: false

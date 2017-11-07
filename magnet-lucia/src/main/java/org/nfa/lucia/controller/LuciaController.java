@@ -24,7 +24,7 @@ public class LuciaController {
 	@Autowired
 	private AthenaClient athenaClient;
 
-	@RequestMapping
+	@RequestMapping("/welcome")
 	public String welcome(@RequestHeader HttpHeaders headers) {
 		LOG.info("welcome");
 		return "welcome";
@@ -44,6 +44,11 @@ public class LuciaController {
 //		System.out.println("call oneUserByNamePath method: " + athenaController.oneUserByNamePath(name));
 //		greetingController.exception();
 		return user;
+	}
+	
+	@RequestMapping("/athenaUserByNamePath")
+	public User athenaUserByNamePath(@RequestParam(value = "name", required = false) String name, @RequestHeader HttpHeaders headers) {
+		return athenaClient.oneUserByNamePath(name);
 	}
 
 	// Need to add @RequestLine("GET /users") to the interface

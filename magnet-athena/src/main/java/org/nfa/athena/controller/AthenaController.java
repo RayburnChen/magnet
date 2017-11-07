@@ -48,14 +48,14 @@ public class AthenaController implements InitializingBean {
 		return user;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName" })
+	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName/{name}" })
 	public User oneUserByNamePath(@PathVariable("name") String name) {
 		log.info("oneUserByNamePath {}", name);
 		User user = userRepository.findOneByName(name);
 		return user;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName/{name}" })
+	@RequestMapping(method = RequestMethod.POST, value = { "/oneUserByName" })
 	public User insertUser(@RequestBody User user) {
 		log.info("insertUser {}", user);
 		return userRepository.insert(user);

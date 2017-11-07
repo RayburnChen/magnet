@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-//@Configuration
+@Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
@@ -15,10 +15,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		http.antMatcher("/**").authorizeRequests().anyRequest().authenticated();
-//		http.antMatcher("/**").authorizeRequests()
-//			.antMatchers("/greeting/oneUserByName").permitAll()
-//			.anyRequest().authenticated();
+		// http.antMatcher("/**").authorizeRequests().anyRequest().authenticated();
+		// http.antMatcher("/**").authorizeRequests()
+		// .antMatchers("/greeting/oneUserByName").permitAll()
+		// .anyRequest().authenticated();
 	}
 
 }
