@@ -1,5 +1,7 @@
 package org.nfa.lucia.controller;
 
+import java.security.Principal;
+
 import org.nfa.athena.AthenaClient;
 import org.nfa.athena.User;
 import org.slf4j.Logger;
@@ -27,15 +29,9 @@ public class LuciaController {
 	private AthenaClient athenaClient;
 
 	@RequestMapping("/welcome")
-	public String welcome(@RequestHeader HttpHeaders headers) {
-		LOG.info("welcome");
-		return "welcome";
-	}
-
-	@RequestMapping("/login")
-	public String login(@RequestHeader HttpHeaders headers) {
-		LOG.info("login");
-		return "login success";
+	public String welcome(Principal principal, @RequestHeader HttpHeaders headers) {
+		LOG.info("Welcome " + principal.getName());
+		return "Welcome " + principal.getName();
 	}
 
 	@RequestMapping("/athenaUser")

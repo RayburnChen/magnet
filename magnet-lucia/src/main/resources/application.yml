@@ -31,15 +31,15 @@ security:
     client:
       client-id: magnet-client
       client-secret: passw0rd
-#      authentication-scheme: 
       clientAuthenticationScheme: form
+#      clientAuthenticationScheme: header
       access-token-uri: http://localhost:8090/oauth/token
       user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
-#    sso:
-#      login-path: http://www.baidu.com
+    sso:
+      login-path: /welcome
 feign:
   hystrix:
     enabled: true

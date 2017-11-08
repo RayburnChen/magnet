@@ -1,4 +1,6 @@
 security:
+  user:
+    password: qqq
   oauth2:
     client:
       client-id: magnet-client
