@@ -20,7 +20,7 @@ public class MagnetAuthApplication {
 	/*
 	 
 	// get token
-	curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=3c2c3bee-35ae-4af4-bc97-cf7ee4415a7d -d scope=write
+	curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=qqq -d scope=write
 
 	// call resource server
 	curl localhost:8110/greeting/oneUser -H "Authorization: Bearer 27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6"
@@ -28,7 +28,7 @@ public class MagnetAuthApplication {
 	curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6
 
 	// client server use user credential to authorize resource
-	curl user:3c2c3bee-35ae-4af4-bc97-cf7ee4415a7d@localhost:8090/oauth/authorize -d client_id=magnet-client -d response_type=code -d redirect_uri=www.baidu.com
+	curl user:qqq@localhost:8090/oauth/authorize -d client_id=magnet-client -d response_type=code -d redirect_uri=www.baidu.com
 
 	 */
 	

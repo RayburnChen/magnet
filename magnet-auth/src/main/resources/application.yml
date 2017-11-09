@@ -19,5 +19,12 @@ spring:
       port: 27017
       repositories:
         enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+    favicon:
+      enabled: false
+    view:
+      prefix: /pages/
+      suffix: .html
 server:
   port: 8090
