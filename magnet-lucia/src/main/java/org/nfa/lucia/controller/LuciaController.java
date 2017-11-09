@@ -30,7 +30,8 @@ public class LuciaController {
 
 	@RequestMapping("/welcome")
 	public String welcome(Principal principal, @RequestHeader HttpHeaders headers) {
-		LOG.info("Welcome " + principal.getName());
+		LOG.info("Headers: {}", headers);
+		LOG.info("Welcome {}", principal.getName());
 		return "Welcome " + principal.getName();
 	}
 
