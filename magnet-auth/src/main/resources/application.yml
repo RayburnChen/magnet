@@ -1,11 +1,15 @@
 security:
   user:
     password: qqq
+    role:
+    - COMMON
   oauth2:
     client:
       client-id: magnet-client
       client-secret: passw0rd
       scope:
+        read, write
+      auto-approve-scopes:
         read, write
     authorization:
       check-token-access: isAuthenticated()
