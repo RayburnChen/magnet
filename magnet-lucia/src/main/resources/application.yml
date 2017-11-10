@@ -20,10 +20,6 @@ spring:
       port: 27017
       repositories:
         enabled: true
-logging:
-  file: log/${spring.application.name}.log
-  pattern:
-    level: DEBUG
 eureka:
   instance:
     preferIpAddress: true
@@ -37,14 +33,11 @@ security:
     client:
       client-id: magnet-client
       client-secret: passw0rd
-      clientAuthenticationScheme: form
       access-token-uri: http://localhost:8090/magnet-auth/oauth/token
       user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
     resource:
       token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
       preferTokenInfo: true
-    sso:
-      login-path: /welcome
 feign:
   hystrix:
     enabled: true
@@ -69,7 +62,7 @@ hystrix:
     default: 
       execution: 
         isolation: 
-          strategy: THREAD
+          strategy: SEMAPHORE
           thread:
             timeoutInMilliseconds: 5000
         timeout:
@@ -77,3 +70,9 @@ hystrix:
 management:
   security:
     enabled: false
+logging:
+  file: log/${spring.application.name}.log
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG

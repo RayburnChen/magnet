@@ -16,6 +16,10 @@ spring:
         enabled: true
 server:
   port: 8110
+  context-path: /magnet-athena
+  session:
+    cookie:
+      name: ATHENASESSIONID
 eureka:
   instance:
     preferIpAddress: true
@@ -29,8 +33,10 @@ security:
     client:
       client-id: magnet-client
       client-secret: passw0rd
+      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
+      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8090/oauth/check_token
+      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
       preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log

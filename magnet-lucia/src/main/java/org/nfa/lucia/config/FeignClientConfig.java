@@ -3,8 +3,11 @@ package org.nfa.lucia.config;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.feign.encoding.BaseRequestInterceptor;
 import org.springframework.cloud.netflix.feign.encoding.FeignClientEncodingProperties;
+import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -14,7 +17,13 @@ import feign.RequestTemplate;
 public class FeignClientConfig {
 
 	@Bean
-	public RequestInterceptor feignInterceptor(FeignClientEncodingProperties properties) {
+	public RequestInterceptor oauthFeignInterceptor(OAuth2ClientContext oAuth2ClientContext,
+			OAuth2ProtectedResourceDetails resource) {
+		return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, resource);
+	}
+
+	@Bean
+	public RequestInterceptor customfeignInterceptor(FeignClientEncodingProperties properties) {
 		return new FeignInterceptor(properties);
 	}
 
@@ -26,7 +35,7 @@ public class FeignClientConfig {
 
 		@Override
 		public void apply(RequestTemplate template) {
-			addHeader(template, "MY_HEADER", "aoidhqwbjdkjbnADJ");
+			addHeader(template, "MY_HEADER", "MY_HEADER_VALUE");
 		}
 
 	}
