@@ -32,3 +32,11 @@ spring:
       suffix: .html
 server:
   port: 8090
+  context-path: /magnet-auth
+  session:
+    cookie:
+      name: AUTHSESSIONID
+logging:
+  file: log/${spring.application.name}.log
+  pattern:
+    level: DEBUG
