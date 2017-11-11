@@ -33,6 +33,7 @@ security:
     client:
       client-id: magnet-client
       client-secret: passw0rd
+      grant-type: implicit
       access-token-uri: http://localhost:8090/magnet-auth/oauth/token
       user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
     resource:

@@ -1,8 +1,9 @@
 security:
   user:
+    name: user
     password: qqq
     role:
-    - COMMON
+    - ADMIN
   oauth2:
     client:
       client-id: magnet-client
