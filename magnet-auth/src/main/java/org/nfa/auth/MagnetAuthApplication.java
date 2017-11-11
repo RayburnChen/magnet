@@ -13,18 +13,18 @@ public class MagnetAuthApplication {
 	
 	// Resource Server
 	// Call Authorization Server to Check Token
-	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/check_token -d token=27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6
+	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/check_token -d token=30bca85a-3ee0-4eab-bb8f-39eb945f1783
 	// org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint
 	
 	// Resource Server Sample Request
-	// curl localhost:8110/magnet-athena/greeting/oneUser -H "Authorization: Bearer 27e95bbb-e26c-4c45-aa76-1ea3f3fb2dc6"
+	// curl localhost:8110/magnet-athena/greeting/oneUser -H "Authorization: Bearer 30bca85a-3ee0-4eab-bb8f-39eb945f1783"
 
 	// Mode 1
 	// Resource Owner Password Credentials
 	// User gives Password to Client
 	// Get Token
 	// Mode 1.1
-	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/token -d grant_type=password -d username=user -d password=qqq -d scope=read&write
+	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/token -d grant_type=password -d username=user -d password=qqq -d scope=read%write
 	
 	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
 	// org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter
