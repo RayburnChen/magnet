@@ -7,6 +7,7 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 30
   server:
     enableSelfPreservation: true
   client:
@@ -35,6 +36,11 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 logging:
   file: log/${spring.application.name}.log
-management:
-  security:
-    enabled: false
+#  level:
+#    org:
+#      springframework: 
+#        web: DEBUG
+        
+#management:
+#  security:
+#    enabled: false

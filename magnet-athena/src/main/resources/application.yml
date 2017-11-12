@@ -41,10 +41,9 @@ security:
       preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
-management:
-  security:
-    enabled: false
-    roles: SUPERUSER
+#management:
+#  security:
+#    enabled: false
 endpoints:
   shutdown:
     enabled: true

@@ -13,7 +13,7 @@ public class HomeController {
 		return new ModelAndView("login");
 	}
 
-	@RequestMapping("/home")
+	@RequestMapping("/")
 	@ResponseBody
 	public String home() {
 		return "Home Page";
@@ -25,10 +25,10 @@ public class HomeController {
 		return "Login Failed Page";
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping("/logoutSuccess")
 	@ResponseBody
 	public String logout() {
-		return "Logout Page";
+		return "Logout Success Page";
 	}
 
 }

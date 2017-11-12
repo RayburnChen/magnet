@@ -68,9 +68,9 @@ hystrix:
             timeoutInMilliseconds: 5000
         timeout:
           enabled: true
-management:
-  security:
-    enabled: false
+#management:
+#  security:
+#    enabled: false
 logging:
   file: log/${spring.application.name}.log
 #  level:
