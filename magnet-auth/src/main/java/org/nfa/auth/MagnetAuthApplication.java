@@ -57,10 +57,28 @@ public class MagnetAuthApplication {
 	// localhost:8090/magnet-auth/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8100/magnet-lucia/login&response_type=code&state=RRRwEg
 	// Client Server get token by one call and no need to call Authorization Server again
 	// Implicit will not validate Client Server because there is no Mode 2.3 which need Client Server Secret
-	// Implicit can access token but can not refresh token
+	// Implicit can get access token but can not get refresh token
 	
 	// org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint
 	// org.springframework.security.oauth2.provider.implicit.ImplicitTokenGranter
+	
+	// Mode 4
+	// Client Credentials
+	// Use Client id and secret to get token
+	// Mode 4.1
+	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/token -d grant_type=client_credentials
+	
+	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
+	// org.springframework.security.oauth2.provider.client.ClientCredentialsTokenGranter
+	
+	// Mode 5
+	// Refresh Token Credentials
+	// When access token is about to expire, use the refresh token to get the new access token
+	// Mode 5.1
+	// curl magnet-client:passw0rd@localhost:8090/magnet-auth/oauth/token -d grant_type=refresh_token -d refresh_token=d845a999-5ce0-440a-a6ea-9d845523db9b
+	
+	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
+	// org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetAuthApplication.class, args);
