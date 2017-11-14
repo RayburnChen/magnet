@@ -54,13 +54,16 @@ magnet-athena:
 ribbon:
   ConnectTimeout: 3000
   ReadTimeout: 6000
+  eager-load:
+    enabled: true
+    clients: magnet-athena
 hystrix: 
   shareSecurityContext: true
   command: 
     "AthenaClient#oneUserByNamePath(String)": 
       execution: 
         isolation: 
-          strategy: SEMAPHORE
+          strategy: THREAD
           thread:
             timeoutInMilliseconds: 5000
         timeout:
@@ -76,6 +79,13 @@ hystrix:
 #management:
 #  security:
 #    enabled: false
+endpoints:
+    sensitive: true
+info:
+  app:
+    name: ${spring.application.name}
+    context-path: ${server.context-path}
+    profiles: ${spring.profiles}
 logging:
   file: log/${spring.application.name}.log
 #  level:
