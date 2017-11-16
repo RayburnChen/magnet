@@ -10,8 +10,10 @@ import org.junit.Test;
 public class TestReentrantLock {
 
 	private int result = 0;
-	private int count = 10;
+	private int count = 5;
 	private ReentrantLock lock = new ReentrantLock();
+	
+	
 
 	@Test
 	public void testReentrantLock() {
@@ -24,7 +26,7 @@ public class TestReentrantLock {
 				try {
 					int num = result;
 					try {
-						TimeUnit.SECONDS.sleep(10);
+						TimeUnit.SECONDS.sleep(40);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -50,5 +52,5 @@ public class TestReentrantLock {
 		System.out.println("TestReentrantLock.testReentrantLock() " + result);
 
 	}
-
+	
 }
