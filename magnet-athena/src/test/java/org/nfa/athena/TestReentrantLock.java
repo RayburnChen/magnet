@@ -13,8 +13,6 @@ public class TestReentrantLock {
 	private int count = 5;
 	private ReentrantLock lock = new ReentrantLock();
 	
-	
-
 	@Test
 	public void testReentrantLock() {
 		List<Thread> list = new ArrayList<>(count);
@@ -52,5 +50,44 @@ public class TestReentrantLock {
 		System.out.println("TestReentrantLock.testReentrantLock() " + result);
 
 	}
+	
+//	add 1t
+//	run 1t
+//	null
+//
+//	add 2t park
+//	run 1t
+//	-1,null
+//
+//	add 3t park
+//	run 1t
+//	-1,-1,null
+//
+//	add 4t park
+//	run 1t
+//	-1,-1,-1,null
+//
+//	add 5t park
+//	run 1t
+//	-1,-1,-1,-1,null
+//
+//	end 1t
+//	run 2t unpark
+//	0,-1,-1,-1,null
+//
+//	end 2t
+//	run 3t unpark
+//	0,-1,-1,null
+//
+//	end 3t
+//	run 4t unpark
+//	0,-1,null
+//
+//	end 4t
+//	run 5t unpark
+//	0,null
+//
+//	end 5t
+//	null
 	
 }
