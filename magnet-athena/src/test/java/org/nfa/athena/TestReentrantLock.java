@@ -13,6 +13,40 @@ public class TestReentrantLock {
 	private int count = 5;
 	private ReentrantLock lock = new ReentrantLock();
 	
+//			AQS Node [thread,waitStatus]
+//
+//			t1 add
+//			t1 lock
+//			t1 run
+//
+//			t2 add
+//			t2 park
+//			[null,-1], [t2,0]
+//
+//			t3 add
+//			t3 park
+//			[null,-1], [t2,-1], [t3,0]
+//
+//			t1 release
+//			[null,0], [t2,-1], [t3,0]
+//			t2 unpark
+//
+//			t2 lock
+//			[null,-1], [t3,0]
+//			t2 run
+//
+//			t2 release
+//			[null,0], [t3,0]
+//			t3 unpark
+//
+//			t3 lock
+//			[null,0]
+//			t3 run
+//
+//			t3 release
+//			[null,0]
+	
+					
 	@Test
 	public void testReentrantLock() {
 		List<Thread> list = new ArrayList<>(count);
@@ -50,44 +84,5 @@ public class TestReentrantLock {
 		System.out.println("TestReentrantLock.testReentrantLock() " + result);
 
 	}
-	
-//	add 1t
-//	run 1t
-//	null
-//
-//	add 2t park
-//	run 1t
-//	-1,null
-//
-//	add 3t park
-//	run 1t
-//	-1,-1,null
-//
-//	add 4t park
-//	run 1t
-//	-1,-1,-1,null
-//
-//	add 5t park
-//	run 1t
-//	-1,-1,-1,-1,null
-//
-//	end 1t
-//	run 2t unpark
-//	0,-1,-1,-1,null
-//
-//	end 2t
-//	run 3t unpark
-//	0,-1,-1,null
-//
-//	end 3t
-//	run 4t unpark
-//	0,-1,null
-//
-//	end 4t
-//	run 5t unpark
-//	0,null
-//
-//	end 5t
-//	null
 	
 }
