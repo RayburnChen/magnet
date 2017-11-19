@@ -92,8 +92,13 @@ public class TestReentrantLock {
 	// AbstractQueuedSynchronizer.acquire(1).tryAcquire(1).nonfairTryAcquire(1)
 	
 	// AbstractQueuedSynchronizer.acquireQueued(addWaiter(1), 1)
-	// If predecessor is head, then the node try to get lock. See node.predecessor() == head
-	// If AbstractQueuedSynchronizer.tryAcquire(1) failed, then the thread will park and wait for next release.
+	// If predecessor is head, then the node will try to get lock. See node.predecessor() == head
+	// If AbstractQueuedSynchronizer.tryAcquire(1) success, then the thread will get lock
+	// If AbstractQueuedSynchronizer.tryAcquire(1) failed and predecessor.waitStatus == 0, then CAS the predecessor.waitStatus to -1
+	// That means the lock is still occupied or some Node has jumped the queue and get the lock. Recover the predecessor.waitStatus to -1
+	// If predecessor is head, then the node will try to get lock. The second time.
+	// If AbstractQueuedSynchronizer.tryAcquire(1) success, then the thread will get lock
+	// If AbstractQueuedSynchronizer.tryAcquire(1) failed and predecessor.waitStatus == -1, then the thread will park and wait for next release.
 	
 	// ReentrantLock.FairSync
 	
