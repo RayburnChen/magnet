@@ -85,4 +85,23 @@ public class TestReentrantLock {
 
 	}
 	
+	// ReentrantLock.NonfairSync
+	
+	// Two chances to jump the queue
+	// NonfairSync.lock().compareAndSetState(0, 1)
+	// AbstractQueuedSynchronizer.acquire(1).tryAcquire(1).nonfairTryAcquire(1)
+	
+	// AbstractQueuedSynchronizer.acquireQueued(addWaiter(1), 1)
+	// If predecessor is head, then the node try to get lock. See node.predecessor() == head
+	// If AbstractQueuedSynchronizer.tryAcquire(1) failed, then the thread will park and wait for next release.
+	
+	// ReentrantLock.FairSync
+	
+	// No chance to jump the queue
+	// FairSync.tryAcquire(1) is restricted by !hasQueuedPredecessors()
+	
+	// AbstractQueuedSynchronizer.acquireQueued(addWaiter(1), 1)
+	// If predecessor is head, then the node try to get lock. See node.predecessor() == head
+	// And FairSync.tryAcquire(1) is always restricted by !hasQueuedPredecessors()
+	
 }
