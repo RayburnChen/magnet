@@ -18,11 +18,11 @@ public class TestCountDownLatch {
 		for (int i = 0; i < N; ++i) {
 			new Thread(() -> {
 				try {
-					startLatch.await();
+					startLatch.await();// wait for startLatch.countDown() and then start
 					System.out.println(Thread.currentThread().getName() + " starts!");
 					Thread.sleep(r.nextInt(5000));
 					System.out.println(Thread.currentThread().getName() + " done!");
-					finishLatch.countDown();
+					finishLatch.countDown();// finishLatch countDown -1
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -30,8 +30,8 @@ public class TestCountDownLatch {
 		}
 
 		System.out.println("All workers start!");
-		startLatch.countDown();
-		finishLatch.await();
+		startLatch.countDown();// trigger all threads to start
+		finishLatch.await();// wait for finishLatch.countDown N times
 		System.out.println("All workers done!");
 
 	}
