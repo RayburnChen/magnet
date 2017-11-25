@@ -1,7 +1,11 @@
 package org.nfa.athena;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
@@ -9,35 +13,39 @@ import org.junit.Test;
 public class TestCyclicBarrier {
 
 	@Test
-	public void test() {
-		final int N = 5;
+	public void test() throws InterruptedException {
+		final Random r = new Random();
+		final int N = 3;
 		final AtomicInteger counter = new AtomicInteger(N * 3);
 		final CyclicBarrier barrier = new CyclicBarrier(N);
-		final Random r = new Random();
+		List<Thread> list = new ArrayList<>(N);
 		for (int i = 0; i < N; i++) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (counter.getAndDecrement() > 0) {
+			list.add(new Thread(() -> {
+				while (counter.getAndDecrement() > 0) {
+					try {
 						System.out.println(Thread.currentThread().getName() + " starts!");
-						try {
-							Thread.sleep(r.nextInt(2000));
-							System.out.println(Thread.currentThread().getName() + " done!");
-							barrier.await();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+						TimeUnit.MILLISECONDS.sleep(r.nextInt(3000));
+						System.out.println(Thread.currentThread().getName() + " done!");
+						barrier.await();
+					} catch (InterruptedException | BrokenBarrierException e) {
+						e.printStackTrace();
 					}
 				}
-			}).start();
+
+			}));
 		}
-		do {
+
+		System.out.println("TestCyclicBarrier.test() Start");
+		list.forEach(t -> t.start());
+		list.forEach(t -> {
 			try {
-				Thread.sleep(5000);
+				t.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		} while (counter.get() > 0);
+		});
+		System.out.println("TestCyclicBarrier.test() Done");
+
 	}
 
 }
