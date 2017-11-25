@@ -85,7 +85,7 @@ public class TestCountDownLatch {
 	// AQS.doReleaseShared()
 	// Only once and signals successor and ensures propagation
 	// Set head Node waitStatus -1 -> 0 and unpark successor Node
-	// Recursive set new head and propagate
+	// Recursive set new head and propagate. See AbstractQueuedSynchronizer.setHeadAndPropagate(node, 1)
 	
 
 }
