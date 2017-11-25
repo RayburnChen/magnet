@@ -11,6 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
+	
+	public User() {
+		super();
+	}
+
+	public User(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
 
 	@Id
 	private String id;
