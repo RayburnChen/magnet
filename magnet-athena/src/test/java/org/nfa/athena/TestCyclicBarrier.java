@@ -11,22 +11,33 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 public class TestCyclicBarrier {
+	
+	// CyclicBarrier.await() is locked by ReentrantLock
+	
+	// CyclicBarrier source code:
+	// count = parties = N
+	// private final ReentrantLock lock = new ReentrantLock();
+	// private final Condition trip = lock.newCondition();
+	
+	// If CyclicBarrier.await() then count decrease by 1
+	// If count transition not zero then move to Condition trip.await()
+	// If count transition to zero then Condition trip.signalAll() and prepare nextGeneration count = parties
 
 	@Test
-	public void test() throws InterruptedException {
+	public void test() {
 		final Random r = new Random();
 		final int N = 3;
 		final AtomicInteger counter = new AtomicInteger(N * 3);
-		final CyclicBarrier barrier = new CyclicBarrier(N);
+		final CyclicBarrier barrier = new CyclicBarrier(N, () -> System.out.println("Barrier tripped"));
 		List<Thread> list = new ArrayList<>(N);
 		for (int i = 0; i < N; i++) {
 			list.add(new Thread(() -> {
 				while (counter.getAndDecrement() > 0) {
 					try {
+						barrier.await();
 						System.out.println(Thread.currentThread().getName() + " starts!");
 						TimeUnit.MILLISECONDS.sleep(r.nextInt(3000));
 						System.out.println(Thread.currentThread().getName() + " done!");
-						barrier.await();
 					} catch (InterruptedException | BrokenBarrierException e) {
 						e.printStackTrace();
 					}
