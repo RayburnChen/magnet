@@ -92,7 +92,7 @@ public class TestTryCatch {
 
 	@Test
 	public void testStringPlus() {
-		String str1 = new String("Base") + new String("String");// already into poll ?
+		String str1 = new String("Base") + new String("String");// already into pool ?
 		String str2 = str1.intern();
 		System.out.println(str1 == str2);// why true ?
 	}
