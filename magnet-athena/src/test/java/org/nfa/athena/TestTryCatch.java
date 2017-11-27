@@ -46,12 +46,12 @@ public class TestTryCatch {
 			return c + "e";
 		}
 	}
-	
+
 	@Test
 	public void testUUID() {
 		System.out.println("TestTryCatch.testUUID " + UUID.randomUUID());
 	}
-	
+
 	@Test
 	public void testListAdd() {
 		User user = new User();
@@ -63,12 +63,29 @@ public class TestTryCatch {
 		user.getValues().addAll(second);
 		System.out.println(user);
 	}
-	
+
 	@Test
 	public void testBigDecimal() {
 		String aa = null;
 		BigDecimal big = new BigDecimal(aa);
 		System.out.println("TestTryCatch.testBigDecimal()" + big.toPlainString());
+	}
+
+	@Test
+	public void testString() {
+		String baseStr = "baseStr";
+		final String baseStrFinal = "baseStr";
+
+		String str1 = "baseStr01";
+		String str2 = "baseStr" + "01";
+		String str3 = baseStr + "01";
+		String str4 = baseStrFinal + "01";
+		String str5 = new String("baseStr01").intern();
+
+		System.out.println(str1 == str2);// true
+		System.out.println(str1 == str3);// false
+		System.out.println(str1 == str4);// true
+		System.out.println(str1 == str5);// true
 	}
 
 }
