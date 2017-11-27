@@ -73,19 +73,28 @@ public class TestTryCatch {
 
 	@Test
 	public void testString() {
-		String baseStr = "baseStr";
-		final String baseStrFinal = "baseStr";
+		String base = "Base";
+		final String baseFinal = "Base";
 
-		String str1 = "baseStr01";
-		String str2 = "baseStr" + "01";
-		String str3 = baseStr + "01";
-		String str4 = baseStrFinal + "01";
-		String str5 = new String("baseStr01").intern();
+		String str1 = "BaseString";
+		String str2 = "Base" + "String";
+		String str3 = base + "String";
+		String str4 = baseFinal + "String";
+		String str5 = new String("BaseString").intern();
+		String str6 = new String("Base") + new String("String");
 
 		System.out.println(str1 == str2);// true
 		System.out.println(str1 == str3);// false
 		System.out.println(str1 == str4);// true
 		System.out.println(str1 == str5);// true
+		System.out.println(str1 == str6);// false
+	}
+
+	@Test
+	public void testStringPlus() {
+		String str1 = new String("Base") + new String("String");// already into poll ?
+		String str2 = str1.intern();
+		System.out.println(str1 == str2);// why true ?
 	}
 
 }
