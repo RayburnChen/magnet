@@ -103,7 +103,8 @@ public class TestTryCatch {
 	@Test
 	public void testStream() {
 		Random ran = new Random();
-		Arrays.asList("1", "2", "3").stream().map(genUnary(ran.nextInt())).forEach(genCons(ran.nextInt()));
+		Arrays.asList("A", "B", "C").stream().map(genUnary(ran.nextInt())).forEach(genCons(ran.nextInt()));
+		Arrays.asList("D", "E", "F").forEach(genCons(ran.nextInt()));
 	}
 
 	private UnaryOperator<String> genUnary(int n) {
