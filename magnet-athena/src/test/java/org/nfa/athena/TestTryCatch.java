@@ -1,12 +1,6 @@
 package org.nfa.athena;
 
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
 import java.util.WeakHashMap;
 
 import org.junit.Test;
@@ -45,56 +39,6 @@ public class TestTryCatch {
 			c += "d";
 			return c + "e";
 		}
-	}
-
-	@Test
-	public void testUUID() {
-		System.out.println("TestTryCatch.testUUID " + UUID.randomUUID());
-	}
-
-	@Test
-	public void testListAdd() {
-		User user = new User();
-		user.setValues(new ArrayList<>());
-		List<String> first = Arrays.asList("first");
-		List<String> second = new LinkedList<>();
-		second.add("second");
-		user.getValues().addAll(first);
-		user.getValues().addAll(second);
-		System.out.println(user);
-	}
-
-	@Test
-	public void testBigDecimal() {
-		String aa = null;
-		BigDecimal big = new BigDecimal(aa);
-		System.out.println("TestTryCatch.testBigDecimal()" + big.toPlainString());
-	}
-
-	@Test
-	public void testString() {
-		String base = "Base";
-		final String baseFinal = "Base";
-
-		String str1 = "BaseString";
-		String str2 = "Base" + "String";
-		String str3 = base + "String";
-		String str4 = baseFinal + "String";
-		String str5 = new String("BaseString").intern();
-		String str6 = new String("Base") + new String("String");
-
-		System.out.println(str1 == str2);// true
-		System.out.println(str1 == str3);// false
-		System.out.println(str1 == str4);// true
-		System.out.println(str1 == str5);// true
-		System.out.println(str1 == str6);// false
-	}
-
-	@Test
-	public void testStringPlus() {
-		String str1 = new String("Base") + new String("String");// already into pool ?
-		String str2 = str1.intern();
-		System.out.println(str1 == str2);// why true ?
 	}
 
 }
