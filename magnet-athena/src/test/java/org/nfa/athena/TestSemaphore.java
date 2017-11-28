@@ -9,10 +9,10 @@ import org.junit.Test;
 
 public class TestSemaphore {
 
-	private final int count = 5;
+	private final int count = 6;
 
 	@Test
-	public void test() {
+	public void testSemaphore() {
 
 		Semaphore semaphore = new Semaphore(3);
 
