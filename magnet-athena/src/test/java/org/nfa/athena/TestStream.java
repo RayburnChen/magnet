@@ -1,8 +1,11 @@
 package org.nfa.athena;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -15,6 +18,26 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestStream {
 
 	static Logger LOG = Logger.getLogger(TestStream.class);
+	
+	@Test
+	public void testStream() {
+		Random ran = new Random();
+		Arrays.asList("A", "B", "C").stream().map(genUnary(ran.nextInt())).forEach(genCons(ran.nextInt()));
+		Arrays.asList("D", "E", "F").forEach(genCons(ran.nextInt()));
+	}
+
+	private UnaryOperator<String> genUnary(int n) {
+		return s -> {
+			System.out.println(s + "-" + n);
+			return s;
+		};
+	}
+
+	private Consumer<String> genCons(int n) {
+		return s -> {
+			System.out.println(s + "-" + n);
+		};
+	}
 
 	@Test
 	public void test() {

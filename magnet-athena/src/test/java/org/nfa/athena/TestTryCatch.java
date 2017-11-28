@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.WeakHashMap;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 import org.junit.Test;
 
@@ -98,26 +95,6 @@ public class TestTryCatch {
 		String str1 = new String("Base") + new String("String");// already into pool ?
 		String str2 = str1.intern();
 		System.out.println(str1 == str2);// why true ?
-	}
-
-	@Test
-	public void testStream() {
-		Random ran = new Random();
-		Arrays.asList("A", "B", "C").stream().map(genUnary(ran.nextInt())).forEach(genCons(ran.nextInt()));
-		Arrays.asList("D", "E", "F").forEach(genCons(ran.nextInt()));
-	}
-
-	private UnaryOperator<String> genUnary(int n) {
-		return s -> {
-			System.out.println(s + "-" + n);
-			return s;
-		};
-	}
-
-	private Consumer<String> genCons(int n) {
-		return s -> {
-			System.out.println(s + "-" + n);
-		};
 	}
 
 }
