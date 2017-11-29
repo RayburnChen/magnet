@@ -8,6 +8,20 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 public class TestSemaphore {
+	
+	// Semaphore
+	
+	// Semaphore.acquire()
+	// AbstractQueuedSynchronizer.acquireSharedInterruptibly(1)
+	// Semaphore.NonfairSync.nonfairTryAcquireShared(1)
+	// remaining = available - acquires
+	// if remaining >= 0 and CAS pass then thread continue
+	// if remaining < 0 then add thread to queue and park AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(1)
+	
+	// Semaphore.release()
+	// AbstractQueuedSynchronizer.releaseShared(1)
+	// Add back semaphore and CAS the state
+	// Unpark all Nodes in the queue and they will try to acquire semaphore
 
 	private final int count = 6;
 
