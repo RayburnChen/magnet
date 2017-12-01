@@ -1,6 +1,8 @@
 package org.nfa.athena;
 
 import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -45,4 +47,11 @@ public class TestCommon {
 		System.out.println(str1 == str2);// why true ?
 	}
 
+	@Test
+	public void testInetAddress() throws UnknownHostException {
+		InetAddress add = InetAddress.getLocalHost();
+		System.out.println(add.getHostName());
+		System.out.println(add.getHostAddress());
+	}
+	
 }
