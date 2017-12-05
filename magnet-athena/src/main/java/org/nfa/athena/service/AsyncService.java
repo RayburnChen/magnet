@@ -12,9 +12,11 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.nfa.athena.EnableMagnetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@EnableMagnetService(value = "AsyncService", priority = 1, comments = "Test Comments")
 public class AsyncService<T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AsyncService.class);
