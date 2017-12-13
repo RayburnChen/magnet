@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
-	
+
 	public User() {
 		super();
 	}
@@ -31,8 +31,9 @@ public class User implements Serializable {
 
 	@Field
 	private int age;
-	
+
 	@Field
+//	@JsonSerialize(using = BigDecimalSerializer.class)
 	private BigDecimal amount;
 
 	@Field
@@ -91,7 +92,7 @@ public class User implements Serializable {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	public BigDecimal getAmount() {
 		return amount;
 	}

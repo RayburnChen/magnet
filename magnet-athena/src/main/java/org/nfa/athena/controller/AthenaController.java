@@ -1,6 +1,7 @@
 package org.nfa.athena.controller;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @RestController
 @RequestMapping(value = "/greeting")
 public class AthenaController implements InitializingBean {
@@ -32,11 +35,14 @@ public class AthenaController implements InitializingBean {
 	private UserRepository userRepository;
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
-	public User oneUser(@RequestHeader HttpHeaders headers) {
+	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
 		log.info("oneUser");
 		log.info("HttpHeaders ", headers);
-		User user = userRepository.findAll().get(0);
-		user.setAmount(new BigDecimal("6129036206198038200.22"));
+		User user = Optional.ofNullable(userRepository.findAll()).filter(l -> l.size() > 0).map(l -> l.get(0))
+				.orElse(new User());
+		BigDecimal amount = new BigDecimal("6129036206198038200.22");
+		log.info(amount.toString());
+		user.setAmount(amount);
 		return user;
 	}
 
