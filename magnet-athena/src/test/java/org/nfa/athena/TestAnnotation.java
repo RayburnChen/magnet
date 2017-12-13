@@ -23,8 +23,12 @@ public class TestAnnotation {
 	}
 
 	@Test
-	public void testLoad() {
-		ServiceLoader.load(Module.class, TestAnnotation.class.getClassLoader()).forEach(m -> System.out.println(m));
+	public void testServiceLoader() {
+		// load class through configuration files
+		// META-INF/services/configuration
+		// e.g com.fasterxml.jackson.databind.module.SimpleModule
+		// e.g com.fasterxml.jackson.module.afterburner.AfterburnerModule
+		ServiceLoader.load(Module.class, ClassLoader.getSystemClassLoader()).forEach(m -> System.out.println(m));
 	}
 
 }
