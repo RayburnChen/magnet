@@ -1,10 +1,11 @@
 package org.nfa.athena.controller;
 
+import java.math.BigDecimal;
+
 import javax.annotation.PostConstruct;
 
 import org.nfa.athena.User;
 import org.nfa.athena.dao.UserRepository;
-import org.nfa.athena.service.AsyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -34,9 +35,9 @@ public class AthenaController implements InitializingBean {
 	public User oneUser(@RequestHeader HttpHeaders headers) {
 		log.info("oneUser");
 		log.info("HttpHeaders ", headers);
-		AsyncService<User> async = AsyncService.build();
-		async.add(() -> userRepository.findAll().get(0));
-		return async.getResult().stream().findAny().orElse(null);
+		User user = userRepository.findAll().get(0);
+		user.setAmount(new BigDecimal("6129036206198038200.22"));
+		return user;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })

@@ -19,7 +19,7 @@ spring:
     name: magnet-auth
   data:
     mongodb:
-      database: auth
+      database: magnet-auth
       host: localhost
       port: 27017
       repositories:

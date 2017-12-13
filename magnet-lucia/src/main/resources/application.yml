@@ -15,7 +15,7 @@ spring:
     name: magnet-lucia
   data:
     mongodb:
-      database: lucia
+      database: magnet-lucia
       host: localhost
       port: 27017
       repositories:

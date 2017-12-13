@@ -1,6 +1,7 @@
 package org.nfa.athena;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -30,6 +31,9 @@ public class User implements Serializable {
 
 	@Field
 	private int age;
+	
+	@Field
+	private BigDecimal amount;
 
 	@Field
 	private String password;
@@ -86,6 +90,14 @@ public class User implements Serializable {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 
 	@Override

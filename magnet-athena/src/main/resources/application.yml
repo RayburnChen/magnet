@@ -9,7 +9,7 @@ spring:
     name: magnet-athena
   data:
     mongodb:
-      database: athena
+      database: magnet-athena
       host: localhost
       port: 27017
       repositories:
