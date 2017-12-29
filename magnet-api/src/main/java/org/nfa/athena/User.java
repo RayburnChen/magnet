@@ -5,10 +5,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
+@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_idx", def = "{ 'name':1 }") })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
@@ -33,7 +36,7 @@ public class User implements Serializable {
 	private int age;
 
 	@Field
-//	@JsonSerialize(using = BigDecimalSerializer.class)
+	// @JsonSerialize(using = BigDecimalSerializer.class)
 	private BigDecimal amount;
 
 	@Field
