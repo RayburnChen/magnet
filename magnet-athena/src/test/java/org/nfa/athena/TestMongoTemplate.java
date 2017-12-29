@@ -27,6 +27,18 @@ public class TestMongoTemplate {
 		Object result = mongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "directly execute script");
 		System.out.println("TestMongoTemplate scriptOps result:" + result.toString());
 	}
+	
+	@Test
+	public void testClone() {
+		User user = new User();
+		user.setName("apple");
+		user.setUserType(UserType.ADMIN);
+		mongoTemplate.insert(user);
+		String script = "function(x)    { u = db.users.findOne({'name':'apple'}); u._id = x; r = db.users.insert(u); return r.nInserted; }";
+		Object result = mongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "new-id-002");
+		Double n = Double.valueOf(String.valueOf(result));
+		System.err.println(n == 0.0);
+	}
 
 	@Test
 	public void testEnumSet() {
