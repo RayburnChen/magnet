@@ -2,14 +2,20 @@ package org.nfa.athena;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.data.mongodb.core.index.IndexDefinition;
+import org.springframework.data.mongodb.core.index.PartialIndexFilter;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.script.ExecutableMongoScript;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,8 +24,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = MagnetAthenaApplication.class)
 public class TestMongoTemplate {
 
+	private final static String NAME_PARTIAL_IDX = "name_partial_idx";
+	private final static Criteria PARTIAL_CT = Criteria.where("userType").is(UserType.ADMIN);
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@PostConstruct
+	public void init() {
+		IndexDefinition idx = new Index("name", Direction.ASC).on("age", Direction.ASC)
+				.partial(PartialIndexFilter.of(PARTIAL_CT)).named(NAME_PARTIAL_IDX).background();
+		mongoTemplate.indexOps(User.class).ensureIndex(idx);
+	}
 
 	@Test
 	public void testScripts() {
@@ -27,7 +43,7 @@ public class TestMongoTemplate {
 		Object result = mongoTemplate.scriptOps().execute(new ExecutableMongoScript(script), "directly execute script");
 		System.out.println("TestMongoTemplate scriptOps result:" + result.toString());
 	}
-	
+
 	@Test
 	public void testClone() {
 		User user = new User();
@@ -43,20 +59,18 @@ public class TestMongoTemplate {
 	@Test
 	public void testEnumSet() {
 		User user = new User();
-		user.setName("peter");
+		user.setName("love");
 		user.setUserType(UserType.ADMIN);
-		// EnumSet<UserType> set = EnumSet.allOf(UserType.class);
+		user.setAge(13);
 		mongoTemplate.insert(user);
-		List<User> datas = mongoTemplate.findAll(User.class);
-		datas.forEach(System.out::println);
+		mongoTemplate.find(new Query(PARTIAL_CT).withHint(NAME_PARTIAL_IDX), User.class).forEach(System.out::println);
 	}
 
 	@Test
 	public void testProject() {
-		Query q = new Query().withHint("document_update_history_true_idx");
+		Query q = new Query().withHint("xxxxx_idx");
 		projectFields(q.fields(), User.class);
-		List<User> datas = mongoTemplate.find(q, User.class);
-		datas.forEach(System.out::println);
+		mongoTemplate.find(q, User.class).forEach(System.out::println);
 	}
 
 	private <V> void projectFields(org.springframework.data.mongodb.core.query.Field fs, Class<V> clazz) {

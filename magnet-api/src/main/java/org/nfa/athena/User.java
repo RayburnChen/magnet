@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
-@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_idx", def = "{ 'name':1 }") })
+@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
