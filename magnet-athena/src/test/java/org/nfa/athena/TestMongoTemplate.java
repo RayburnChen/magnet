@@ -68,7 +68,7 @@ public class TestMongoTemplate {
 
 	@Test
 	public void testProject() {
-		Query q = new Query().withHint("xxxxx_idx");
+		Query q = new Query();
 		projectFields(q.fields(), User.class);
 		mongoTemplate.find(q, User.class).forEach(System.out::println);
 	}
