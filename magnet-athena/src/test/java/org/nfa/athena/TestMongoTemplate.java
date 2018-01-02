@@ -63,7 +63,7 @@ public class TestMongoTemplate {
 		user.setUserType(UserType.ADMIN);
 		user.setAge(13);
 		mongoTemplate.insert(user);
-		mongoTemplate.find(new Query(PARTIAL_CT).withHint(NAME_PARTIAL_IDX), User.class).forEach(System.out::println);
+		mongoTemplate.find(new Query(Criteria.where("userType").is(UserType.ADMIN)).withHint(NAME_PARTIAL_IDX), User.class).forEach(System.out::println);
 	}
 
 	@Test
