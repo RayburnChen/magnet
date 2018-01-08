@@ -30,5 +30,21 @@ public class TestRedisTemplate {
 		List<String> list = stringRedisTemplate.opsForList().range("list01", 0, end);
 		System.err.println(list);
 	}
+	
+	@Test
+	public void boundHashOps() {
+		stringRedisTemplate.boundHashOps("hash01").put("k01", "v01");
+		stringRedisTemplate.boundHashOps("hash01").put("k02", "v02");
+		stringRedisTemplate.boundHashOps("hash01").put("k03", "v03");
+		System.err.println(stringRedisTemplate.boundHashOps("hash01").entries());
+	}
 
+	@Test
+	public void opsForHash() {
+		stringRedisTemplate.opsForHash().put("hash02", "k01", "v01");
+		stringRedisTemplate.opsForHash().put("hash02", "k02", "v02");
+		stringRedisTemplate.opsForHash().put("hash02", "k03", "v03");
+		System.err.println(stringRedisTemplate.opsForHash().entries("hash02"));
+	}
+	
 }
