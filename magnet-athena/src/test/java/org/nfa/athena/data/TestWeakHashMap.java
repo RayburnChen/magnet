@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.data;
 
 import java.util.Map;
 import java.util.WeakHashMap;

@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.concurrent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import org.junit.Test;
+import org.nfa.athena.User;
 
 public class TestAtomic {
 

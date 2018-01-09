@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.common;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

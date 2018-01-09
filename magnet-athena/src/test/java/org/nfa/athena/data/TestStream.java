@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;

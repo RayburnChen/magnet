@@ -1,9 +1,10 @@
-package org.nfa.athena;
+package org.nfa.athena.common;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.junit.Test;
+import org.nfa.athena.AthenaClient;
 
 public class TestMethod {
 

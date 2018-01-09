@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

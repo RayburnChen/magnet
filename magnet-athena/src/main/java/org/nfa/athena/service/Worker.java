@@ -2,7 +2,7 @@ package org.nfa.athena.service;
 
 import java.util.Random;
 
-import org.nfa.athena.TestThreadLocal;
+import org.nfa.athena.concurrent.TestThreadLocal;
 
 public class Worker implements Runnable {
 

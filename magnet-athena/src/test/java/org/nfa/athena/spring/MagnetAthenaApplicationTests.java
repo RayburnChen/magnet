@@ -1,7 +1,9 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nfa.athena.MagnetAthenaApplication;
+import org.nfa.athena.User;
 import org.nfa.athena.dao.UserRepository;
 import org.nfa.stream.MagnetSource;
 import org.springframework.beans.factory.annotation.Autowired;

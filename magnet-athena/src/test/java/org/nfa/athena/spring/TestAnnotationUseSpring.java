@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import java.io.IOException;
 import java.util.ArrayList;
