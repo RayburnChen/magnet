@@ -1,9 +1,10 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nfa.athena.MagnetAthenaApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
