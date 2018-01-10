@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.concurrent;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -7,6 +7,9 @@ import javax.annotation.PostConstruct;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nfa.athena.MagnetAthenaApplication;
+import org.nfa.athena.User;
+import org.nfa.athena.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.annotation.Transient;

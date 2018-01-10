@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.common;
 
 import java.math.BigDecimal;
 import java.net.InetAddress;

@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.common;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -7,9 +7,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
+import org.nfa.athena.User;
 import org.springframework.data.annotation.Transient;
 
-public class TestBinaryOperator {
+public class TestField {
 
 	private List<String> list = Arrays.asList("a", "aa", "aaa", "b", "bb", "bbb", "c", "cc", "ccc");
 

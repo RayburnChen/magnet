@@ -19,7 +19,6 @@ public class RxService {
 						e -> log.error("Observer.onError", e), 
 						() -> log.info("Observer.onCompleted"));
 		subscription.unsubscribe();
-
 	}
 
 }

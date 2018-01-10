@@ -1,8 +1,9 @@
-package org.nfa.athena;
+package org.nfa.athena.spring;
 
 import java.util.ServiceLoader;
 
 import org.junit.Test;
+import org.nfa.athena.EnableMagnetService;
 
 import com.fasterxml.jackson.databind.Module;
 
