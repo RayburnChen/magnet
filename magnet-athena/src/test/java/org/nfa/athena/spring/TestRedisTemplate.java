@@ -2,15 +2,21 @@ package org.nfa.athena.spring;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nfa.athena.MagnetAthenaApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -20,11 +26,27 @@ public class TestRedisTemplate {
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
 
+	@Autowired
+	private RedisConnectionFactory connectionFactory;
+
+	private RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+
+	@PostConstruct
+	public void init() {
+		RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+		redisTemplate.setKeySerializer(stringSerializer);
+		redisTemplate.setValueSerializer(stringSerializer);
+		redisTemplate.setHashKeySerializer(stringSerializer);
+		redisTemplate.setHashValueSerializer(stringSerializer);
+		redisTemplate.setConnectionFactory(connectionFactory);
+		redisTemplate.afterPropertiesSet();
+	}
+
 	@Test
 	public void opsForValue() {
 		stringRedisTemplate.opsForValue().set("key01", "user01");
-		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("001"));
-		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("002"));
+		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("key01"));
+		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("key02"));
 	}
 
 	@Test
@@ -68,6 +90,12 @@ public class TestRedisTemplate {
 
 		});
 		System.err.println("Number of items added to set Results : " + txResults);
+	}
+
+	@Test
+	public void testRedisTemplate() {
+		redisTemplate.opsForValue().set("key02", "owen");
+		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("key02"));
 	}
 
 }
