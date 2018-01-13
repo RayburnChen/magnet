@@ -15,6 +15,7 @@ public class TestExchanger {
 	public void testExchanger() throws InterruptedException {
 		// swap elements within pairs
 		// just like exchange name card
+		// http://blog.csdn.net/luoyuyou/article/details/30259877
 		Exchanger<String> exchanger = new Exchanger<String>();
 		for (int i = 0; i < THREAD_TOTAL; i++) {
 			new Thread(() -> {
