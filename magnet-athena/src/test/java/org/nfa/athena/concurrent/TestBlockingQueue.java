@@ -17,12 +17,18 @@ public class TestBlockingQueue {
 
 	@Test
 	public void testLinkedBlockingQueue() throws InterruptedException {
+		// AtomicInteger count Current number of elements
+		// ReentrantLock takeLock
+		// Condition notEmpty = takeLock.newCondition();
+		// ReentrantLock putLock
+		// Condition notFull = putLock.newCondition();
 		BlockingQueue<User> queue = new LinkedBlockingQueue<User>(CAPACITY);
 		testBlockingQueue(queue);
 	}
 
 	@Test
 	public void testSynchronousQueue() throws InterruptedException {
+		// CAS  UNSAFE.compareAndSwapObject
 		BlockingQueue<User> queue = new SynchronousQueue<User>();
 		testBlockingQueue(queue);
 	}
