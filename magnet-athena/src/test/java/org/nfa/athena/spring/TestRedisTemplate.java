@@ -15,9 +15,14 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MagnetAthenaApplication.class)
@@ -29,11 +34,14 @@ public class TestRedisTemplate {
 	@Autowired
 	private RedisConnectionFactory connectionFactory;
 
-	private RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+	private RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
 
 	@PostConstruct
 	public void init() {
-		RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModules(new SimpleModule());
+		mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
+		RedisSerializer<Object> stringSerializer = new GenericJackson2JsonRedisSerializer(mapper);
 		redisTemplate.setKeySerializer(stringSerializer);
 		redisTemplate.setValueSerializer(stringSerializer);
 		redisTemplate.setHashKeySerializer(stringSerializer);
