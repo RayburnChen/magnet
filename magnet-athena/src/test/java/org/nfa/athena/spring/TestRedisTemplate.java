@@ -23,6 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MagnetAthenaApplication.class)
@@ -39,7 +41,7 @@ public class TestRedisTemplate {
 	@PostConstruct
 	public void init() {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModules(new SimpleModule());
+		mapper.registerModules(new SimpleModule(), new Jdk8Module(), new JavaTimeModule());
 		mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
 		RedisSerializer<Object> stringSerializer = new GenericJackson2JsonRedisSerializer(mapper);
 		redisTemplate.setKeySerializer(stringSerializer);
@@ -53,6 +55,7 @@ public class TestRedisTemplate {
 	@Test
 	public void opsForValue() {
 		stringRedisTemplate.opsForValue().set("key01", "user01");
+		stringRedisTemplate.opsForValue().setIfAbsent("key02", "user02");
 		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("key01"));
 		System.err.println("StringRedisTemplate opsForValue " + stringRedisTemplate.opsForValue().get("key02"));
 	}
