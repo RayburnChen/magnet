@@ -1,6 +1,7 @@
 package org.nfa.athena.spring;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 
@@ -41,8 +42,9 @@ public class TestRedisTemplate {
 	@PostConstruct
 	public void init() {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModules(new SimpleModule(), new Jdk8Module(), new JavaTimeModule());
+		mapper.registerModules(new JavaTimeModule(), new Jdk8Module(), new SimpleModule());
 		mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
+		mapper.setTimeZone(TimeZone.getDefault());
 		RedisSerializer<Object> stringSerializer = new GenericJackson2JsonRedisSerializer(mapper);
 		redisTemplate.setKeySerializer(stringSerializer);
 		redisTemplate.setValueSerializer(stringSerializer);
