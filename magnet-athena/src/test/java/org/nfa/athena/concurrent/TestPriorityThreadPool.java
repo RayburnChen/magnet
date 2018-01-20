@@ -24,7 +24,8 @@ public class TestPriorityThreadPool {
 		for (int i = 0; i < SIZE; i++) {
 			EXECUTOR.submit(new Task(RAN.nextInt(SIZE * 2)));
 		}
-		TimeUnit.HOURS.sleep(1);
+		EXECUTOR.shutdown();
+		EXECUTOR.awaitTermination(1, TimeUnit.HOURS);
 	}
 
 	public static class Task implements Callable<String> {
