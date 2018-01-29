@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
 public class TestCommon {
 
@@ -52,6 +54,18 @@ public class TestCommon {
 		InetAddress add = InetAddress.getLocalHost();
 		System.out.println(add.getHostName());
 		System.out.println(add.getHostAddress());
+	}
+	
+	@Test
+	public void testStopWatch() throws InterruptedException {
+		StopWatch sw = new StopWatch();
+		sw.start("testStopWatch01");
+		TimeUnit.SECONDS.sleep(1L);
+		sw.stop();
+		sw.start("testStopWatch02");
+		TimeUnit.SECONDS.sleep(2L);
+		sw.stop();
+		System.out.println(sw.prettyPrint());
 	}
 	
 }
