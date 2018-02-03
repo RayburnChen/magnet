@@ -18,9 +18,8 @@ public class TestCommon {
 
 	@Test
 	public void testBigDecimal() {
-		String aa = null;
-		BigDecimal big = new BigDecimal(aa);
-		System.out.println("TestTryCatch.testBigDecimal()" + big.toPlainString());
+		System.out.println(new BigDecimal(0.01));
+		System.out.println(BigDecimal.valueOf(0.01));
 	}
 
 	@Test
