@@ -28,6 +28,8 @@ public class CacheConfig {
 	public CacheManager cacheManager(RedisTemplate<Object, Object> redisTemplate) {
 		// configure and return an implementation of Spring's CacheManager SPI
 		RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+		cacheManager.setCachePrefix(s -> s.concat(":").getBytes());
+		cacheManager.setUsePrefix(true);
 		return cacheManager;
 	}
 
