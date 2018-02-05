@@ -1,18 +1,11 @@
 package org.nfa.athena.controller;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
-
 import org.nfa.athena.User;
-import org.nfa.athena.dao.UserRepository;
+import org.nfa.athena.service.AthenaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,63 +20,49 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
 @RequestMapping(value = "/greeting")
-public class AthenaController implements InitializingBean {
+public class AthenaController {
 
 	private static final Logger log = LoggerFactory.getLogger(AthenaController.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private AthenaService athenaService;
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
-		log.info("oneUser");
 		log.info("HttpHeaders ", headers);
-		User user = Optional.ofNullable(userRepository.findAll()).filter(l -> l.size() > 0).map(l -> l.get(0))
-				.orElse(new User());
-		BigDecimal amount = new BigDecimal("6129036206198038200.22");
-		log.info(amount.toString());
-		user.setAmount(amount);
-		return user;
+		return athenaService.oneUser();
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = { "/oneUser" })
+	@RequestMapping(method = RequestMethod.GET, value = { "/user" })
+	public User user(@RequestParam("id") String id) {
+		return athenaService.findOne(id);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = { "/user" })
 	public User insertUser(@RequestBody User user) {
 		log.info("insertUser {}", user);
-		return userRepository.insert(user);
+		return athenaService.insert(user);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName" })
-	public User oneUserByName(@RequestParam("name") String name) {
+	@RequestMapping(method = RequestMethod.GET, value = { "/userByName" })
+	public User userByName(@RequestParam("name") String name) {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
 				.getRequestAttributes();
 		log.info(requestAttributes.getRequest().getServletPath());
 		log.info("oneUserByName {}", name);
-		User user = userRepository.findOneByName(name);
-		return user;
+		return athenaService.findOneByName(name);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = { "/oneUserByName/{name}" })
-	public User oneUserByNamePath(@PathVariable("name") String name) {
+	@RequestMapping(method = RequestMethod.GET, value = { "/userByName/{name}" })
+	public User userByNamePath(@PathVariable("name") String name) {
 		log.info("oneUserByNamePath {}", name);
-		User user = userRepository.findOneByName(name);
-		return user;
+		return athenaService.findOneByName(name);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/exception" })
 	public User exception() {
 		log.info("User exception {}");
-		Assert.notNull(null, "My exception Assert.isNull");
-		return null;
-	}
-
-	@PostConstruct
-	public void init() {
-		log.info("@PostConstruct {}", userRepository);
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		log.info("afterPropertiesSet {}", userRepository);
+		throw new RuntimeException("My exception Assert.isNull");
 	}
 
 }

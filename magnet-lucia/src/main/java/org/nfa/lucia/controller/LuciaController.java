@@ -50,12 +50,12 @@ public class LuciaController {
 
 	@RequestMapping("/oneUserByName")
 	public User oneUserByName(@RequestParam(value = "name") String name) {
-		return athenaClient.oneUserByName(name);
+		return athenaClient.userByName(name);
 	}
 
 	@RequestMapping("/oneUserByNamePath")
 	public User oneUserByNamePath(@RequestParam(value = "name") String name) {
-		return athenaClient.oneUserByNamePath(name);
+		return athenaClient.userByNamePath(name);
 	}
 
 	// Need to add @RequestLine("GET /users") to the interface
