@@ -18,6 +18,9 @@ spring:
 #    generator:
 #      WRITE_BIGDECIMAL_AS_PLAIN: true
 #      WRITE_NUMBERS_AS_STRINGS: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
 server:
   port: 8110
   context-path: /magnet-athena

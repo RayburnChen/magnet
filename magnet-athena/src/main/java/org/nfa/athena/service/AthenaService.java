@@ -28,6 +28,7 @@ public class AthenaService {
 		return userRepository.findOne(id);
 	}
 
+	@Cacheable(CacheConfig.USER_NAME_CACHE)
 	public User findOneByName(String name) {
 		return userRepository.findOneByName(name);
 	}
