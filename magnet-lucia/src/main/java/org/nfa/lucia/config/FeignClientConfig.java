@@ -16,11 +16,11 @@ import feign.RequestTemplate;
 @EnableConfigurationProperties(FeignClientEncodingProperties.class)
 public class FeignClientConfig {
 
-	@Bean
-	public RequestInterceptor oauthFeignInterceptor(OAuth2ClientContext oAuth2ClientContext,
-			OAuth2ProtectedResourceDetails resource) {
-		return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, resource);
-	}
+//	@Bean
+//	public RequestInterceptor oauthFeignInterceptor(OAuth2ClientContext oAuth2ClientContext,
+//			OAuth2ProtectedResourceDetails resource) {
+//		return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, resource);
+//	}
 
 	@Bean
 	public RequestInterceptor customfeignInterceptor(FeignClientEncodingProperties properties) {

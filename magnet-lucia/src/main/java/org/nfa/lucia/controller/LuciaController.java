@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableFeignClients(clients = AthenaClient.class, defaultConfiguration = FeignClientsConfiguration.class)
 public class LuciaController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LuciaController.class);
+	private static final Logger log = LoggerFactory.getLogger(LuciaController.class);
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
@@ -30,22 +30,15 @@ public class LuciaController {
 
 	@RequestMapping("/welcome")
 	public String welcome(Principal principal, @RequestHeader HttpHeaders headers) {
-		LOG.info("Headers: {}", headers);
-		LOG.info("Welcome {}", principal.getName());
+		log.info("Headers: {}", headers);
+		log.info("Welcome {}", principal.getName());
 		return "Welcome " + principal.toString();
 	}
 
 	@RequestMapping("/athenaUser")
-	public User athenaUser(@RequestParam(value = "name", required = false) String name,
-			@RequestHeader HttpHeaders headers) {
-		System.out.println(discoveryClient.getInstances("magnet-athena").get(0).getUri().toString());
-		User user = athenaClient.oneUser();
-		// System.out.println("call oneUserByName method: " +
-		// athenaController.oneUserByName(name));
-		// System.out.println("call oneUserByNamePath method: " +
-		// athenaController.oneUserByNamePath(name));
-		// greetingController.exception();
-		return user;
+	public User athenaUser(@RequestHeader HttpHeaders headers) {
+		log.info("Athena Instances: " + discoveryClient.getInstances("magnet-athena"));
+		return athenaClient.oneUser();
 	}
 
 	@RequestMapping("/oneUserByName")
