@@ -1,27 +1,6 @@
-spring:
-  profiles: dev
-  application:
-    name: magnet-eureka
-server:
-  port: 8761
-eureka:
-  instance:
-    prefer-ip-address: true
-    leaseRenewalIntervalInSeconds: 30
-  server:
-    enableSelfPreservation: true
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://${server.address}:${server.port}/eureka/
-logging:
-  file: log/${spring.application.name}.log
----
 server:
   port: 8761
 spring:
-  profiles: local
   application:
     name: magnet-eureka
 eureka:

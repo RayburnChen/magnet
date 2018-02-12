@@ -2,7 +2,6 @@ package org.nfa.lucia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -10,7 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableSwagger2
-@EnableOAuth2Sso
 //@EnableBinding(MagnetSink.class)
 public class MagnetLuciaApplication {
 
