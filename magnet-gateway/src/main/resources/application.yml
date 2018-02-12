@@ -3,16 +3,31 @@ spring:
     name: magnet-gateway
   data:
     mongodb:
-      database: gateway
+      database: magnet-gateway
       host: localhost
       port: 27017
       repositories:
         enabled: true
-  sleuth:
-    sampler:
-      percentage: 1.0
 server:
   port: 8080
+  context-path: /magnet-gateway
+  session:
+    cookie:
+      name: GATEWAYSESSIONID
+zuul:
+  prefix: /v1
+  ignored-services:
+    magnet-auth
+  routes:
+    magnet-athena:
+      path: /athena/**
+      service-id: magnet-athena
+      strip-prefix: true
+    magnet-lucia:
+      path: /lucia/**
+      service-id: magnet-lucia
+      strip-prefix: true
+    
 eureka:
   instance:
     preferIpAddress: true
@@ -21,6 +36,17 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+security:
+  oauth2:
+    client:
+      client-id: magnet-client
+      client-secret: passw0rd
+      grant-type: implicit
+      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
+      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
+    resource:
+      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
+      preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
 management:
