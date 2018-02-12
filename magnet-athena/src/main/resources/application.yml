@@ -1,10 +1,4 @@
 spring:
-  profiles: dev
-  application:
-    name: magnet-athena
----
-spring:
-  profiles: local
   application:
     name: magnet-athena
   data:
