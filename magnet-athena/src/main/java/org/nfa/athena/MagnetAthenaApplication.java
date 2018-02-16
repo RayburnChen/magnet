@@ -11,7 +11,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableDiscoveryClient
 @EnableSwagger2
 @EnableCaching
-// @EnableBinding(MagnetSource.class)
 public class MagnetAthenaApplication {
 
 	public static void main(String[] args) {
