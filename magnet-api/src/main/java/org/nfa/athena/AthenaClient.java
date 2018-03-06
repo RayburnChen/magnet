@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * see org.springframework.cloud.netflix.feign.FeignAutoConfiguration
+ *
+ */
 @FeignClient(name = "magnet-athena", path = "magnet-athena", configuration = FeignClientsConfiguration.class)
 @RequestMapping(value = "/greeting")
 public interface AthenaClient {
