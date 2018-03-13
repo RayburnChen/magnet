@@ -3,6 +3,9 @@ package org.nfa.athena.common;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +17,14 @@ public class TestCommon {
 	@Test
 	public void testUUID() {
 		System.out.println("TestTryCatch.testUUID " + UUID.randomUUID());
+	}
+
+	@Test
+	public void addAllList() {
+		List<String> arrayList = Arrays.asList("arrayList");
+		List<String> linkedList = new LinkedList<>();
+		linkedList.add("linkedList");
+		arrayList.addAll(linkedList);// UnsupportedOperationException
 	}
 
 	@Test
@@ -54,7 +65,7 @@ public class TestCommon {
 		System.out.println(add.getHostName());
 		System.out.println(add.getHostAddress());
 	}
-	
+
 	@Test
 	public void testStopWatch() throws InterruptedException {
 		StopWatch sw = new StopWatch();
@@ -66,5 +77,5 @@ public class TestCommon {
 		sw.stop();
 		System.out.println(sw.prettyPrint());
 	}
-	
+
 }
