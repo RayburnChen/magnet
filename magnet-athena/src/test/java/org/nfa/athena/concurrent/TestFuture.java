@@ -31,16 +31,16 @@ public class TestFuture {
 
 		@Override
 		public String call() throws Exception {
-			
+
 			// case 1 normal
 			EXECUTOR.submit(new MinorThread());
-			
+
 			// case 2 dead lock
 			// EXECUTOR.submit(new MinorThread()).get();
-			
+
 			// case 3 throw time out exception
 			// EXECUTOR.submit(new MinorThread()).get(3, TimeUnit.SECONDS);
-			
+
 			return "MainThread Done";
 		}
 
@@ -55,6 +55,19 @@ public class TestFuture {
 			return "MinorThread Result";
 		}
 
+	}
+
+	@Test
+	public void testRuntimeException() {
+		for (int i = 0; i < 7; i++) {
+			EXECUTOR.submit(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println("run " + Thread.currentThread());
+					throw new RuntimeException();
+				}
+			});
+		}
 	}
 
 }
