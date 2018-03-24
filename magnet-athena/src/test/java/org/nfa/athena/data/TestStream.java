@@ -2,23 +2,16 @@ package org.nfa.athena.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class TestStream {
 
-	static Logger LOG = Logger.getLogger(TestStream.class);
-	
 	@Test
 	public void testStream() {
 		Random ran = new Random();
@@ -52,8 +45,8 @@ public class TestStream {
 			List<Integer> data = initial(size);
 			streamMethod = streamMethod + streamMethod(data);
 		}
-		LOG.info(" forMethod total is " + forMethod);
-		LOG.info(" streamMethod total is " + streamMethod);
+		System.out.println(" forMethod total is " + forMethod);
+		System.out.println(" streamMethod total is " + streamMethod);
 	}
 
 	private List<Integer> initial(int size) {
@@ -71,7 +64,7 @@ public class TestStream {
 			System.err.println(one);
 		}
 		long n = System.currentTimeMillis();
-		LOG.info("forMethod cost" + String.valueOf(n - t));
+		System.out.println("forMethod cost" + String.valueOf(n - t));
 		return n - t;
 	}
 
@@ -79,8 +72,16 @@ public class TestStream {
 		long t = System.currentTimeMillis();
 		list.stream().forEach(one -> System.err.println(one));
 		long n = System.currentTimeMillis();
-		LOG.info("streamMethod cost " + String.valueOf(n - t));
+		System.out.println("streamMethod cost " + String.valueOf(n - t));
 		return n - t;
+	}
+
+	@Test
+	public void testSpliterator() {
+		List<Integer> arrayList = new ArrayList<>();
+		System.out.println(arrayList.spliterator().characteristics());
+		List<Integer> linkedList = new LinkedList<>();
+		System.out.println(linkedList.spliterator().characteristics());
 	}
 
 }
