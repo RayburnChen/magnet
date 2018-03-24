@@ -60,13 +60,21 @@ public class TestMongoTemplate {
 	}
 
 	@Test
+	public void testFindOne() {
+		System.err.println(
+				mongoTemplate.findOne(new Query(Criteria.where("_id").is("5aa892b7aeea821da889ea10")), User.class));
+	}
+
+	@Test
 	public void testEnumSet() {
 		User user = new User();
 		user.setName("love");
 		user.setUserType(UserType.ADMIN);
 		user.setAge(13);
 		mongoTemplate.insert(user);
-		mongoTemplate.find(new Query(Criteria.where("userType").is(UserType.ADMIN)).withHint(NAME_PARTIAL_IDX), User.class).forEach(System.out::println);
+		mongoTemplate
+				.find(new Query(Criteria.where("userType").is(UserType.ADMIN)).withHint(NAME_PARTIAL_IDX), User.class)
+				.forEach(System.out::println);
 	}
 
 	@Test
