@@ -2,9 +2,13 @@ package org.nfa.athena.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -78,10 +82,14 @@ public class TestStream {
 
 	@Test
 	public void testSpliterator() {
-		List<Integer> arrayList = new ArrayList<>();
-		System.out.println(arrayList.spliterator().characteristics());
-		List<Integer> linkedList = new LinkedList<>();
-		System.out.println(linkedList.spliterator().characteristics());
+		print(Arrays.asList(new ArrayList<>(), new LinkedList<>(), new HashMap<>().keySet(),
+				new LinkedHashMap<>().keySet(), new TreeMap<>().keySet()));
+	}
+
+	private void print(List<Collection<?>> collections) {
+		collections.forEach(collection -> {
+			System.out.println(collection.getClass() + ":" + collection.spliterator().characteristics());
+		});
 	}
 
 }
