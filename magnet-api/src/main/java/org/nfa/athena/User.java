@@ -2,16 +2,20 @@ package org.nfa.athena;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
-@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
+@CompoundIndexes({
+		@CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
@@ -47,6 +51,12 @@ public class User implements Serializable {
 
 	@Field
 	private UserType userType;
+
+	@CreatedDate
+	private Date createdDate;
+
+	@Version
+	private Long version;
 
 	public String getId() {
 		return id;
@@ -104,10 +114,27 @@ public class User implements Serializable {
 		this.amount = amount;
 	}
 
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", age=" + age + ", password=" + password + ", values=" + values
-				+ ", userType=" + userType + "]";
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password
+				+ ", values=" + values + ", userType=" + userType + ", createdDate=" + createdDate + ", version="
+				+ version + "]";
 	}
 
 }

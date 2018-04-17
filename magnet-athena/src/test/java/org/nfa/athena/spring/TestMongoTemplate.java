@@ -2,6 +2,7 @@ package org.nfa.athena.spring;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -75,6 +76,17 @@ public class TestMongoTemplate {
 		mongoTemplate
 				.find(new Query(Criteria.where("userType").is(UserType.ADMIN)).withHint(NAME_PARTIAL_IDX), User.class)
 				.forEach(System.out::println);
+	}
+
+	@Test
+	public void testAudit() {
+		User user = new User();
+		user.setName("2018-04-17-audit");
+		user.setUserType(UserType.ADMIN);
+		user.setAge(13);
+		user.setVersion(1L);// mongoDB will be 0
+		user.setCreatedDate(new Date(1423965003862L));// mongoDB will use new date
+		mongoTemplate.insert(user);
 	}
 
 	@Test
