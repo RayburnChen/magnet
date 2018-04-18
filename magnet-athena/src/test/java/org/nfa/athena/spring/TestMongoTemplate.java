@@ -98,7 +98,7 @@ public class TestMongoTemplate {
 		user.setUserType(UserType.ADMIN);
 		user.setAge(13);
 		user.setVersion(null);// not null will throw OptimisticLockingFailureException
-		user.setCreatedDate(new Date(1423965003862L));// mongoDB will use new date
+		user.setCreatedDate(new Date(1423965003862L));// mongoDB will use new date when insert
 		mongoTemplate.save(user);
 	}
 
