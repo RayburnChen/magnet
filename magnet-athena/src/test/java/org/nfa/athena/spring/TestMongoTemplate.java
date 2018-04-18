@@ -1,6 +1,8 @@
 package org.nfa.athena.spring;
 
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -79,14 +81,25 @@ public class TestMongoTemplate {
 	}
 
 	@Test
-	public void testAudit() {
+	public void testAuditCreate() {
 		User user = new User();
-		user.setName("2018-04-17-audit");
+		user.setName("Name:" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
 		user.setUserType(UserType.ADMIN);
 		user.setAge(13);
 		user.setVersion(1L);// mongoDB will be 0
 		user.setCreatedDate(new Date(1423965003862L));// mongoDB will use new date
 		mongoTemplate.insert(user);
+	}
+
+	@Test
+	public void testAuditModify() {
+		User user = new User();
+		user.setName("Name:" + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+		user.setUserType(UserType.ADMIN);
+		user.setAge(13);
+		user.setVersion(null);// not null will throw OptimisticLockingFailureException
+		user.setCreatedDate(new Date(1423965003862L));// mongoDB will use new date
+		mongoTemplate.save(user);
 	}
 
 	@Test
