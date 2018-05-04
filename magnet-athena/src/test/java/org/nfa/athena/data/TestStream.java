@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -90,6 +91,14 @@ public class TestStream {
 		collections.forEach(collection -> {
 			System.out.println(collection.getClass() + ":" + collection.spliterator().characteristics());
 		});
+	}
+
+	@Test
+	public void testPeek() {
+		Stream.of("one", "two", "three", "four").filter(e -> e.length() > 3)
+				.peek(e -> System.out.println("Filtered value: " + e)).map(String::toUpperCase)
+				.peek(e -> System.out.println("Mapped value: " + e))
+				.forEach(e -> System.out.println("Each value: " + e));
 	}
 
 }
