@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.junit.Test;
+import org.nfa.athena.User;
 
 public class TestStream {
 
@@ -38,7 +40,22 @@ public class TestStream {
 	}
 
 	@Test
-	public void test() {
+	public void testStreamFunction() {
+		List<User> users = new ArrayList<>();
+		Stream.of("A01", "A02", "A03").map(process(new User())).forEach(u -> users.add(u));
+		Stream.of("B01", "B02", "B03").map(s -> process(new User()).apply(s)).forEach(u -> users.add(u));
+		users.forEach(u -> System.out.println(u.getId()));
+	}
+
+	private Function<String, User> process(User user) {
+		return s -> {
+			user.setId(s);
+			return user;
+		};
+	}
+
+	@Test
+	public void testPerformance() {
 		int size = 1000000;
 		long forMethod = 0L;
 		long streamMethod = 0L;
