@@ -42,6 +42,13 @@ public class TestMongoTemplate {
 				.partial(PartialIndexFilter.of(PARTIAL_CT)).named(NAME_PARTIAL_IDX).background();
 		mongoTemplate.indexOps(User.class).ensureIndex(idx);
 	}
+	
+	// server class
+	// com.mongodb.connection.DefaultServer
+	// connection pool class
+	// com.mongodb.connection.DefaultConnectionPool
+	// connection class
+	// com.mongodb.connection.DefaultConnectionPool.PooledConnection
 
 	@Test
 	public void testScripts() {
