@@ -25,3 +25,14 @@ rsconf = {
 }
 
 rs.initiate( rsconf )
+
+
+mongo shell transaction example
+
+session = db.getMongo().startSession( { mode: "primary" } );
+session.startTransaction( { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } } );
+session.getDatabase("hr").employees.insertOne( { employee: 3, status: { new: "Inactive", old: "Active" } } );
+session.commitTransaction();
+//session.abortTransaction();
+session.endSession();
+
