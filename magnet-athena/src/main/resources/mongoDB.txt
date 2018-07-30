@@ -4,7 +4,7 @@ mongod --replSet rs0 --port 27017 --dbpath /srv/mongodb/rs0-0 --smallfiles --opl
 mongod --replSet rs0 --port 27018 --dbpath /srv/mongodb/rs0-1 --smallfiles --oplogSize 128
 mongod --replSet rs0 --port 27019 --dbpath /srv/mongodb/rs0-2 --smallfiles --oplogSize 128
 
-mongo --port 27017
+mongo localhost:27017
 
 rsconf = {
   _id: "rs0",
@@ -31,6 +31,7 @@ mongo shell transaction example
 
 session = db.getMongo().startSession( { mode: "primary", retryWrites: true } );
 session.startTransaction( { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } } );
+session.getDatabase("hr").employees.find({})
 session.getDatabase("hr").employees.insertOne( { employee: "Bob", status: "Active" } );
 session.getDatabase("hr").employees.findAndModify({ query:{"employee" : "Bob", "status" : "Active"}, update:{"$set":{"status" : "Down"}} })
 session.commitTransaction();
