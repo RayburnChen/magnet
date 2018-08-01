@@ -11,8 +11,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.function.Consumer;
 
-import javax.annotation.PreDestroy;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
@@ -27,23 +25,32 @@ import org.springframework.stereotype.Service;
 public class LuceneIndexService {
 
 	@Autowired
-	private IndexWriter indexWriter;
+	private LuceneConfigService luceneConfigService;
 
-	@PreDestroy
-	public void preDestroy() {
+	public void build() {
 		try {
-			indexWriter.close();
+			IndexWriter indexWriter = luceneConfigService.indexWriter();
+			try {
+				// 原始文档的路径
+				Path sourcePath = Paths.get(new ClassPathResource("/files").getURI());
+				Files.walkFileTree(sourcePath, getFileVisitor(getConsumer(indexWriter)));
+			} finally {
+				indexWriter.close();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public void build() {
+	public void delete() {
 		try {
-			// 原始文档的路径
-			Path sourcePath = Paths.get(new ClassPathResource("/files").getURI());
-			Files.walkFileTree(sourcePath, getFileVisitor(getConsumer(this.indexWriter)));
-			// 关闭IndexWriter对象。
+			IndexWriter indexWriter = luceneConfigService.indexWriter();
+			try {
+				// 删除全部索引
+				indexWriter.deleteAll();
+			} finally {
+				indexWriter.close();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
