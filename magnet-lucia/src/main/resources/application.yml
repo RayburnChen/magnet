@@ -14,6 +14,9 @@ spring:
       port: 27017
       repositories:
         enabled: true
+lucia:
+  resources:
+    lucene_index_path: index/lucia
 eureka:
   instance:
     preferIpAddress: true
@@ -51,30 +54,27 @@ ribbon:
   eager-load:
     enabled: true
     clients: magnet-athena
-hystrix: 
+hystrix:
   shareSecurityContext: true
-  command: 
-    "AthenaClient#oneUserByNamePath(String)": 
-      execution: 
-        isolation: 
+  command:
+    AthenaClient#oneUserByNamePath(String):
+      execution:
+        isolation:
           strategy: THREAD
           thread:
             timeoutInMilliseconds: 5000
         timeout:
           enabled: true
-    default: 
-      execution: 
-        isolation: 
+    default:
+      execution:
+        isolation:
           strategy: SEMAPHORE
           thread:
             timeoutInMilliseconds: 5000
         timeout:
           enabled: true
-#management:
-#  security:
-#    enabled: false
 endpoints:
-    sensitive: true
+  sensitive: true
 info:
   app:
     name: ${spring.application.name}
@@ -82,7 +82,3 @@ info:
     profiles: ${spring.profiles}
 logging:
   file: log/${spring.application.name}.log
-#  level:
-#    org:
-#      springframework:
-#        security: DEBUG
