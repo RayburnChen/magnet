@@ -35,10 +35,11 @@ public class LuceneController {
 	}
 
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
-	public TopDocs search(@RequestParam String query) throws IOException {
-		// 04
+	public TopDocs search(@RequestParam String param) throws IOException {
+		// David
 		// fileContent:David
-		return luceneQueryService.search(query);
+		// fileName:04
+		return luceneQueryService.search(param);
 	}
 
 }

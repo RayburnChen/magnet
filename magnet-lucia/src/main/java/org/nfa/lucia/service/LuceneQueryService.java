@@ -33,11 +33,10 @@ public class LuceneQueryService {
 			// 创建queryparser对象
 			// 第一个参数默认搜索的域
 			// 第二个参数就是分析器对象
-			QueryParser queryParser = new QueryParser("fileName", luceneConfigService.getAnalyzer());
+			QueryParser queryParser = new QueryParser("fileContent", luceneConfigService.getAnalyzer());
 			// 使用默认的域,这里用的是语法，下面会详细讲解一下
 			Query query = queryParser.parse(queryString);
 			// 不使用默认的域，可以自己指定域
-			// Query query = queryParser.parse("fileContent:" + parseString);
 			// 执行查询
 
 			// 第一个参数是查询对象，第二个参数是查询结果返回的最大值
