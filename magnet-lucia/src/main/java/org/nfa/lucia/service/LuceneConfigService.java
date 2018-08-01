@@ -22,6 +22,10 @@ public class LuceneConfigService {
 	@Autowired
 	private ConfigProperties configProperties;
 
+	public Analyzer getAnalyzer() {
+		return new StandardAnalyzer();
+	}
+
 	public IndexWriter indexWriter() {
 		try {
 			// 创建索引
@@ -31,7 +35,7 @@ public class LuceneConfigService {
 			Directory directory = new MMapDirectory(path);
 
 			// 指定一个标准分析器，对文档内容进行分析
-			Analyzer analyzer = new StandardAnalyzer();
+			Analyzer analyzer = getAnalyzer();
 
 			// 创建indexwriterCofig对象
 			// 第一个参数： Lucene的版本信息，可以选择对应的lucene版本也可以使用LATEST

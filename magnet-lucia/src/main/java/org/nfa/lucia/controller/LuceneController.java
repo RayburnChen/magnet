@@ -6,6 +6,7 @@ import org.nfa.lucia.service.LuceneQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,9 +27,16 @@ public class LuceneController {
 		luceneIndexService.delete();
 	}
 
-	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	@RequestMapping(value = "/query/all", method = RequestMethod.GET)
 	public TopDocs searchAll() {
 		return luceneQueryService.searchAll();
+	}
+
+	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	public TopDocs search(@RequestParam String query) {
+		// 04
+		// fileContent:David
+		return luceneQueryService.search(query);
 	}
 
 }
