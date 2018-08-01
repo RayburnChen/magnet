@@ -27,32 +27,24 @@ public class LuceneIndexService {
 	@Autowired
 	private LuceneConfigService luceneConfigService;
 
-	public void build() {
+	public void build() throws IOException {
+		IndexWriter indexWriter = luceneConfigService.indexWriter();
 		try {
-			IndexWriter indexWriter = luceneConfigService.indexWriter();
-			try {
-				// 原始文档的路径
-				Path sourcePath = Paths.get(new ClassPathResource("/files").getURI());
-				Files.walkFileTree(sourcePath, getFileVisitor(getConsumer(indexWriter)));
-			} finally {
-				indexWriter.close();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			// 原始文档的路径
+			Path sourcePath = Paths.get(new ClassPathResource("/files").getURI());
+			Files.walkFileTree(sourcePath, getFileVisitor(getConsumer(indexWriter)));
+		} finally {
+			indexWriter.close();
 		}
 	}
 
-	public void delete() {
+	public void delete() throws IOException {
+		IndexWriter indexWriter = luceneConfigService.indexWriter();
 		try {
-			IndexWriter indexWriter = luceneConfigService.indexWriter();
-			try {
-				// 删除全部索引
-				indexWriter.deleteAll();
-			} finally {
-				indexWriter.close();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			// 删除全部索引
+			indexWriter.deleteAll();
+		} finally {
+			indexWriter.close();
 		}
 	}
 

@@ -1,5 +1,7 @@
 package org.nfa.lucia.controller;
 
+import java.io.IOException;
+
 import org.apache.lucene.search.TopDocs;
 import org.nfa.lucia.service.LuceneIndexService;
 import org.nfa.lucia.service.LuceneQueryService;
@@ -18,22 +20,22 @@ public class LuceneController {
 	private LuceneQueryService luceneQueryService;
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public void buildIndex() {
+	public void buildIndex() throws IOException {
 		luceneIndexService.build();
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.DELETE)
-	public void deleteIndex() {
+	public void deleteIndex() throws IOException {
 		luceneIndexService.delete();
 	}
 
 	@RequestMapping(value = "/query/all", method = RequestMethod.GET)
-	public TopDocs searchAll() {
+	public TopDocs searchAll() throws IOException {
 		return luceneQueryService.searchAll();
 	}
 
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
-	public TopDocs search(@RequestParam String query) {
+	public TopDocs search(@RequestParam String query) throws IOException {
 		// 04
 		// fileContent:David
 		return luceneQueryService.search(query);
