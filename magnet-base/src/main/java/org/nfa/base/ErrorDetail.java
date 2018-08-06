@@ -1,4 +1,4 @@
-package org.nfa.common;
+package org.nfa.base;
 
 public class ErrorDetail {
 

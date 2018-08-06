@@ -1,4 +1,4 @@
-package org.nfa.athena.config;
+package org.nfa.panel.config;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
-import org.nfa.common.ApplicationException;
-import org.nfa.common.ErrorDetail;
-import org.nfa.common.ErrorResponse;
-import org.nfa.common.Priority;
+import org.nfa.base.ApplicationException;
+import org.nfa.base.ErrorDetail;
+import org.nfa.base.ErrorResponse;
+import org.nfa.base.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
 	}
 
 	private String initErrorMsg(Throwable e) {
-		return e.getClass().getSimpleName() + " " + e.getMessage() + " at " + String.valueOf(e.getStackTrace()[0]);
+		return e.getClass().getSimpleName() + " " + e.getMessage() + String.valueOf(e.getStackTrace()[0]);
 	}
 
 	private ErrorResponse initNestedErrorResponse(HystrixRuntimeException exception) {

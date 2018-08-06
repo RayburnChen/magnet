@@ -1,4 +1,4 @@
-package org.nfa.athena.service;
+package org.nfa.panel.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,13 +16,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-import org.nfa.athena.EnableMagnetService;
-import org.nfa.common.ApplicationException;
-import org.nfa.common.Priority;
+import org.nfa.base.ApplicationException;
+import org.nfa.base.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@EnableMagnetService(value = "AsyncService", priority = 1, comments = "Test Comments")
 public class AsyncService<T> {
 
 	public static final long DEFAULT_TIMEOUT = 30L;

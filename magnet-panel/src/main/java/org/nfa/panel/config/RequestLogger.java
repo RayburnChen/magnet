@@ -1,4 +1,4 @@
-package org.nfa.athena.config;
+package org.nfa.panel.config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

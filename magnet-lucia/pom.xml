@@ -23,6 +23,11 @@
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-panel</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>7.4.0</version>
@@ -36,17 +41,6 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
 			<version>7.4.0</version>
-		</dependency>
-		<!-- Swagger -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 

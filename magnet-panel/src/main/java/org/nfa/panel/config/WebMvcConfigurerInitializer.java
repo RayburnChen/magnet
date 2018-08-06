@@ -1,4 +1,4 @@
-package org.nfa.lucia.config;
+package org.nfa.panel.config;
 
 import java.util.List;
 
@@ -9,14 +9,18 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Configuration
 public class WebMvcConfigurerInitializer extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	private MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
+	private ObjectMapper objectMapper;
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		jackson2HttpMessageConverter.setObjectMapper(objectMapper);
 		converters.add(jackson2HttpMessageConverter);
 	}
 

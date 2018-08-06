@@ -1,4 +1,4 @@
-package org.nfa.common;
+package org.nfa.base;
 
 import java.io.Serializable;
 

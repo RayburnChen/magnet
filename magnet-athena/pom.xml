@@ -22,16 +22,10 @@
 			<artifactId>magnet-api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<!-- Swagger -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-panel</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

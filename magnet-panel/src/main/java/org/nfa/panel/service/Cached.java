@@ -1,4 +1,4 @@
-package org.nfa.common;
+package org.nfa.panel.service;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

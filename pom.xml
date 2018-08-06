@@ -23,6 +23,8 @@
 
 	<modules>
 		<module>magnet-api</module>
+		<module>magnet-panel</module>
+		<module>magnet-base</module>
 		<module>magnet-athena</module>
 		<module>magnet-config</module>
 		<module>magnet-eureka</module>
