@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>magnet-lucia</artifactId>
+	<artifactId>magnet-atropos</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-lucia</name>
-	<description>magnet-lucia</description>
+	<name>magnet-atropos</name>
+	<description>magnet-atropos</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
@@ -26,21 +26,6 @@
 			<groupId>org.nfa</groupId>
 			<artifactId>magnet-panel</artifactId>
 			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>7.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
-			<version>7.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-queryparser</artifactId>
-			<version>7.4.0</version>
 		</dependency>
 	</dependencies>
 

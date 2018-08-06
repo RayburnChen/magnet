@@ -26,9 +26,10 @@
 		<module>magnet-panel</module>
 		<module>magnet-base</module>
 		<module>magnet-athena</module>
+		<module>magnet-lucia</module>
+		<module>magnet-atropos</module>
 		<module>magnet-config</module>
 		<module>magnet-eureka</module>
-		<module>magnet-lucia</module>
 		<module>magnet-zipkin</module>
 		<module>magnet-gateway</module>
 		<module>magnet-auth</module>

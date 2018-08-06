@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>magnet-athena</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>magnet-athena</name>
 	<description>Athena project for Spring Boot</description>
