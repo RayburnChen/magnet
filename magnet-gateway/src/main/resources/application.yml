@@ -1,33 +1,23 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /${spring.application.name}
+    session:
+      cookie:
+        name: ${spring.application.name}
 spring:
   application:
     name: magnet-gateway
   data:
     mongodb:
-      database: magnet-gateway
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
-server:
-  port: 8080
-  context-path: /magnet-gateway
-  session:
-    cookie:
-      name: GATEWAYSESSIONID
-zuul:
-  prefix: /v1
-  ignored-services:
-    magnet-auth
-  routes:
-    magnet-athena:
-      path: /athena/**
-      service-id: magnet-athena
-      strip-prefix: true
-    magnet-lucia:
-      path: /lucia/**
-      service-id: magnet-lucia
-      strip-prefix: true
-    
+      uri: mongodb://localhost:27017/${spring.application.name}
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: http://example.org
+        predicates:
+        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
 eureka:
   instance:
     preferIpAddress: true
@@ -50,6 +40,12 @@ security:
 logging:
   file: log/${spring.application.name}.log
 management:
-  security:
-    enabled: false
-
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+info:
+  app:
+    name: ${spring.application.name}
+    context-path: ${server.servlet.context-path}
+    profiles: ${spring.profiles}

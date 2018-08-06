@@ -10,7 +10,7 @@ spring:
     name: magnet-atropos
   data:
     mongodb:
-      uri: mongodb://10.0.0.4:27017/${spring.application.name}
+      uri: mongodb://localhost:27017/${spring.application.name}
 eureka:
   instance:
     preferIpAddress: true
