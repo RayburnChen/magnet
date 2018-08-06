@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: magnet-eureka
+  data:
+    mongodb:
+      database: magnet-eureka
+      host: 10.0.0.4
+      port: 27017
 eureka:
   instance:
     prefer-ip-address: true

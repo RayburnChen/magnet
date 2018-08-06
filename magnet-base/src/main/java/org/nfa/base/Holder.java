@@ -25,7 +25,7 @@ public class Holder<T> extends PageImpl<T> {
 	}
 
 	public Holder(Page<T> page) {
-		super(page.getContent(), new PageRequest(page.getNumber(), page.getSize(), page.getSort()), page.getTotalElements());
+		super(page.getContent(), PageRequest.of(page.getNumber(), page.getSize(), page.getSort()), page.getTotalElements());
 	}
 
 }

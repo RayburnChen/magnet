@@ -3,34 +3,28 @@ package org.nfa.panel.config;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.AbstractErrorController;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.nfa.base.ApplicationException;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class GlobalErrorController extends AbstractErrorController {
 
-	private static final Logger log = LoggerFactory.getLogger(GlobalErrorController.class);
+	private final ServerProperties serverProperties;
+	private final ErrorAttributes errorAttributes;
 
-	@Autowired
-	private ServerProperties serverProperties;
-	private ErrorAttributes errorAttributes;
-
-	public GlobalErrorController(ErrorAttributes errorAttributes) {
+	public GlobalErrorController(ServerProperties serverProperties, ErrorAttributes errorAttributes) {
 		super(errorAttributes);
 		this.errorAttributes = errorAttributes;
+		this.serverProperties = serverProperties;
 	}
 
 	@Override
@@ -39,13 +33,11 @@ public class GlobalErrorController extends AbstractErrorController {
 	}
 
 	@RequestMapping
-	public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
-		RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-		HttpStatus status = getStatus(request);
-		String origialUri = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
-		Map<String, Object> body = errorAttributes.getErrorAttributes(requestAttributes, true);
-		log.error("GlobalErrorController. HttpStatus {} {} {}", status, origialUri, body);
-		throw new RuntimeException(origialUri + " " + String.valueOf(body.get("error")), errorAttributes.getError(requestAttributes));
+	public ResponseEntity<Map<String, Object>> error(WebRequest webRequest) {
+		String origialUri = (String) webRequest.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI, RequestAttributes.SCOPE_REQUEST);
+		Integer errorCode = (Integer) webRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE, RequestAttributes.SCOPE_REQUEST);
+		Throwable e = errorAttributes.getError(webRequest);
+		throw new ApplicationException("Not found " + origialUri, errorCode, e);
 	}
 
 }

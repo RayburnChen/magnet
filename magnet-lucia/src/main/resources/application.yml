@@ -1,19 +1,16 @@
 server:
   port: 8100
-  context-path: /magnet-lucia
-  session:
-    cookie:
-      name: LUCIASESSIONID
+  servlet:
+    context-path: /${spring.application.name}
+    session:
+      cookie:
+        name: ${spring.application.name}
 spring:
   application:
     name: magnet-lucia
   data:
     mongodb:
-      database: magnet-lucia
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
+      uri: mongodb://10.0.0.4:27017/${spring.application.name}
 lucia:
   resources:
     lucene_index_path: index/lucia
@@ -22,8 +19,8 @@ eureka:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 30
     leaseExpirationDurationInSeconds: 90
-    status-page-url-path: ${server.context-path}/info
-    health-check-url-path: ${server.context-path}/health
+    status-page-url-path: ${server.servlet.context-path}/info
+    health-check-url-path: ${server.servlet.context-path}/health
   client:
     fetch-registry: true
     registry-fetch-interval-seconds: 30
@@ -41,44 +38,15 @@ security:
     resource:
       token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
       preferTokenInfo: true
-feign:
-  hystrix:
-    enabled: true
-magnet-athena:
-  ribbon:
-    OkToRetryOnAllOperations: false
-    MaxAutoRetries: 0
-ribbon:
-  ConnectTimeout: 3000
-  ReadTimeout: 6000
-  eager-load:
-    enabled: true
-    clients: magnet-athena
-hystrix:
-  shareSecurityContext: true
-  command:
-    AthenaClient#oneUserByNamePath(String):
-      execution:
-        isolation:
-          strategy: THREAD
-          thread:
-            timeoutInMilliseconds: 5000
-        timeout:
-          enabled: true
-    default:
-      execution:
-        isolation:
-          strategy: SEMAPHORE
-          thread:
-            timeoutInMilliseconds: 5000
-        timeout:
-          enabled: true
-endpoints:
-  sensitive: true
+logging:
+  file: log/${spring.application.name}.log
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 info:
   app:
     name: ${spring.application.name}
-    context-path: ${server.context-path}
+    context-path: ${server.servlet.context-path}
     profiles: ${spring.profiles}
-logging:
-  file: log/${spring.application.name}.log

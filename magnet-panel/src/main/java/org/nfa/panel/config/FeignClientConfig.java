@@ -1,8 +1,8 @@
 package org.nfa.panel.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.netflix.feign.encoding.BaseRequestInterceptor;
-import org.springframework.cloud.netflix.feign.encoding.FeignClientEncodingProperties;
+import org.springframework.cloud.openfeign.encoding.BaseRequestInterceptor;
+import org.springframework.cloud.openfeign.encoding.FeignClientEncodingProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

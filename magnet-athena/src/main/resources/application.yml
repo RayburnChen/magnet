@@ -1,30 +1,23 @@
+server:
+  port: 8110
+  servlet:
+    context-path: /${spring.application.name}
+    session:
+      cookie:
+        name: ${spring.application.name}
 spring:
   application:
     name: magnet-athena
   data:
     mongodb:
-      database: magnet-athena
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
-#  jackson:
-#    generator:
-#      WRITE_BIGDECIMAL_AS_PLAIN: true
-#      WRITE_NUMBERS_AS_STRINGS: true
-server:
-  port: 8110
-  context-path: /magnet-athena
-  session:
-    cookie:
-      name: ATHENASESSIONID
+      uri: mongodb://10.0.0.4:27017/${spring.application.name}
 eureka:
   instance:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 30
     leaseExpirationDurationInSeconds: 90
-    status-page-url-path: ${server.context-path}/info
-    health-check-url-path: ${server.context-path}/health
+    status-page-url-path: ${server.servlet.context-path}/info
+    health-check-url-path: ${server.servlet.context-path}/health
   client:
     fetch-registry: true
     registry-fetch-interval-seconds: 30
@@ -44,18 +37,13 @@ security:
       preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
-#management:
-#  security:
-#    enabled: false
-endpoints:
-  shutdown:
-    enabled: true
-  restart:
-    enabled: true
-  health:
-    sensitive: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 info:
   app:
     name: ${spring.application.name}
-    context-path: ${server.context-path}
+    context-path: ${server.servlet.context-path}
     profiles: ${spring.profiles}

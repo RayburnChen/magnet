@@ -56,6 +56,11 @@ public class GlobalExceptionHandler {
 		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getNamespace().getFullName();
 	}
 
+	@ExceptionHandler(FeignException.class)
+	public ResponseEntity<ErrorResponse> handleFeignException(FeignException e, HttpServletRequest request) {
+		return handleException(e, Priority.MINOR, request, UnaryOperator.identity(), initNestedErrorResponse(e));
+	}
+
 	@ExceptionHandler(HystrixRuntimeException.class)
 	public ResponseEntity<ErrorResponse> handleHystrixRuntimeException(HystrixRuntimeException e, HttpServletRequest request) {
 		return handleException(e, Priority.MINOR, request, UnaryOperator.identity(), initNestedErrorResponse(e));
@@ -149,17 +154,27 @@ public class GlobalExceptionHandler {
 
 	private ErrorResponse initNestedErrorResponse(HystrixRuntimeException exception) {
 		Throwable cause = exception.getCause();
-		if (cause instanceof FeignException && null != cause.getMessage() && cause.getMessage().contains("; content:\n")) {
-			String message = cause.getMessage().split("; content:\n")[1];
+		if (cause instanceof FeignException) {
+			FeignException feignException = (FeignException) cause;
+			return initNestedErrorResponse(feignException);
+		} else {
+			return defaultErrorResponse(exception);
+		}
+	}
+
+	private ErrorResponse initNestedErrorResponse(FeignException exception) {
+		if (null != exception.getMessage() && exception.getMessage().contains("; content:\n")) {
+			String message = exception.getMessage().split("; content:\n")[1];
 			try {
 				return objectMapper.readValue(message, ERROR_RESPONSE_TYPE_REF);
 			} catch (RuntimeException | IOException e) {
-				LOGGER.warn("Fetch error msg failed " + cause.getMessage(), e);
-				return defaultErrorResponse(cause);
+				LOGGER.warn("Fetch error msg failed " + exception.getMessage(), e);
+				return defaultErrorResponse(exception);
 			}
 		} else {
 			return defaultErrorResponse(exception);
 		}
+
 	}
 
 	private ErrorResponse initNestedErrorResponse(RestClientResponseException exception) {
