@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.model;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;

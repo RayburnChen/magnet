@@ -1,4 +1,4 @@
-package org.nfa.athena;
+package org.nfa.athena.model;
 
 public enum UserType {
 

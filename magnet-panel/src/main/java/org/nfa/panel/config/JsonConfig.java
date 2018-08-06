@@ -1,9 +1,12 @@
 package org.nfa.panel.config;
 
+import java.nio.charset.Charset;
+import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -25,7 +28,9 @@ public class JsonConfig {
 		objectMapper.configure(Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 		objectMapper.registerModules(new JavaTimeModule(), new Jdk8Module(), new SimpleModule());
 		objectMapper.enableDefaultTyping(DefaultTyping.JAVA_LANG_OBJECT, As.PROPERTY);
-		objectMapper.setTimeZone(TimeZone.getDefault());
+		TimeZone timeZone = TimeZone.getTimeZone(ZoneOffset.UTC);
+		TimeZone.setDefault(timeZone);
+		objectMapper.setTimeZone(timeZone);
 		objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, true);
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
 		objectMapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, true);
@@ -33,6 +38,14 @@ public class JsonConfig {
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.setSerializationInclusion(Include.NON_NULL);
 		return objectMapper;
+	}
+
+	@Bean
+	public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter(ObjectMapper objectMapper) {
+		MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+		jackson2HttpMessageConverter.setDefaultCharset(Charset.defaultCharset());
+		return jackson2HttpMessageConverter;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 
 public class TestAtomic {
 

@@ -19,7 +19,12 @@
 		<!-- Magnet Api -->
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-api</artifactId>
+			<artifactId>magnet-lucia-model</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-athena-model</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>

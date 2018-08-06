@@ -7,7 +7,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 
 public class TestBlockingQueue {
 

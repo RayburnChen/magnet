@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class GlobalExceptionHandler {
 
 	@PostConstruct
 	public void init() {
-		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getFullName();
+		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getNamespace().getFullName();
 	}
 
 	@ExceptionHandler(HystrixRuntimeException.class)
@@ -139,7 +140,11 @@ public class GlobalExceptionHandler {
 	}
 
 	private String initErrorMsg(Throwable e) {
-		return e.getClass().getSimpleName() + " " + e.getMessage() + String.valueOf(e.getStackTrace()[0]);
+		StringJoiner sj = new StringJoiner(" ");
+		sj.add(e.getClass().getSimpleName());
+		sj.add(e.getMessage());
+		sj.add(String.valueOf(e.getStackTrace()[0]));
+		return sj.toString();
 	}
 
 	private ErrorResponse initNestedErrorResponse(HystrixRuntimeException exception) {

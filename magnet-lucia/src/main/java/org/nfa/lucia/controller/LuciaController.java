@@ -1,9 +1,7 @@
 package org.nfa.lucia.controller;
 
-import java.security.Principal;
-
-import org.nfa.athena.AthenaClient;
-import org.nfa.athena.User;
+import org.nfa.athena.model.AthenaClient;
+import org.nfa.athena.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,9 @@ public class LuciaController {
 	private AthenaClient athenaClient;
 
 	@RequestMapping("/welcome")
-	public String welcome(Principal principal, @RequestHeader HttpHeaders headers) {
+	public String welcome(@RequestHeader HttpHeaders headers) {
 		log.info("Headers: {}", headers);
-		log.info("Welcome {}", principal.getName());
-		return "Welcome " + principal.toString();
+		return "Welcome";
 	}
 
 	@RequestMapping("/athenaUser")

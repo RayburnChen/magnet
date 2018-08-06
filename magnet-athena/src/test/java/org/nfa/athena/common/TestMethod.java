@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.junit.Test;
-import org.nfa.athena.AthenaClient;
+import org.nfa.athena.model.AthenaClient;
 
 public class TestMethod {
 

@@ -19,7 +19,7 @@
 		<!-- Magnet Api -->
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-api</artifactId>
+			<artifactId>magnet-atropos-model</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>

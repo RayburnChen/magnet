@@ -1,6 +1,6 @@
 package org.nfa.athena.controller;
 
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 import org.nfa.athena.service.AthenaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

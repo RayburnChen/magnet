@@ -2,9 +2,9 @@ package org.nfa.athena.service;
 
 import java.util.Optional;
 
-import org.nfa.athena.User;
 import org.nfa.athena.config.CacheConfig;
 import org.nfa.athena.dao.UserRepository;
+import org.nfa.athena.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class AthenaService {
 
 	@Cacheable(CacheConfig.USER_CACHE)
 	public User findOne(String id) {
-		return userRepository.findOne(id);
+		return userRepository.findById(id).orElse(null);
 	}
 
 	public User findOneByName(String name) {

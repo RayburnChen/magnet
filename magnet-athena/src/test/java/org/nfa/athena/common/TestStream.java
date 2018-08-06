@@ -15,7 +15,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 
 public class TestStream {
 
