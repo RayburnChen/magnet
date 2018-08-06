@@ -5,9 +5,7 @@ spring:
     name: magnet-eureka
   data:
     mongodb:
-      database: magnet-eureka
-      host: 10.0.0.4
-      port: 27017
+      uri: mongodb://localhost:27017/${spring.application.name}
 eureka:
   instance:
     prefer-ip-address: true
@@ -26,7 +24,14 @@ logging:
 #    org:
 #      springframework: 
 #        web: DEBUG
-        
-#management:
-#  security:
-#    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+info:
+  app:
+    name: ${spring.application.name}
+    context-path: ${server.servlet.context-path}
+    profiles: ${spring.profiles}
