@@ -52,9 +52,19 @@ public class HttpClientConfig {
 
 	@Bean
 	public RequestInterceptor customfeignInterceptor(FeignClientEncodingProperties properties) {
-		// com.netflix.client.AbstractLoadBalancerAwareClient#executeWithLoadBalancer
+		
+		// if use zipkin see
+		// org.springframework.cloud.sleuth.instrument.web.client.feign.TraceLoadBalancerFeignClient
 		// org.springframework.cloud.sleuth.instrument.web.client.feign.TracingFeignClient
-		// feign.Client.$Default
+		
+		// 1. org.springframework.cloud.openfeign.ribbon.LoadBalancerFeignClient
+		
+		// 2. org.springframework.cloud.openfeign.ribbon.FeignLoadBalancer
+		
+		// 3. com.netflix.client.AbstractLoadBalancerAwareClient#executeWithLoadBalancer
+		
+		// 4. feign.Client.$Default
+		
 		return new FeignInterceptor(properties);
 	}
 
