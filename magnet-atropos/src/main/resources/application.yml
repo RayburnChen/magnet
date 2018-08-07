@@ -13,7 +13,7 @@ spring:
       uri: mongodb://localhost:27017/${spring.application.name}
   sleuth:
     sampler:
-      probability: 1.0
+      probability: 0.0
 eureka:
   instance:
     preferIpAddress: true
