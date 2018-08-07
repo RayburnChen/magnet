@@ -28,7 +28,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoAuditing
 @EnableMongoRepositories
 @EnableScheduling
-@Import(value = { JsonConfig.class, GlobalErrorController.class, GlobalExceptionHandler.class, WebMvcConfigurerInitializer.class, FeignClientConfig.class, RestTemplateConfig.class,
+@Import(value = { 
+		JsonConfig.class, 
+		GlobalErrorController.class, 
+		GlobalExceptionHandler.class, 
+		WebMvcConfigurerInitializer.class, 
+		HttpClientConfig.class, 
 		ThreadPoolConfigurer.class })
 public @interface EnableMagnetService {
 
