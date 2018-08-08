@@ -1,7 +1,6 @@
 server:
   port: 8100
   servlet:
-    context-path: /${spring.application.name}
     session:
       cookie:
         name: ${spring.application.name}
@@ -19,8 +18,8 @@ eureka:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 30
     leaseExpirationDurationInSeconds: 90
-    status-page-url-path: ${server.servlet.context-path}/info
-    health-check-url-path: ${server.servlet.context-path}/health
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
   client:
     fetch-registry: true
     registry-fetch-interval-seconds: 30
@@ -61,8 +60,10 @@ management:
     web:
       exposure:
         include: '*'
+  endpoint:
+    health:
+      show-details: always
 info:
   app:
     name: ${spring.application.name}
-    context-path: ${server.servlet.context-path}
     profiles: ${spring.profiles}
