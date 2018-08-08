@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestOperations;
 
 @RestController
 @EnableFeignClients(clients = AthenaClient.class, defaultConfiguration = FeignClientsConfiguration.class)
@@ -23,9 +24,10 @@ public class LuciaController {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
-
 	@Autowired
 	private AthenaClient athenaClient;
+	@Autowired
+	private RestOperations restOperations;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/welcome")
 	public String welcome(@RequestHeader HttpHeaders headers) {
@@ -37,6 +39,11 @@ public class LuciaController {
 	public User athenaUser(@RequestHeader HttpHeaders headers) {
 		log.info("Athena Instances: " + discoveryClient.getInstances("magnet-athena"));
 		return athenaClient.oneUser();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser/operations")
+	public User athenaUserRestOperations() {
+		return restOperations.getForObject("http://magnet-athena/magnet-athena/greeting/oneUser", User.class);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/oneUserByName")
@@ -52,6 +59,11 @@ public class LuciaController {
 	@RequestMapping(method = RequestMethod.GET, value = { "/exception" })
 	public User exception() {
 		return athenaClient.exception();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/exception/operations" })
+	public User exceptionRestOperations() {
+		return restOperations.getForObject("http://magnet-athena/magnet-athena/greeting/exception", User.class);
 	}
 
 }

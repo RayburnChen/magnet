@@ -3,6 +3,7 @@ package org.nfa.panel.config;
 import java.io.IOException;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.encoding.BaseRequestInterceptor;
 import org.springframework.cloud.openfeign.encoding.FeignClientEncodingProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import feign.RequestTemplate;
 public class HttpClientConfig {
 
 	@Bean
+	@LoadBalanced
 	public RestTemplate restTemplate(MappingJackson2HttpMessageConverter jackson2HttpMessageConverter) {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new RestClientInterceptor());
