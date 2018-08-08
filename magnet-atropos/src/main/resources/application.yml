@@ -63,4 +63,4 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    profiles: ${spring.profiles}
+    port: ${server.port}
