@@ -5,5 +5,59 @@ spring:
     name: magnet-zipkin
   sleuth:
     enabled: false
-logging:
-  file: log/${spring.application.name}.log
+zipkin:
+  self-tracing:
+    # Set to true to enable self-tracing.
+    enabled: false
+    # percentage to self-traces to retain
+    sample-rate: 1.0
+    # Timeout in seconds to flush self-tracing data to storage.
+    message-timeout: 1
+  collector:
+    # percentage to traces to retain
+    sample-rate: 1.0
+    http:
+      # Set to false to disable creation of spans via HTTP collector API
+      enabled: true
+  ui:
+    enabled: true
+    ## Values below here are mapped to ZipkinUiProperties, served as /config.json
+    # Default limit for Find Traces
+    query-limit: 10
+    # The value here becomes a label in the top-right corner
+    environment:
+    # Default duration to look back when finding traces.
+    # Affects the "Start time" element in the UI. 1 hour in millis
+    default-lookback: 3600000
+    # When false, disables the "find a trace" screen
+    search-enabled: true
+    # Which sites this Zipkin UI covers. Regex syntax. (e.g. http:\/\/example.com\/.*)
+    # Multiple sites can be specified, e.g.
+    # - .*example1.com
+    # - .*example2.com
+    # Default is "match all websites"
+    instrumented: .*
+    # URL placed into the <base> tag in the HTML
+    base-path: /zipkin
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+  client:
+    enabled: false
+    fetch-registry: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: ${spring.application.name}
+    profiles: ${spring.profiles.active}

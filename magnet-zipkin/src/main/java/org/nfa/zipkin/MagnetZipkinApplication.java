@@ -10,6 +10,7 @@ import zipkin2.server.internal.EnableZipkinServer;
 // @EnableZipkinStreamServer
 public class MagnetZipkinApplication {
 
+	// http://localhost:9411/zipkin/
 	// https://cloud.spring.io/spring-cloud-static/Dalston.SR4/multi/multi__span_data_as_messages.html#_zipkin_consumer
 
 	public static void main(String[] args) {
