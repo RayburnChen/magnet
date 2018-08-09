@@ -37,6 +37,7 @@ public class MagnetAuthApplication {
 	// User gives Password to Client
 	// Get Token
 	// Mode 1.1
+	// curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=qqq -d scope=read%20write
 	// curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=password -d username=user -d password=qqq -d scope=read+write
 	
 	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
@@ -46,7 +47,7 @@ public class MagnetAuthApplication {
 	// Authorization Code Credentials
 	// Client Server Redirect to Authorization Server and get Authorization Code
 	// Mode 2.1
-	// curl user:qqq@localhost:8090/oauth/authorize -d client_id=magnet-client -d response_type=code -d redirect_uri=www.baidu.com
+	// Client Server Redirect and response_type is code
 	// localhost:8090/oauth/authorize?client_id=magnet-client&response_type=code&redirect_uri=http://www.baidu.com
 	
 	// org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint
@@ -67,10 +68,13 @@ public class MagnetAuthApplication {
 	// Implicit Credentials
 	// Client Server Redirect to Authorization Server
 	// Mode 3.1
-	// localhost:8090/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8100/magnet-lucia/login&response_type=code&state=RRRwEg
+	// response_type is token
+	// localhost:8090/oauth/authorize?client_id=magnet-client&response_type=token&redirect_uri=http://www.baidu.com
 	// Client Server get token by one call and no need to call Authorization Server again
 	// Implicit will not validate Client Server because there is no Mode 2.3 which need Client Server Secret
 	// Implicit can get access token but can not get refresh token
+	// Mode 3.2
+	// https://www.baidu.com/#access_token=5630cd7f-ed85-4d56-b5fc-bdd836a512ab&token_type=bearer&expires_in=43199&scope=read%20write
 	
 	// org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint
 	// org.springframework.security.oauth2.provider.implicit.ImplicitTokenGranter
