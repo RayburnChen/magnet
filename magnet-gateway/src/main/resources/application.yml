@@ -1,7 +1,6 @@
 server:
   port: 8080
   servlet:
-    context-path: /${spring.application.name}
     session:
       cookie:
         name: ${spring.application.name}
@@ -15,9 +14,14 @@ spring:
     gateway:
       routes:
       - id: custom_route
-        uri: http://magnet-athena
+        uri: lb://MAGNET-ATHENA
         predicates:
-        - Path=/athena/
+        - Path=/athena/**
+        filters:
+        - name: RewritePath
+          args: 
+            regexp: /athena/(?<remaining>.*)
+            replacement: /${remaining}
 eureka:
   instance:
     preferIpAddress: true
@@ -26,17 +30,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-security:
-  oauth2:
-    client:
-      client-id: magnet-client
-      client-secret: passw0rd
-      grant-type: implicit
-      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
-      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
-    resource:
-      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
-      preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
 management:
@@ -47,5 +40,3 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    context-path: ${server.servlet.context-path}
-    profiles: ${spring.profiles}
