@@ -5,9 +5,10 @@ import java.util.Map;
 import javax.servlet.RequestDispatcher;
 
 import org.nfa.base.ApplicationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +17,12 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
-public class GlobalErrorController extends AbstractErrorController {
+public class GlobalErrorController implements ErrorController {
 
-	private final ServerProperties serverProperties;
-	private final ErrorAttributes errorAttributes;
-
-	public GlobalErrorController(ServerProperties serverProperties, ErrorAttributes errorAttributes) {
-		super(errorAttributes);
-		this.errorAttributes = errorAttributes;
-		this.serverProperties = serverProperties;
-	}
+	@Autowired
+	private ServerProperties serverProperties;
+	@Autowired
+	private ErrorAttributes errorAttributes;
 
 	@Override
 	public String getErrorPath() {
