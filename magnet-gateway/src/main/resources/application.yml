@@ -14,10 +14,10 @@ spring:
   cloud:
     gateway:
       routes:
-      - id: after_route
-        uri: http://example.org
+      - id: custom_route
+        uri: http://magnet-athena
         predicates:
-        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+        - Path=/athena/
 eureka:
   instance:
     preferIpAddress: true
