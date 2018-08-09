@@ -34,7 +34,7 @@ public class GlobalErrorController implements ErrorController {
 		String origialUri = (String) webRequest.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI, RequestAttributes.SCOPE_REQUEST);
 		Integer errorCode = (Integer) webRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE, RequestAttributes.SCOPE_REQUEST);
 		Throwable e = errorAttributes.getError(webRequest);
-		throw new ApplicationException("Not found " + origialUri, errorCode, e);
+		throw new ApplicationException("Failed processing uri " + origialUri, errorCode, e);
 	}
 
 }

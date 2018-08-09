@@ -1,29 +1,29 @@
+server:
+  port: 8090
+  servlet:
+    session:
+      cookie:
+        name: ${spring.application.name}
 security:
-  user:
-    name: user
-    password: qqq
-    role:
-    - ADMIN
   oauth2:
     client:
       client-id: magnet-client
       client-secret: passw0rd
-      scope:
-        read, write
-      auto-approve-scopes:
-        read, write
+      scope: read, write
+      auto-approve-scopes: read, write
+      registered-redirect-uri:
+      - http://www.baidu.com
     authorization:
-      check-token-access: isAuthenticated()
+      check-token-access: fullyAuthenticated
 spring:
   application:
     name: magnet-auth
   data:
     mongodb:
-      database: magnet-auth
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
+      uri: mongodb://localhost:27017/${spring.application.name}
+  sleuth:
+    sampler:
+      probability: 0.0
   mvc:
     throw-exception-if-no-handler-found: true
     favicon:
@@ -31,15 +31,30 @@ spring:
     view:
       prefix: /pages/
       suffix: .html
-server:
-  port: 8090
-  context-path: /magnet-auth
-  session:
-    cookie:
-      name: AUTHSESSIONID
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+  client:
+    fetch-registry: true
+    registry-fetch-interval-seconds: 30
+    log-delta-diff: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 logging:
   file: log/${spring.application.name}.log
-#  level:
-#    org:
-#      springframework:
-#        security: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: ${spring.application.name}
+    port: ${server.port}
