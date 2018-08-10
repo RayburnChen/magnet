@@ -7,6 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.encoding.BaseRequestInterceptor;
 import org.springframework.cloud.openfeign.encoding.FeignClientEncodingProperties;
+import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,9 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.web.client.RestTemplate;
 
 import feign.RequestInterceptor;
@@ -25,8 +29,8 @@ public class HttpClientConfig {
 
 	@Bean
 	@LoadBalanced
-	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.additionalInterceptors(new RestClientInterceptor()).build();
+	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder, OAuth2ClientContext oAuth2ClientContext, OAuth2ProtectedResourceDetails resource) {
+		return restTemplateBuilder.additionalInterceptors(new RestClientInterceptor()).configure(new OAuth2RestTemplate(resource, oAuth2ClientContext));
 	}
 
 	private class RestClientInterceptor implements ClientHttpRequestInterceptor {
@@ -47,6 +51,11 @@ public class HttpClientConfig {
 			}
 		}
 
+	}
+
+	@Bean
+	public RequestInterceptor oAuth2FeignRequestInterceptor(OAuth2ClientContext oAuth2ClientContext, OAuth2ProtectedResourceDetails resource) {
+		return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, resource);
 	}
 
 	@Bean
