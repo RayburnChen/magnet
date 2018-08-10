@@ -15,16 +15,33 @@ spring:
       probability: 0.0
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
       routes:
-      - id: custom_route
+      
+      - id: athena_route
         uri: lb://MAGNET-ATHENA
         predicates:
         - Path=/athena/**
         filters:
-        - name: RewritePath
-          args: 
-            regexp: /athena/(?<remaining>.*)
-            replacement: /${remaining}
+        - StripPrefix=1
+        
+      - id: lucia_route
+        uri: lb://MAGNET-LUCIA
+        predicates:
+        - Path=/lucia/**
+        filters:
+        - StripPrefix=1
+        
+      - id: atropos_route
+        uri: lb://MAGNET-ATROPOS
+        predicates:
+        - Path=/atropos/**
+        filters:
+        - StripPrefix=1
+        
 eureka:
   instance:
     preferIpAddress: true
@@ -33,6 +50,14 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 3000
 logging:
   file: log/${spring.application.name}.log
 management:
