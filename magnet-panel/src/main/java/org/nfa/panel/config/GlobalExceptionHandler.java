@@ -163,27 +163,24 @@ public class GlobalExceptionHandler {
 	}
 
 	private ErrorResponse initNestedErrorResponse(FeignException exception) {
-		if (null != exception.getMessage() && exception.getMessage().contains("; content:\n")) {
-			String message = exception.getMessage().split("; content:\n")[1];
-			try {
-				return objectMapper.readValue(message, ERROR_RESPONSE_TYPE_REF);
-			} catch (RuntimeException | IOException e) {
-				LOGGER.warn("Fetch error msg failed " + exception.getMessage(), e);
-				return defaultErrorResponse(exception);
-			}
-		} else {
-			return defaultErrorResponse(exception);
-		}
-
+		return Optional.of(exception).map(FeignException::getMessage).filter(msg -> null != msg && msg.contains("; content:\n")).map(msg -> msg.split("; content:\n")[1]).map(this::initNested)
+				.orElse(defaultErrorResponse(exception));
 	}
 
 	private ErrorResponse initNestedErrorResponse(RestClientResponseException exception) {
-		String message = exception.getResponseBodyAsString();
+		return Optional.of(exception).map(RestClientResponseException::getResponseBodyAsString).map(this::initNested).orElse(defaultErrorResponse(exception));
+	}
+
+	private ErrorResponse initNested(String errorResponseString) {
 		try {
-			return objectMapper.readValue(message, ERROR_RESPONSE_TYPE_REF);
+			ErrorResponse errorResponse = objectMapper.readValue(errorResponseString, ERROR_RESPONSE_TYPE_REF);
+			if (null == errorResponse.getMessage()) {
+				errorResponse.setMessage(errorResponseString);
+			}
+			return errorResponse;
 		} catch (RuntimeException | IOException e) {
-			LOGGER.warn("Fetch error msg failed " + message, e);
-			return defaultErrorResponse(exception);
+			LOGGER.debug("Fetch error msg failed " + errorResponseString, e);
+			return null;
 		}
 	}
 

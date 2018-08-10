@@ -36,7 +36,7 @@ public class JsonConfig {
 		objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		objectMapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, true);
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.setSerializationInclusion(Include.NON_NULL);
 		return objectMapper;

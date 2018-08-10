@@ -45,10 +45,10 @@ security:
       client-id: magnet-client
       client-secret: passw0rd
       grant-type: implicit
-      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
-      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
+      token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
 logging:
   file: log/${spring.application.name}.log
