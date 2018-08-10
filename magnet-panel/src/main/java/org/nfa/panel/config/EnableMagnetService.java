@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.nfa.panel.service.AuditEventRepositoryImpl;
+import org.nfa.panel.service.TraceRepositoryImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -28,13 +30,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoAuditing
 @EnableMongoRepositories
 @EnableScheduling
-@Import(value = { 
-		JsonConfig.class, 
-		GlobalErrorController.class, 
-		GlobalExceptionHandler.class, 
-		WebMvcConfigurerInitializer.class, 
-		HttpClientConfig.class, 
-		ThreadPoolConfigurer.class })
+@Import(value = { JsonConfig.class, GlobalErrorController.class, GlobalExceptionHandler.class, WebMvcConfigurerInitializer.class, HttpClientConfig.class, ThreadPoolConfigurer.class,
+		AuditEventRepositoryImpl.class, TraceRepositoryImpl.class })
 public @interface EnableMagnetService {
 
 	String value() default "";

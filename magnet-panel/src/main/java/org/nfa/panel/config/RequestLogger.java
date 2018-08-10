@@ -15,7 +15,7 @@ public class RequestLogger implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		log.info("Received {}:{}", request.getMethod(), request.getRequestURI());
+		log.debug("Received {}:{}", request.getMethod(), request.getRequestURI());
 		request.setAttribute(REQUEST_LOGGER_TIME, System.currentTimeMillis());
 		return true;
 	}
@@ -23,7 +23,7 @@ public class RequestLogger implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		long time = Long.parseLong(String.valueOf(request.getAttribute(REQUEST_LOGGER_TIME)));
-		log.info("Complete {}:{} after {}ms", request.getMethod(), request.getRequestURI(), System.currentTimeMillis() - time);
+		log.debug("Complete {}:{} after {}ms", request.getMethod(), request.getRequestURI(), System.currentTimeMillis() - time);
 		request.removeAttribute(REQUEST_LOGGER_TIME);
 	}
 
