@@ -1,7 +1,9 @@
 package org.nfa.panel.config;
 
 import java.io.IOException;
+import java.util.Optional;
 
+import org.nfa.base.AuditableUser;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -10,11 +12,14 @@ import org.springframework.cloud.openfeign.encoding.FeignClientEncodingPropertie
 import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -26,6 +31,18 @@ import feign.RequestTemplate;
 @Configuration
 @EnableConfigurationProperties(FeignClientEncodingProperties.class)
 public class HttpClientConfig {
+
+	@Bean
+	public AuditorAware<AuditableUser> auditorAware() {
+		return () -> {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (null != authentication) {
+				return Optional.of(new AuditableUser(authentication.getName(), authentication.getAuthorities().toString()));
+			} else {
+				return Optional.empty();
+			}
+		};
+	}
 
 	@Bean
 	@LoadBalanced
