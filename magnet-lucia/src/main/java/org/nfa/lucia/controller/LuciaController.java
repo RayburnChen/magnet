@@ -41,7 +41,7 @@ public class LuciaController {
 		return athenaClient.oneUser();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser/operations")
+	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser/restOperations")
 	public User athenaUserRestOperations() {
 		return restOperations.getForObject("http://magnet-athena/greeting/oneUser", User.class);
 	}
@@ -61,7 +61,7 @@ public class LuciaController {
 		return athenaClient.exception();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = { "/exception/operations" })
+	@RequestMapping(method = RequestMethod.GET, value = { "/exception/restOperations" })
 	public User exceptionRestOperations() {
 		return restOperations.getForObject("http://magnet-athena/greeting/exception", User.class);
 	}
