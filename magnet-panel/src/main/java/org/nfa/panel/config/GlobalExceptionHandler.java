@@ -103,12 +103,13 @@ public class GlobalExceptionHandler {
 
 	private ExceptionLog initExceptionLog(Throwable e, HttpServletRequest request, int priority, ErrorResponse nested) {
 		ExceptionLog l = new ExceptionLog();
+		initExceptionLog(l, e);
 		l.setPath(request.getMethod() + ":" + request.getRequestURI());
 		l.setCreatedDate(Instant.now());
 		l.setPriority(priority);
 		l.setDetails(nested.getDetails());
 		l.setRootCause(nested.getException());
-		initExceptionLog(l, e);
+		l.setMessage(nested.getMessage());
 		return l;
 	}
 
