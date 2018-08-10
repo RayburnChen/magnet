@@ -18,6 +18,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import brave.Tracer;
+
 @RestController
 @RequestMapping(value = "/greeting")
 public class AthenaController {
@@ -26,10 +28,13 @@ public class AthenaController {
 
 	@Autowired
 	private AthenaService athenaService;
+	@Autowired
+	private Tracer tracer;
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
 		log.info("HttpHeaders ", headers);
+		log.info(tracer.currentSpan().context().toString());
 		return athenaService.oneUser();
 	}
 
@@ -46,8 +51,7 @@ public class AthenaController {
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/userByName" })
 	public User userByName(@RequestParam("name") String name) {
-		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
-				.getRequestAttributes();
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		log.info(requestAttributes.getRequest().getServletPath());
 		log.info("oneUserByName {}", name);
 		return athenaService.findOneByName(name);
