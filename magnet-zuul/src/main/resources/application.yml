@@ -29,7 +29,12 @@ zuul:
   routes:
     athena:
       path: /athena/**
+      sensitiveHeaders:
       serviceId: MAGNET-ATHENA
+    oauth:
+      path: /oauth/**
+      sensitiveHeaders:
+      serviceId: MAGNET-AUTH
 security:
   oauth2:
     client:
