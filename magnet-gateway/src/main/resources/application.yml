@@ -18,30 +18,36 @@ spring:
       discovery:
         locator:
           enabled: true
-      default-filters:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedMethods:
+            - '*'
+            allowedHeaders:
+            - '*'
+            allowCredentials: true
+            maxAge: 1800
+      default-filters: null
       routes:
-      
       - id: athena_route
         uri: lb://MAGNET-ATHENA
         predicates:
         - Path=/athena/**
         filters:
         - StripPrefix=1
-        
       - id: lucia_route
         uri: lb://MAGNET-LUCIA
         predicates:
         - Path=/lucia/**
         filters:
         - StripPrefix=1
-        
       - id: atropos_route
         uri: lb://MAGNET-ATROPOS
         predicates:
         - Path=/atropos/**
         filters:
         - StripPrefix=1
-        
 eureka:
   instance:
     preferIpAddress: true
@@ -50,6 +56,17 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+security:
+  oauth2:
+    client:
+      client-id: magnet-client
+      client-secret: passw0rd
+      grant-type: implicit
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
+    resource:
+      token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
 hystrix:
   command:
     default:
