@@ -13,6 +13,7 @@ security:
       auto-approve-scopes: read, write
       registered-redirect-uri:
       - http://www.baidu.com
+      - http://localhost:8080/login
     authorization:
       check-token-access: fullyAuthenticated
 spring:
