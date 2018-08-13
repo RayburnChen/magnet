@@ -101,13 +101,35 @@ public class MagnetAuthApplication {
 		SpringApplication.run(MagnetAuthApplication.class, args);
 	}
 	
-	// Case
-	// 1. Call Zuul http://localhost:8080/athena/greeting/oneUser
-	// 2. Forward Auth POST http://localhost:8090/login
-	// 3. Show login page Response cookies magnet-auth 2oXCN7ehWlmBBECHrxUD8jImoZt3MgQsZTwfFq5b
-	// 4. Commit password http://localhost:8090/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8080/login&response_type=code&state=2MuPKa
-	// 5. Forward Zuul http://localhost:8080/login?code=Jx724H&state=2MuPKa
-	// 6. Forward Zuul http://localhost:8080/athena/greeting/oneUser
-	// 7. Call athena service
+	// Case new user
+	
+	// 1. Call Zuul GET http://localhost:8080/athena/greeting/oneUser
+	//    Zuul check cookie failed and return Set-Cookie: magnet-zuul=9ScfS1QftDI9u4zOmtHLLOQSVSIhM5DsPxD8k5eB
+	
+	// 2. Redirect Zuul GET http://localhost:8080/login
+	//    Zuul return header Location: http://localhost:8090/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8080/login&response_type=code&state=6ePbq7
+	
+	// 3. Redirect Auth GET http://localhost:8090/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8080/login&response_type=code&state=6ePbq7
+	//    Auth check cookie failed and return Set-Cookie: magnet-auth=jMnbmufM-F3fwztcdSUefJwZzSklDScBwduooofp
+	
+	// 4. Redirect Auth GET http://localhost:8090/login
+	//    Auth return login page html
+	
+	// 5. Post password POST http://localhost:8090/login
+	//    Auth return Set-Cookie: magnet-auth=0MLmzi8CxqtSYBw_pWkPJkc9sGgY6a_w2EMUcKNv
+	
+	// 6. Redirect Auth GET http://localhost:8090/oauth/authorize?client_id=magnet-client&redirect_uri=http://localhost:8080/login&response_type=code&state=6ePbq7
+	//    Auth return Location: http://localhost:8080/login?code=1iXiQZ&state=6ePbq7
+	
+	// 7. Redirect Zuul GET http://localhost:8080/login?code=1iXiQZ&state=6ePbq7
+	//    Zuul return Set-Cookie: magnet-zuul=mDdJaBoWwGR6w6xxrK6IOUpKN-KiJijISYL9E-LB
+	
+	// 8. Redirect Zuul GET http://localhost:8080/athena/greeting/oneUser
+	//    Forward to Athena service and return
+	
+	// Case old user
+	// Call Zuul GET http://localhost:8080/athena/greeting/oneUser
+	// Cookie: magnet-zuul=mDdJaBoWwGR6w6xxrK6IOUpKN-KiJijISYL9E-LB; magnet-auth=0MLmzi8CxqtSYBw_pWkPJkc9sGgY6a_w2EMUcKNv
+	// Forward to Athena service and return
 	
 }
