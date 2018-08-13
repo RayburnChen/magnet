@@ -23,6 +23,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 zuul:
   ribbonIsolationStrategy: SEMAPHORE
+  host:
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 3000
+    time-unit: MILLISECONDS
   threadPool:
     useSeparateThreadPools: true
     threadPoolKeyPrefix: zuulgw
@@ -30,6 +34,12 @@ zuul:
     athena:
       path: /athena/**
       serviceId: MAGNET-ATHENA
+ribbon:
+  ReadTimeout: 3000
+  SocketTimeout: 3000
+#If you want to configure the socket timeouts and read timeouts for requests proxied through Zuul, you have two options, based on your configuration:
+#If Zuul uses service discovery, you need to configure these timeouts with the ribbon.ReadTimeout and ribbon.SocketTimeout Ribbon properties.
+#If you have configured Zuul routes by specifying URLs, you need to use zuul.host.connect-timeout-millis and zuul.host.socket-timeout-millis.
 security:
   oauth2:
     client:
@@ -41,14 +51,6 @@ security:
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          strategy: SEMAPHORE
-          thread:
-            timeoutInMilliseconds: 3000
 logging:
   file: log/${spring.application.name}.log
 management:
