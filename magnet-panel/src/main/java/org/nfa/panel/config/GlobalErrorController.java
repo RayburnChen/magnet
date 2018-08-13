@@ -31,11 +31,12 @@ public class GlobalErrorController implements ErrorController {
 
 	@RequestMapping
 	public ResponseEntity<Map<String, Object>> error(WebRequest webRequest) {
-		String uri = (String) webRequest.getAttribute(RequestDispatcher.ERROR_REQUEST_URI, RequestAttributes.SCOPE_REQUEST);
+		Object uri = webRequest.getAttribute(RequestDispatcher.ERROR_REQUEST_URI, RequestAttributes.SCOPE_REQUEST);
 		Integer code = (Integer) webRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE, RequestAttributes.SCOPE_REQUEST);
 		Throwable e = errorAttributes.getError(webRequest);
 		Map<String, Object> body = errorAttributes.getErrorAttributes(webRequest, true);
-		throw new ApplicationException(uri + " " + String.valueOf(body.get("message")), code, e);
+		String uriString = null != uri ? uri + " " : new String();
+		throw new ApplicationException(uriString + String.valueOf(body.get("message")), code, e);
 	}
 
 }

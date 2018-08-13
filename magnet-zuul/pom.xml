@@ -16,6 +16,11 @@
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-panel</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- Spring Cloud -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
