@@ -33,7 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 @EnableResourceServer
 @Import(value = { JsonConfig.class, GlobalErrorController.class, GlobalExceptionHandler.class, WebMvcConfigurerInitializer.class, HttpClientConfig.class,
-		ThreadPoolConfigurer.class, AuditEventRepositoryImpl.class, TraceRepositoryImpl.class, SecurityConfiguer.class })
+		ThreadPoolConfigurer.class, AuditEventRepositoryImpl.class, TraceRepositoryImpl.class })
 public @interface EnableMagnetService {
 
 	String value() default "";
