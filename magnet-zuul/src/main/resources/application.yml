@@ -35,10 +35,6 @@ zuul:
       path: /athena/**
       sensitiveHeaders:
       serviceId: MAGNET-ATHENA
-    oauth:
-      path: /oauth/**
-      sensitiveHeaders:
-      serviceId: MAGNET-AUTH
 
 ribbon:
   ReadTimeout: 3000
