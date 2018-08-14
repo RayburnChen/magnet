@@ -57,14 +57,6 @@ security:
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          strategy: SEMAPHORE
-          thread:
-            timeoutInMilliseconds: 3000
 logging:
   file: log/${spring.application.name}.log
 management:
