@@ -33,7 +33,9 @@ zuul:
   routes:
     athena:
       path: /athena/**
+      sensitiveHeaders:
       serviceId: MAGNET-ATHENA
+
 ribbon:
   ReadTimeout: 3000
   SocketTimeout: 3000
