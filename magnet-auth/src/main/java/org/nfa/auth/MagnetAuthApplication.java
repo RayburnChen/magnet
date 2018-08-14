@@ -2,6 +2,7 @@ package org.nfa.auth;
 
 import org.nfa.panel.config.GlobalErrorController;
 import org.nfa.panel.config.GlobalExceptionHandler;
+import org.nfa.panel.config.SecurityConfiguer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoRepositories
 @EnableDiscoveryClient
 @EnableAuthorizationServer
-@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
+@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class, SecurityConfiguer.class })
 public class MagnetAuthApplication {
 	
 	// Spring Boot Authorization Server Configuration
