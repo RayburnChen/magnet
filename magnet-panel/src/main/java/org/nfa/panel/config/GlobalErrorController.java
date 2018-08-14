@@ -36,7 +36,8 @@ public class GlobalErrorController implements ErrorController {
 		Throwable e = errorAttributes.getError(webRequest);
 		Map<String, Object> body = errorAttributes.getErrorAttributes(webRequest, true);
 		String uriString = null != uri ? uri + " " : new String();
-		throw new ApplicationException(uriString + String.valueOf(body.get("message")), code, e);
+		String message = null != e ? e.getMessage() : String.valueOf(body.get("message"));
+		throw new ApplicationException(uriString + message, code, e);
 	}
 
 }
