@@ -16,6 +16,7 @@ security:
       - http://localhost:8080/login
     authorization:
       check-token-access: fullyAuthenticated
+      token-key-access: fullyAuthenticated
 spring:
   application:
     name: magnet-auth
