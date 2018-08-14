@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.nfa.base.ApplicationException;
 import org.nfa.base.ErrorDetail;
 import org.nfa.base.ErrorResponse;
@@ -26,6 +28,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.RestClientResponseException;
@@ -76,12 +81,23 @@ public class GlobalExceptionHandler {
 		return handleException(e, Priority.LOWEST, request, populate(e.getCode(), e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+		return handleException(e, Priority.LOWEST, request, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	}
+
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<ErrorResponse> handleValidationException(ValidationException e, HttpServletRequest request) {
+		return handleException(e, Priority.LOWEST, request, populate(DEFAULT_ERROR_CODE, e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	}
+
 	@ExceptionHandler(Throwable.class)
 	public ResponseEntity<ErrorResponse> handleThrowable(Throwable e, HttpServletRequest request) {
 		return handleException(e, Priority.HIGHEST, request, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
-	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, HttpServletRequest request, UnaryOperator<ErrorResponse> operator, ErrorResponse defaultErrorResponse) {
+	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, HttpServletRequest request, UnaryOperator<ErrorResponse> operator,
+			ErrorResponse defaultErrorResponse) {
 		log(e, request);
 		Optional<ExceptionLog> exceptionLog = persist(initExceptionLog(e, request, priority, defaultErrorResponse));
 		ErrorResponse errorResponse = populate(request, exceptionLog).andThen(operator).apply(defaultErrorResponse);
@@ -153,6 +169,11 @@ public class GlobalExceptionHandler {
 		return sj.toString();
 	}
 
+	private String initErrorMsg(MethodArgumentNotValidException e) {
+		return Optional.of(e).map(MethodArgumentNotValidException::getBindingResult).map(BindingResult::getAllErrors).filter(CollectionUtils::isNotEmpty).map(l -> l.get(0))
+				.map(ObjectError::getDefaultMessage).orElse(e.getMessage());
+	}
+
 	private ErrorResponse initNestedErrorResponse(HystrixRuntimeException exception) {
 		Throwable cause = exception.getCause();
 		if (cause instanceof FeignException) {
@@ -164,8 +185,8 @@ public class GlobalExceptionHandler {
 	}
 
 	private ErrorResponse initNestedErrorResponse(FeignException exception) {
-		return Optional.of(exception).map(FeignException::getMessage).filter(msg -> null != msg && msg.contains("; content:\n")).map(msg -> msg.split("; content:\n")[1]).map(this::initNested)
-				.orElse(defaultErrorResponse(exception));
+		return Optional.of(exception).map(FeignException::getMessage).filter(msg -> null != msg && msg.contains("; content:\n")).map(msg -> msg.split("; content:\n")[1])
+				.map(this::initNested).orElse(defaultErrorResponse(exception));
 	}
 
 	private ErrorResponse initNestedErrorResponse(RestClientResponseException exception) {

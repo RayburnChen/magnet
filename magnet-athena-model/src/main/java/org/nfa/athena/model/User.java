@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -14,8 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
-@CompoundIndexes({
-		@CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
+@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 2157443368101050157L;
@@ -34,6 +35,7 @@ public class User implements Serializable {
 	private String id;
 
 	@Field
+	@NotNull(message = "name is missing")
 	private String name;
 
 	@Field
@@ -132,9 +134,8 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password
-				+ ", values=" + values + ", userType=" + userType + ", createdDate=" + createdDate + ", version="
-				+ version + "]";
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password + ", values=" + values + ", userType=" + userType
+				+ ", createdDate=" + createdDate + ", version=" + version + "]";
 	}
 
 }
