@@ -51,10 +51,10 @@ security:
       access-token-uri: http://localhost:8090/oauth/token
       user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
-#      token-info-uri: http://localhost:8090/oauth/check_token
-#      preferTokenInfo: true
-      jwt:
-        key-uri: http://localhost:8090/oauth/token_key
+      token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
+#      jwt:
+#        key-uri: http://localhost:8090/oauth/token_key
 logging:
   file: log/${spring.application.name}.log
 management:
