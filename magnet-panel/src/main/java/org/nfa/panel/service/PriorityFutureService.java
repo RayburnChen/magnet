@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -63,7 +64,7 @@ public class PriorityFutureService<T> {
 	}
 
 	public List<T> getResult() {
-		return this.objectFutureList.stream().map(this::get).collect(Collectors.toList());
+		return this.objectFutureList.stream().map(this::get).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	public void getVoidResult() {
