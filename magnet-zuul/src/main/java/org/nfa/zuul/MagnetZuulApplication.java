@@ -11,6 +11,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @SpringBootApplication
 @EnableZuulProxy
@@ -20,7 +22,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories
 @Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
 @EnableOAuth2Sso
-public class MagnetZuulApplication {
+public class MagnetZuulApplication extends WebSecurityConfigurerAdapter {
 
 	// http://localhost:8080/actuator/filters
 	// http://localhost:8080/actuator/routes
@@ -30,5 +32,19 @@ public class MagnetZuulApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetZuulApplication.class, args);
 	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.antMatcher("/**")
+				.authorizeRequests()
+			.antMatchers("/permission/**")
+				.permitAll()
+			.anyRequest()
+				.authenticated();
+	}
+	
+	// org.springframework.cloud.security.oauth2.proxy.OAuth2TokenRelayFilter
+	// org.springframework.cloud.netflix.zuul.web.ZuulController
 
 }
