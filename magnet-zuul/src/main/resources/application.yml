@@ -59,13 +59,13 @@ security:
       client-id: magnet-client
       client-secret: passw0rd
       grant-type: implicit
-      access-token-uri: http://localhost:8080/permission/oauth/token
-      user-authorization-uri: http://localhost:8080/permission/oauth/authorize
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8080/permission/oauth/check_token
+      token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
-    sso:
-      login-path: http://localhost:8080/permission/login
+#    sso:
+#      login-path: http://localhost:8080/permission/login
 logging:
   file: log/${spring.application.name}.log
 management:
