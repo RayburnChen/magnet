@@ -20,7 +20,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
 public class MagnetZuulApplication {
 
+	// http://localhost:8080/actuator/filters
 	// http://localhost:8080/actuator/routes
+	// http://localhost:8080/actuator/routes/details
 	// http://localhost:8080/athena/greeting/oneUser
 
 	public static void main(String[] args) {
