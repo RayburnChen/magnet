@@ -30,18 +30,29 @@ zuul:
   threadPool:
     useSeparateThreadPools: true
     threadPoolKeyPrefix: zuulgw
+  ignoredServices: '*'
+  ignoreSecurityHeaders: true
+  sensitiveHeaders: Cookie,Set-Cookie,Authorization
   routes:
     athena:
       path: /athena/**
-      sensitiveHeaders:
+      sensitiveHeaders: null
+      strip-prefix: true
       serviceId: MAGNET-ATHENA
-
+    permission:
+      path: /permission/**
+      sensitiveHeaders: null
+      strip-prefix: true
+      serviceId: MAGNET-AUTH
 ribbon:
   ReadTimeout: 3000
   SocketTimeout: 3000
-#If you want to configure the socket timeouts and read timeouts for requests proxied through Zuul, you have two options, based on your configuration:
-#If Zuul uses service discovery, you need to configure these timeouts with the ribbon.ReadTimeout and ribbon.SocketTimeout Ribbon properties.
-#If you have configured Zuul routes by specifying URLs, you need to use zuul.host.connect-timeout-millis and zuul.host.socket-timeout-millis.
+proxy:
+  auth:
+    loadBalanced: true
+    routes:
+      athena: oauth2
+      permission: passthru
 security:
   oauth2:
     client:
@@ -53,8 +64,6 @@ security:
     resource:
       token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
-#      jwt:
-#        key-uri: http://localhost:8090/oauth/token_key
 logging:
   file: log/${spring.application.name}.log
 management:
