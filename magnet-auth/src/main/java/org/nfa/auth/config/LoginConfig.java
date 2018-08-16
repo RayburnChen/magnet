@@ -15,6 +15,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
 				.authenticated()
 			.and()
 				.formLogin()
+				.loginPage("/login")
 				.permitAll()
 			.and()
 				.logout()
