@@ -56,7 +56,7 @@ public class TestStream {
 
 	@Test
 	public void testPerformance() {
-		int size = 1000000;
+		int size = 100000;
 		long forMethod = 0L;
 		long streamMethod = 0L;
 		for (int i = 0; i < 30; i++) {
@@ -86,7 +86,6 @@ public class TestStream {
 			System.err.println(one);
 		}
 		long n = System.currentTimeMillis();
-		System.out.println("forMethod cost" + String.valueOf(n - t));
 		return n - t;
 	}
 
@@ -94,7 +93,6 @@ public class TestStream {
 		long t = System.currentTimeMillis();
 		list.stream().forEach(one -> System.err.println(one));
 		long n = System.currentTimeMillis();
-		System.out.println("streamMethod cost " + String.valueOf(n - t));
 		return n - t;
 	}
 
