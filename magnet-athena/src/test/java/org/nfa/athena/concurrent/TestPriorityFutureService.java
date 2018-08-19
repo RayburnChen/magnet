@@ -85,5 +85,15 @@ public class TestPriorityFutureService {
 		forkJoinPool.awaitQuiescence(100, TimeUnit.SECONDS);
 		System.out.println("size is " + forkJoinPool.getPoolSize());
 	}
+	
+	public String getTaskResult(ForkJoinPool forkJoinPool) throws InterruptedException, ExecutionException {
+		ForkJoinTask<String> result = forkJoinPool.submit(() -> {
+			TimeUnit.SECONDS.sleep(1);
+			return getTaskResult(forkJoinPool);
+		});
+		String r = result.get();
+		System.err.println(r);
+		return r;
+	}
 
 }
