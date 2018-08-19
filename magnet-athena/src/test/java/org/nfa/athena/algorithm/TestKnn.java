@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
@@ -17,12 +18,14 @@ import org.nfa.athena.model.User;
 public class TestKnn {
 
 	private static final int K = 3;
+	private static final Random RANDOM = new Random();
 
 	@Test
 	public void test() {
-//		for (int i = 0; i < 1000000000; i++) {
-		System.out.println("Tag:" + kttGetTag(new User(new BigDecimal(String.valueOf(100000)), "unknown")) + " for " + 100000);
-//		}
+		for (int i = 0; i < 1000; i++) {
+			int amount = RANDOM.nextInt(1000000);
+			System.out.println("Tag:" + kttGetTag(new User(new BigDecimal(amount), "unknown")) + " for " + amount);
+		}
 	}
 
 	private String kttGetTag(User user) {
@@ -42,8 +45,6 @@ public class TestKnn {
 		sample.add(new User(new BigDecimal("100000"), "medium"));
 		sample.add(new User(new BigDecimal("1000000"), "rich"));
 		sample.add(new User(new BigDecimal("10000000"), "rich"));
-		sample.add(new User(new BigDecimal("100000000"), "powerful"));
-		sample.add(new User(new BigDecimal("1000000000"), "powerful"));
 		return sample;
 	}
 
@@ -84,6 +85,14 @@ public class TestKnn {
 			return result;
 		}
 
+	}
+
+	@Test
+	public void testPriority() {
+		User user = new User(new BigDecimal(String.valueOf(100000)), "unknown");
+		List<User> users = getSample();
+		users.sort(Comparator.comparingDouble(u -> u.distance(user)));
+		users.forEach(u -> System.out.println(u.getAmount()));
 	}
 
 }

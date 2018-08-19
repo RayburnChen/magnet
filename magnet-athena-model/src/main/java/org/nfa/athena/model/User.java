@@ -157,7 +157,7 @@ public class User implements Serializable, Measurable<User> {
 
 	@Override
 	public double distance(User target) {
-		return this.amount.subtract(target.amount).doubleValue();
+		return this.amount.subtract(target.amount).abs().doubleValue();
 	}
 
 }
