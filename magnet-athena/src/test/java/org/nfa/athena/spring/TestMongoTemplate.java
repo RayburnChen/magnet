@@ -52,23 +52,24 @@ public class TestMongoTemplate {
 
 	// 1. oplog 是幂等的
 	
-	// 2. secondary拉取primary的oplog
-	// secondary先记录某段oplog中的最小时间戳
-	// 拉取oplog保存到本地
-	// 清空记录的最小时间戳
-	// 任何一步失败，截短本地oplog至最小时间戳，从最小时间戳重新拉取
+	// 2. secondary pull primary oplog
+	// secondary先记录某段oplog中的最小时间戳 the start time of a period oplog
+	// pull oplog and save to local
+	// clear the 最小时间戳
+	// if error happened 截短本地oplog至最小时间戳，从最小时间戳重新拉取
 	
 	// 3. secondary回放本地的oplog
-	// 回放oplog
-	// 回放完成，记录oplog最大时间戳
-	// 任何一步失败，重放最大时间戳开始的所有oplog
+	// execute oplog
+	// execute oplog finish and record oplog最大时间戳
+	// if error happened 重放最大时间戳开始的所有oplog
 	
 	// 4. 保证oplog的顺序
-	// 加锁： 生成时间戳，存到_uncommittedRecordIds里面
+	// lock and atomic 生成时间戳，存到_uncommittedRecordIds里面
 	// oplog时间戳设好，存入oplog collection，并发，无序
-	// 加锁： _uncommittedRecordIds移除该时间戳
+	// lock and atomic _uncommittedRecordIds移除该时间戳
 	// secondary只能拉取早于_uncommittedRecordIds里的时间戳的数据
-	// 保证了一旦时间戳生成，能读取到的oplog必然有序
+	// atomic generate time stamp and save and exclusivity read
+	// according to the sequence of time stamp 能读取到的oplog必然有序
 	
 	@Test
 	public void testScripts() {
