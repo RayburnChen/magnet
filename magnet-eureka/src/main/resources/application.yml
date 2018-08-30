@@ -9,6 +9,9 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
+    health-check-url-path: /actuator/health
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 30
   server:
     enableSelfPreservation: false
   client:
