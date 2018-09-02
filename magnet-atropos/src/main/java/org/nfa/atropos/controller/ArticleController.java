@@ -72,8 +72,11 @@ public class ArticleController {
 
 	@GetMapping("/randomNumbers")
 	public Flux<ServerSentEvent<Integer>> randomNumbers() {
-		return Flux.interval(Duration.ofSeconds(1)).map(seq -> Tuples.of(seq, ThreadLocalRandom.current().nextInt()))
-				.map(data -> ServerSentEvent.<Integer>builder().event("random").id(Long.toString(data.getT1())).data(data.getT2()).build());
+		// curl localhost:8120/article/randomNumbers
+		return Flux.interval(Duration.ofSeconds(1)).log().map(seq -> Tuples.of(seq, ThreadLocalRandom.current().nextInt())).map(data -> {
+			log.info("Thread:" + Thread.currentThread().toString());
+			return ServerSentEvent.<Integer>builder().event("random").id(Long.toString(data.getT1())).data(data.getT2()).build();
+		});
 	}
 
 }
