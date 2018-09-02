@@ -1,6 +1,7 @@
 package org.nfa.atropos.service;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.nfa.atropos.model.Article;
@@ -27,9 +28,10 @@ public class ArticleService {
 		return Mono.justOrEmpty(data.get(id)).switchIfEmpty(Mono.error(new ApplicationException("not found", 10010)));
 	}
 
-	public Mono<Article> createOrUpdate(Article Article) {
-		data.put(Article.getId(), Article);
-		return Mono.just(Article);
+	public Mono<Article> createOrUpdate(Article article) {
+		Objects.requireNonNull(article.getId());
+		data.put(article.getId(), article);
+		return Mono.just(article);
 	}
 
 	public Mono<Article> delete(String id) {
