@@ -75,3 +75,4 @@ info:
     name: ${spring.application.name}
     port: ${server.port}
   git: ${git}
+  build: ${build}
