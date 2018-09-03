@@ -22,6 +22,7 @@ import org.nfa.base.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -55,12 +56,14 @@ public class GlobalExceptionHandler {
 	private MongoOperations mongoOperations;
 	@Autowired(required = false)
 	private HttpServletRequest request;
+	@Autowired
+	private Environment environment;
 
 	private String prefix;
 
 	@PostConstruct
 	public void init() {
-		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getNamespace().getFullName();
+		prefix = null == environment.getProperty("spring.application.name") ? "EXCEPTION_LOG" : environment.getProperty("spring.application.name");
 	}
 
 	@ExceptionHandler(FeignException.class)
