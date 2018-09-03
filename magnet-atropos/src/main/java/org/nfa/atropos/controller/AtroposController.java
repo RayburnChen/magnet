@@ -19,4 +19,9 @@ public class AtroposController {
 		return new SegItem("welcome", String.valueOf(headers.getHost()));
 	}
 
+	@GetMapping("/exception")
+	public void exception() {
+		throw new RuntimeException("AtroposController exception Assert.isNull");
+	}
+
 }
