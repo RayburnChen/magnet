@@ -35,7 +35,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		// org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext
+		// org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
 		ApplicationContextUtils.applicationContext = applicationContext;
 	}
 

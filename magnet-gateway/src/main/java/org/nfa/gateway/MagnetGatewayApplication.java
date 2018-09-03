@@ -2,17 +2,22 @@ package org.nfa.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
-@EnableZuulProxy
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+@EnableWebFlux
 public class MagnetGatewayApplication {
+
+	// http://localhost:8080/actuator/gateway/routes
+	// http://localhost:8080/MAGNET-ATHENA/greeting/oneUser
+	// http://localhost:8080/athena/greeting/oneUser
 
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetGatewayApplication.class, args);
 	}
-
-	// http://localhost:8080/magnet-gateway/v1/athena/magnet-athena/greeting/oneUser
-	// http://localhost:8080/magnet-gateway/v1/lucia/magnet-lucia/athenaUser
 
 }

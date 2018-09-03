@@ -8,11 +8,11 @@ import com.mongodb.MongoClient;
 
 @Configuration
 public class TestBeans {
-	
+
 	@Bean
-	public MongoTemplate mongoTemplate(){
+	public MongoTemplate mongoTemplate() {
 		MongoClient mongo = new MongoClient("localhost", 27017);
-		return new MongoTemplate(mongo, "athena");
+		return new MongoTemplate(mongo, "magnet-athena");
 	}
 
 }

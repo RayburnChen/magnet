@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 import org.springframework.data.annotation.Transient;
 
 public class TestField {

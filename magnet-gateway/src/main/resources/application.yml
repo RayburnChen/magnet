@@ -1,33 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: ${spring.application.name}
 spring:
   application:
     name: magnet-gateway
   data:
     mongodb:
-      database: magnet-gateway
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
-server:
-  port: 8080
-  context-path: /magnet-gateway
-  session:
-    cookie:
-      name: GATEWAYSESSIONID
-zuul:
-  prefix: /v1
-  ignored-services:
-    magnet-auth
-  routes:
-    magnet-athena:
-      path: /athena/**
-      service-id: magnet-athena
-      strip-prefix: true
-    magnet-lucia:
-      path: /lucia/**
-      service-id: magnet-lucia
-      strip-prefix: true
-    
+      uri: mongodb://localhost:27017/${spring.application.name}
+  sleuth:
+    sampler:
+      probability: 0.0
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedMethods:
+            - '*'
+            allowedHeaders:
+            - '*'
+            allowCredentials: true
+            maxAge: 1800
+      default-filters: null
+      routes:
+      - id: athena_route
+        uri: lb://MAGNET-ATHENA
+        predicates:
+        - Path=/athena/**
+        filters:
+        - StripPrefix=1
+      - id: lucia_route
+        uri: lb://MAGNET-LUCIA
+        predicates:
+        - Path=/lucia/**
+        filters:
+        - StripPrefix=1
+      - id: atropos_route
+        uri: lb://MAGNET-ATROPOS
+        predicates:
+        - Path=/atropos/**
+        filters:
+        - StripPrefix=1
 eureka:
   instance:
     preferIpAddress: true
@@ -42,14 +62,30 @@ security:
       client-id: magnet-client
       client-secret: passw0rd
       grant-type: implicit
-      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
-      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
+      token-info-uri: http://localhost:8090/oauth/check_token
       preferTokenInfo: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 3000
 logging:
   file: log/${spring.application.name}.log
 management:
-  security:
-    enabled: false
-
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: ${spring.application.name}
+    port: ${server.port}

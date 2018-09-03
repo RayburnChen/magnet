@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>magnet-athena</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>magnet-athena</name>
 	<description>Athena project for Spring Boot</description>
@@ -19,19 +19,13 @@
 		<!-- Magnet Api -->
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-api</artifactId>
+			<artifactId>magnet-athena-model</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<!-- Swagger -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
+			<groupId>org.nfa</groupId>
+			<artifactId>magnet-panel</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

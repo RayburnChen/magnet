@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.junit.Test;
-import org.nfa.athena.User;
+import org.nfa.athena.model.User;
 
 public class TestSort {
 

@@ -1,20 +1,20 @@
 package org.nfa.lucia.controller;
 
-import java.security.Principal;
-
-import org.nfa.athena.AthenaClient;
-import org.nfa.athena.User;
+import org.nfa.athena.model.AthenaClient;
+import org.nfa.athena.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestOperations;
 
 @RestController
 @EnableFeignClients(clients = AthenaClient.class, defaultConfiguration = FeignClientsConfiguration.class)
@@ -24,36 +24,46 @@ public class LuciaController {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
-
 	@Autowired
 	private AthenaClient athenaClient;
+	@Autowired
+	private RestOperations restOperations;
 
-	@RequestMapping("/welcome")
-	public String welcome(Principal principal, @RequestHeader HttpHeaders headers) {
+	@RequestMapping(method = RequestMethod.GET, value = "/welcome")
+	public String welcome(@RequestHeader HttpHeaders headers) {
 		log.info("Headers: {}", headers);
-		log.info("Welcome {}", principal.getName());
-		return "Welcome " + principal.toString();
+		return "Welcome";
 	}
 
-	@RequestMapping("/athenaUser")
+	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser")
 	public User athenaUser(@RequestHeader HttpHeaders headers) {
 		log.info("Athena Instances: " + discoveryClient.getInstances("magnet-athena"));
 		return athenaClient.oneUser();
 	}
 
-	@RequestMapping("/oneUserByName")
+	@RequestMapping(method = RequestMethod.GET, value = "/athenaUser/restOperations")
+	public User athenaUserRestOperations() {
+		return restOperations.getForObject("http://magnet-athena/greeting/oneUser", User.class);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/oneUserByName")
 	public User oneUserByName(@RequestParam(value = "name") String name) {
 		return athenaClient.userByName(name);
 	}
 
-	@RequestMapping("/oneUserByNamePath")
+	@RequestMapping(method = RequestMethod.GET, value = "/oneUserByNamePath")
 	public User oneUserByNamePath(@RequestParam(value = "name") String name) {
 		return athenaClient.userByNamePath(name);
 	}
 
-	// Need to add @RequestLine("GET /users") to the interface
-	// GreetingController GreetingController controller =
-	// Feign.builder().target(GreetingController.class,
-	// "http://localhost:8082/athena");
+	@RequestMapping(method = RequestMethod.GET, value = { "/exception" })
+	public User exception() {
+		return athenaClient.exception();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/exception/restOperations" })
+	public User exceptionRestOperations() {
+		return restOperations.getForObject("http://magnet-athena/greeting/exception", User.class);
+	}
 
 }

@@ -1,88 +1,73 @@
 server:
   port: 8100
-  context-path: /magnet-lucia
-  session:
-    cookie:
-      name: LUCIASESSIONID
+  servlet:
+    session:
+      cookie:
+        name: ${spring.application.name}
 spring:
+  main:
+    banner-mode: LOG
   application:
     name: magnet-lucia
   data:
     mongodb:
-      database: magnet-lucia
-      host: localhost
-      port: 27017
-      repositories:
-        enabled: true
+      uri: mongodb://localhost:27017/${spring.application.name}
+  sleuth:
+    sampler:
+      probability: 0.0
 eureka:
   instance:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 30
     leaseExpirationDurationInSeconds: 90
-    status-page-url-path: ${server.context-path}/info
-    health-check-url-path: ${server.context-path}/health
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
   client:
     fetch-registry: true
     registry-fetch-interval-seconds: 30
     log-delta-diff: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
 security:
   oauth2:
     client:
       client-id: magnet-client
       client-secret: passw0rd
       grant-type: implicit
-      access-token-uri: http://localhost:8090/magnet-auth/oauth/token
-      user-authorization-uri: http://localhost:8090/magnet-auth/oauth/authorize
+      access-token-uri: http://localhost:8090/oauth/token
+      user-authorization-uri: http://localhost:8090/oauth/authorize
     resource:
-      token-info-uri: http://localhost:8090/magnet-auth/oauth/check_token
-      preferTokenInfo: true
-feign:
-  hystrix:
-    enabled: true
-magnet-athena:
-  ribbon:
-    OkToRetryOnAllOperations: false
-    MaxAutoRetries: 0
-ribbon:
-  ConnectTimeout: 3000
-  ReadTimeout: 6000
-  eager-load:
-    enabled: true
-    clients: magnet-athena
-hystrix: 
-  shareSecurityContext: true
-  command: 
-    "AthenaClient#oneUserByNamePath(String)": 
-      execution: 
-        isolation: 
-          strategy: THREAD
-          thread:
-            timeoutInMilliseconds: 5000
-        timeout:
-          enabled: true
-    default: 
-      execution: 
-        isolation: 
-          strategy: SEMAPHORE
-          thread:
-            timeoutInMilliseconds: 5000
-        timeout:
-          enabled: true
-#management:
-#  security:
-#    enabled: false
-endpoints:
-    sensitive: true
+#      token-info-uri: http://localhost:8090/oauth/check_token
+#      preferTokenInfo: true
+      jwt:
+        key-uri: http://localhost:8090/oauth/token_key
+lucia:
+  resources:
+    lucene_index_path: index/lucia
+logging:
+  file: log/${spring.application.name}.log
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 info:
   app:
     name: ${spring.application.name}
-    context-path: ${server.context-path}
-    profiles: ${spring.profiles}
-logging:
-  file: log/${spring.application.name}.log
-#  level:
-#    org:
-#      springframework:
-#        security: DEBUG
+    port: ${server.port}

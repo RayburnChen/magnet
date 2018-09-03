@@ -3,7 +3,7 @@ package org.nfa.athena.spring;
 import java.util.ServiceLoader;
 
 import org.junit.Test;
-import org.nfa.athena.EnableMagnetService;
+import org.nfa.panel.config.EnableMagnetService;
 
 import com.fasterxml.jackson.databind.Module;
 
@@ -17,7 +17,6 @@ public class TestAnnotation {
 		if (clazz.isAnnotationPresent(EnableMagnetService.class)) {
 			EnableMagnetService anno = clazz.getAnnotation(EnableMagnetService.class);
 			System.out.println("@EnableMagnetService comments " + anno.comments());
-			System.out.println("@EnableMagnetService priority " + anno.priority());
 			System.out.println("@EnableMagnetService value " + anno.value());
 		}
 
