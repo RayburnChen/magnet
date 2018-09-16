@@ -1,11 +1,16 @@
 package org.nfa.athena.controller;
 
+import java.io.PrintWriter;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Max;
 
 import org.nfa.athena.model.User;
 import org.nfa.athena.service.AthenaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +39,8 @@ public class AthenaController {
 	private AthenaService athenaService;
 	@Autowired
 	private Tracer tracer;
+	@Autowired
+	private BeanFactory beanFactory;// DefaultListableBeanFactory
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
@@ -73,4 +80,26 @@ public class AthenaController {
 		throw new RuntimeException("My exception Assert.isNull");
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = { "/sse" })
+	public void push(HttpServletResponse response) {
+		// curl localhost:8110/greeting/sse
+		response.setContentType("text/event-stream");
+		response.setCharacterEncoding("utf-8");
+		while (true) {
+			Random r = new Random();
+			try {
+				Thread.sleep(1000);
+				PrintWriter pw = response.getWriter();
+				if (pw.checkError()) {
+					log.info("Connnection Stopped");
+					return;
+				}
+				pw.write("data:Testing 1,2,3" + r.nextInt() + "\n\n");
+				pw.flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 }

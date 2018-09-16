@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
 @CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
-public class User implements Serializable {
+public class User implements Serializable, Measurable<User> {
 
 	private static final long serialVersionUID = 2157443368101050157L;
 
@@ -29,6 +29,12 @@ public class User implements Serializable {
 		super();
 		this.name = name;
 		this.age = age;
+	}
+
+	public User(BigDecimal amount, String tag) {
+		super();
+		this.amount = amount;
+		this.tag = tag;
 	}
 
 	@Id
@@ -53,6 +59,9 @@ public class User implements Serializable {
 
 	@Field
 	private UserType userType;
+
+	@Field
+	private String tag;
 
 	@CreatedDate
 	private Date createdDate;
@@ -132,10 +141,23 @@ public class User implements Serializable {
 		this.version = version;
 	}
 
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password + ", values=" + values + ", userType=" + userType
 				+ ", createdDate=" + createdDate + ", version=" + version + "]";
+	}
+
+	@Override
+	public double distance(User target) {
+		return this.amount.subtract(target.amount).abs().doubleValue();
 	}
 
 }

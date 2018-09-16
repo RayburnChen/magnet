@@ -22,6 +22,7 @@ import org.nfa.base.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -53,80 +54,83 @@ public class GlobalExceptionHandler {
 	private ObjectMapper objectMapper;
 	@Autowired(required = false)
 	private MongoOperations mongoOperations;
+	@Autowired(required = false)
+	private HttpServletRequest request;
+	@Autowired
+	private Environment environment;
 
 	private String prefix;
 
 	@PostConstruct
 	public void init() {
-		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getNamespace().getFullName();
+		prefix = null == environment.getProperty("spring.application.name") ? "EXCEPTION_LOG" : environment.getProperty("spring.application.name");
 	}
 
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<ErrorResponse> handleFeignException(FeignException e, HttpServletRequest request) {
-		return handleException(e, Priority.MINOR, request, UnaryOperator.identity(), initNestedErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleFeignException(FeignException e) {
+		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(HystrixRuntimeException.class)
-	public ResponseEntity<ErrorResponse> handleHystrixRuntimeException(HystrixRuntimeException e, HttpServletRequest request) {
-		return handleException(e, Priority.MINOR, request, UnaryOperator.identity(), initNestedErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleHystrixRuntimeException(HystrixRuntimeException e) {
+		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(RestClientResponseException.class)
-	public ResponseEntity<ErrorResponse> handleRestClientException(RestClientResponseException e, HttpServletRequest request) {
-		return handleException(e, Priority.MINOR, request, UnaryOperator.identity(), initNestedErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleRestClientException(RestClientResponseException e) {
+		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(ApplicationException.class)
-	public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e, HttpServletRequest request) {
-		return handleException(e, Priority.LOWEST, request, populate(e.getCode(), e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
+		return handleException(e, Priority.LOWEST, populate(e.getCode(), e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
-		return handleException(e, Priority.LOWEST, request, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		return handleException(e, Priority.LOWEST, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(ValidationException.class)
-	public ResponseEntity<ErrorResponse> handleValidationException(ValidationException e, HttpServletRequest request) {
-		return handleException(e, Priority.LOWEST, request, populate(DEFAULT_ERROR_CODE, e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleValidationException(ValidationException e) {
+		return handleException(e, Priority.LOWEST, populate(DEFAULT_ERROR_CODE, e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(Throwable.class)
-	public ResponseEntity<ErrorResponse> handleThrowable(Throwable e, HttpServletRequest request) {
-		return handleException(e, Priority.HIGHEST, request, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
+	public ResponseEntity<ErrorResponse> handleThrowable(Throwable e) {
+		return handleException(e, Priority.HIGHEST, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
-	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, HttpServletRequest request, UnaryOperator<ErrorResponse> operator,
-			ErrorResponse defaultErrorResponse) {
-		log(e, request);
-		Optional<ExceptionLog> exceptionLog = persist(initExceptionLog(e, request, priority, defaultErrorResponse));
-		ErrorResponse errorResponse = populate(request, exceptionLog).andThen(operator).apply(defaultErrorResponse);
+	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, UnaryOperator<ErrorResponse> operator, ErrorResponse defaultErrorResponse) {
+		log(e);
+		ExceptionLog exceptionLog = initExceptionLog(e, priority, defaultErrorResponse);
+		ErrorResponse errorResponse = populate(exceptionLog).andThen(operator).apply(defaultErrorResponse);
 		return buildResponse(errorResponse);
 	}
 
-	private void log(Throwable e, HttpServletRequest request) {
-		LOGGER.error("Error while processing " + request.getMethod() + ":" + request.getRequestURI(), e);
+	private void log(Throwable e) {
+		LOGGER.error("Error while processing " + getRequestPath(), e);
 	}
 
-	private Optional<ExceptionLog> persist(ExceptionLog exceptionLog) {
-		if (null == mongoOperations || null == exceptionLog) {
-			return Optional.empty();
-		} else {
-			mongoOperations.insert(exceptionLog);
-			return Optional.of(exceptionLog);
-		}
-	}
-
-	private ExceptionLog initExceptionLog(Throwable e, HttpServletRequest request, int priority, ErrorResponse nested) {
+	private ExceptionLog initExceptionLog(Throwable e, int priority, ErrorResponse nested) {
 		ExceptionLog l = new ExceptionLog();
 		initExceptionLog(l, e);
-		l.setPath(request.getMethod() + ":" + request.getRequestURI());
+		l.setPath(getRequestPath());
 		l.setCreatedDate(Instant.now());
 		l.setPriority(priority);
 		l.setDetails(nested.getDetails());
 		l.setRootCause(nested.getException());
 		l.setMessage(nested.getMessage());
+		persist(l);
 		return l;
+	}
+
+	private void persist(ExceptionLog exceptionLog) {
+		if (null == mongoOperations || null == exceptionLog) {
+			return;
+		} else {
+			mongoOperations.insert(exceptionLog);
+		}
 	}
 
 	private void initExceptionLog(ExceptionLog l, Throwable e) {
@@ -149,10 +153,10 @@ public class GlobalExceptionHandler {
 		};
 	}
 
-	private UnaryOperator<ErrorResponse> populate(HttpServletRequest request, Optional<ExceptionLog> exceptionLog) {
+	private UnaryOperator<ErrorResponse> populate(ExceptionLog exceptionLog) {
 		return error -> {
-			error.setPath(request.getMethod() + " " + request.getRequestURI());
-			exceptionLog.ifPresent(l -> error.getDetails().add(new ErrorDetail(prefix, l.getId())));
+			error.setPath(getRequestPath());
+			error.getDetails().add(new ErrorDetail(prefix, exceptionLog.getId()));
 			return error;
 		};
 	}
@@ -208,6 +212,14 @@ public class GlobalExceptionHandler {
 
 	private ErrorResponse defaultErrorResponse(Throwable e) {
 		return populate(DEFAULT_ERROR_CODE, e.getMessage(), e.getClass().getSimpleName()).apply(new ErrorResponse());
+	}
+
+	private String getRequestPath() {
+		if (null == request) {
+			return null;
+		} else {
+			return request.getMethod() + ":" + request.getRequestURI();
+		}
 	}
 
 	@Document(collection = "exception_log")
