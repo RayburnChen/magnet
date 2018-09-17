@@ -1,0 +1,7 @@
+keytool -genkey -alias auth-server -keypass 666888 -keyalg RSA -keysize 1024 -validity 365 -keystore C:\Users\userX\keystore.jks -storepass 123456
+keytool -list -v -keystore C:\Users\userX\keystore.jks -storepass 123456
+keytool -export -alias auth-server -keystore C:\Users\userX\keystore.jks -file auth-server-dev.cer
+
+JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "123456".toCharArray()).getKeyPair("auth-server", "666888".toCharArray());
+converter.setKeyPair(keyPair);

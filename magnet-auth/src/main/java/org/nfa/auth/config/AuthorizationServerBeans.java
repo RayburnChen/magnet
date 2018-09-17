@@ -41,7 +41,7 @@ public class AuthorizationServerBeans {
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() throws NoSuchAlgorithmException {
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-		converter.setKeyPair(KeyPairGenerator.getInstance("RSA").generateKeyPair());
+		converter.setKeyPair(KeyPairGenerator.getInstance("RSA").genKeyPair());
 		return converter;
 	}
 
