@@ -1,7 +1,5 @@
 package org.nfa.athena.config;
 
-import java.util.TimeZone;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,13 +14,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 @EnableConfigurationProperties(CacheProperties.class)
@@ -45,17 +36,13 @@ public class CacheConfig {
 	}
 
 	@Bean
-	public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModules(new JavaTimeModule(), new Jdk8Module(), new SimpleModule());
-		mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
-		mapper.setTimeZone(TimeZone.getDefault());
-		RedisSerializer<Object> stringSerializer = new GenericJackson2JsonRedisSerializer(mapper);
-		RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
-		redisTemplate.setKeySerializer(stringSerializer);
-		redisTemplate.setValueSerializer(stringSerializer);
-		redisTemplate.setHashKeySerializer(stringSerializer);
-		redisTemplate.setHashValueSerializer(stringSerializer);
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+		RedisSerializer<Object> objectSerializer = new GenericJackson2JsonRedisSerializer();
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(objectSerializer);
+		redisTemplate.setHashKeySerializer(objectSerializer);
+		redisTemplate.setHashValueSerializer(objectSerializer);
 		redisTemplate.setConnectionFactory(connectionFactory);
 		redisTemplate.afterPropertiesSet();
 		return redisTemplate;
