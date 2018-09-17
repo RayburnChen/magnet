@@ -22,6 +22,7 @@ import org.nfa.base.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -55,12 +56,14 @@ public class GlobalExceptionHandler {
 	private MongoOperations mongoOperations;
 	@Autowired(required = false)
 	private HttpServletRequest request;
+	@Autowired
+	private Environment environment;
 
 	private String prefix;
 
 	@PostConstruct
 	public void init() {
-		prefix = null == mongoOperations ? "EXCEPTION_LOG" : mongoOperations.getCollection(mongoOperations.getCollectionName(ExceptionLog.class)).getNamespace().getFullName();
+		prefix = null == environment.getProperty("spring.application.name") ? "EXCEPTION_LOG" : environment.getProperty("spring.application.name");
 	}
 
 	@ExceptionHandler(FeignException.class)
@@ -100,22 +103,13 @@ public class GlobalExceptionHandler {
 
 	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, UnaryOperator<ErrorResponse> operator, ErrorResponse defaultErrorResponse) {
 		log(e);
-		Optional<ExceptionLog> exceptionLog = persist(initExceptionLog(e, priority, defaultErrorResponse));
+		ExceptionLog exceptionLog = initExceptionLog(e, priority, defaultErrorResponse);
 		ErrorResponse errorResponse = populate(exceptionLog).andThen(operator).apply(defaultErrorResponse);
 		return buildResponse(errorResponse);
 	}
 
 	private void log(Throwable e) {
 		LOGGER.error("Error while processing " + getRequestPath(), e);
-	}
-
-	private Optional<ExceptionLog> persist(ExceptionLog exceptionLog) {
-		if (null == mongoOperations || null == exceptionLog) {
-			return Optional.empty();
-		} else {
-			mongoOperations.insert(exceptionLog);
-			return Optional.of(exceptionLog);
-		}
 	}
 
 	private ExceptionLog initExceptionLog(Throwable e, int priority, ErrorResponse nested) {
@@ -127,7 +121,16 @@ public class GlobalExceptionHandler {
 		l.setDetails(nested.getDetails());
 		l.setRootCause(nested.getException());
 		l.setMessage(nested.getMessage());
+		persist(l);
 		return l;
+	}
+
+	private void persist(ExceptionLog exceptionLog) {
+		if (null == mongoOperations || null == exceptionLog) {
+			return;
+		} else {
+			mongoOperations.insert(exceptionLog);
+		}
 	}
 
 	private void initExceptionLog(ExceptionLog l, Throwable e) {
@@ -150,10 +153,10 @@ public class GlobalExceptionHandler {
 		};
 	}
 
-	private UnaryOperator<ErrorResponse> populate(Optional<ExceptionLog> exceptionLog) {
+	private UnaryOperator<ErrorResponse> populate(ExceptionLog exceptionLog) {
 		return error -> {
 			error.setPath(getRequestPath());
-			exceptionLog.ifPresent(l -> error.getDetails().add(new ErrorDetail(prefix, l.getId())));
+			error.getDetails().add(new ErrorDetail(prefix, exceptionLog.getId()));
 			return error;
 		};
 	}
