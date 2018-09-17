@@ -9,6 +9,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 public class MagnetConfigApplication {
 
 	// http://localhost:8888/magnet-athena/dev
+	// http://localhost:8888/decrypt
+	// http://localhost:8888/encrypt
 
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetConfigApplication.class, args);
