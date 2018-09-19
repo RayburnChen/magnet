@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.nfa.base.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 public class WebFallback implements FallbackProvider {
 
+	private static final Logger log = LoggerFactory.getLogger(WebFallback.class);
+
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -28,6 +32,7 @@ public class WebFallback implements FallbackProvider {
 	}
 
 	public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
+		log.error("Error while processing " + route, cause);
 		return new ClientHttpResponse() {
 			private HttpStatus status = HttpStatus.BAD_GATEWAY;
 
