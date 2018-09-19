@@ -31,6 +31,7 @@ public class WebFallback implements FallbackProvider {
 	}
 
 	public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
+		// cause maybe com.netflix.client.ClientException
 		log.error("Error while processing " + route, cause);
 		return new ClientHttpResponse() {
 			private HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
