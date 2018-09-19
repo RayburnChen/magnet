@@ -43,6 +43,9 @@ public class AuthorizationServerBeans {
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() throws NoSuchAlgorithmException {
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		converter.setAccessTokenConverter(new CustomAccessTokenConverter());
+		// DefaultAccessTokenConverter can be replaced by CustomAccessTokenConverter
+		// see DefaultAccessTokenConverter.convertAccessToken
 		KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("auth-server.jks"), "Y4M9ti#jrSN@1T@X".toCharArray()).getKeyPair("auth-server",
 				"CBPSW%OGXLdSzw0W".toCharArray());
 		converter.setKeyPair(keyPair);
