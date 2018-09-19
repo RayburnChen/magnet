@@ -71,6 +71,5 @@ info:
   app:
     name: ${spring.application.name}
     port: ${server.port}
-    address: ${eureka.instance.ipAddress}
   git: ${git}
   build: ${build}
