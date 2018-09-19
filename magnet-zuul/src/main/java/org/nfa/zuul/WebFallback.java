@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +33,7 @@ public class WebFallback implements FallbackProvider {
 	public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
 		log.error("Error while processing " + route, cause);
 		return new ClientHttpResponse() {
-			private HttpStatus status = HttpStatus.BAD_GATEWAY;
+			private HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
 
 			@Override
 			public HttpStatus getStatusCode() throws IOException {
@@ -63,8 +62,7 @@ public class WebFallback implements FallbackProvider {
 				error.setPath(route);
 				error.setMessage(cause.getMessage());
 				error.setException(cause.getClass().getSimpleName());
-				ResponseEntity<ErrorResponse> response = new ResponseEntity<ErrorResponse>(error, HttpStatus.SERVICE_UNAVAILABLE);
-				return new ByteArrayInputStream(objectMapper.writeValueAsBytes(response));
+				return new ByteArrayInputStream(objectMapper.writeValueAsBytes(error));
 			}
 
 			@Override
