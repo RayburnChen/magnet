@@ -5,6 +5,6 @@ encrypt:
     algorithm: oaep
   keyStore:
     location: classpath:/config-server.jks
-    password: 12314512
+    password: fjEOEVHL6mTvX0lp
     alias: config-server
-    secret: 2342346
+    secret: 9iS6vyfrwfA4e4FL
