@@ -9,12 +9,14 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<swagger.version>2.9.2</swagger.version>
 		<base-model.version>1.0.0</base-model.version>
 		<base-service.version>1.0.0</base-service.version>
 		<athena-model.version>1.0.0</athena-model.version>
 		<atropos-model.version>1.0.0</atropos-model.version>
 		<lucia-model.version>1.0.0</lucia-model.version>
+		<swagger.version>2.9.2</swagger.version>
+		<lucene.version>7.4.0</lucene.version>
+		<zipkin.version>2.11.1</zipkin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -55,6 +57,33 @@
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${swagger.version}</version>
+			</dependency>
+			<!-- lucene -->
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers-common</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queryparser</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<!-- zipkin -->
+			<dependency>
+				<groupId>io.zipkin.java</groupId>
+				<artifactId>zipkin-autoconfigure-ui</artifactId>
+				<version>${zipkin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.zipkin.java</groupId>
+				<artifactId>zipkin-server</artifactId>
+				<version>${zipkin.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
