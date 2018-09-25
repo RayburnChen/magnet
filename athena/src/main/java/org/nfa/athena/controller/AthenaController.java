@@ -3,6 +3,7 @@ package org.nfa.athena.controller;
 import java.io.PrintWriter;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Max;
 
@@ -41,6 +42,11 @@ public class AthenaController {
 	private Tracer tracer;
 	@Autowired
 	private BeanFactory beanFactory;// DefaultListableBeanFactory
+
+	@PostConstruct
+	public void init() {
+		log.info("BeanFactory class is {}", beanFactory.getClass().getName());
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
 	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
