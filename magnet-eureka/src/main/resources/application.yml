@@ -1,0 +1,40 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: magnet-eureka
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/${spring.application.name}
+eureka:
+  instance:
+    prefer-ip-address: true
+    health-check-url-path: /actuator/health
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 30
+  server:
+    enableSelfPreservation: false
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    registry-fetch-interval-seconds: 30
+    log-delta-diff: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  file: log/${spring.application.name}.log
+#  level:
+#    org:
+#      springframework: 
+#        web: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+info:
+  app:
+    name: ${spring.application.name}
+    context-path: ${server.servlet.context-path}
+    profiles: ${spring.profiles}

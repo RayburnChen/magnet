@@ -1,7 +1,7 @@
 package org.nfa.zuul;
 
-import org.nfa.base.service.config.GlobalErrorController;
-import org.nfa.base.service.config.GlobalExceptionHandler;
+import org.nfa.panel.config.GlobalErrorController;
+import org.nfa.panel.config.GlobalExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -20,8 +20,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableCircuitBreaker
 @EnableMongoAuditing
 @EnableMongoRepositories
-@EnableOAuth2Sso
 @Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
+@EnableOAuth2Sso
 public class MagnetZuulApplication extends WebSecurityConfigurerAdapter {
 
 	// http://localhost:8080/actuator/filters
@@ -32,18 +32,18 @@ public class MagnetZuulApplication extends WebSecurityConfigurerAdapter {
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetZuulApplication.class, args);
 	}
-
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.antMatcher("/**")
-		.authorizeRequests()
-		.antMatchers("/permission/**")
-		.permitAll()
-		.anyRequest()
-		.authenticated();
+			.antMatcher("/**")
+				.authorizeRequests()
+			.antMatchers("/permission/**")
+				.permitAll()
+			.anyRequest()
+				.authenticated();
 	}
-
+	
 	// org.springframework.cloud.security.oauth2.proxy.OAuth2TokenRelayFilter
 	// org.springframework.cloud.netflix.zuul.web.ZuulController
 
