@@ -12,6 +12,7 @@
 		<groupId>org.nfa</groupId>
 		<artifactId>model-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../model-parent</relativePath>
 	</parent>
 
 </project>

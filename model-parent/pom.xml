@@ -13,7 +13,7 @@
 		<groupId>org.nfa</groupId>
 		<artifactId>magnet</artifactId>
 		<version>1.0.0</version>
-		<relativePath></relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<build>
