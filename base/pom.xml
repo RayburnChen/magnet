@@ -10,9 +10,21 @@
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>model-parent</artifactId>
+		<artifactId>magnet</artifactId>
 		<version>1.0.0</version>
-		<relativePath>../model-parent</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

@@ -16,10 +16,6 @@
 	</parent>
 	
 	<dependencies>
-		<dependency>
-			<groupId>org.nfa</groupId>
-			<artifactId>base</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
