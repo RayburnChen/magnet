@@ -23,24 +23,34 @@
 	</properties>
 
 	<modules>
-		<module>magnet-base</module>
-		<module>magnet-panel</module>
-		<module>magnet-athena</module>
-		<module>magnet-athena-model</module>
-		<module>magnet-atropos</module>
-		<module>magnet-atropos-model</module>
-		<module>magnet-lucia</module>
-		<module>magnet-lucia-model</module>
-		<module>magnet-config</module>
-		<module>magnet-eureka</module>
-		<module>magnet-zipkin</module>
-		<module>magnet-gateway</module>
-		<module>magnet-zuul</module>
-		<module>magnet-auth</module>
+		<module>base</module>
+		<module>panel</module>
+		<module>athena</module>
+		<module>athena-model</module>
+		<module>atropos</module>
+		<module>atropos-model</module>
+		<module>lucia</module>
+		<module>lucia-model</module>
+		<module>config</module>
+		<module>eureka</module>
+		<module>zipkin</module>
+		<module>gateway</module>
+		<module>zuul</module>
+		<module>auth</module>
+		<module>magnet-dependencies</module>
+		<module>model-parent</module>
+		<module>service-parent</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>magnet-dependencies</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>

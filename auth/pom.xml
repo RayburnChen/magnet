@@ -4,10 +4,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>magnet-zuul</artifactId>
+	<artifactId>auth</artifactId>
 	<packaging>jar</packaging>
-	<name>magnet-zuul</name>
-	<description>Magnet Zuul Project</description>
+
+	<name>auth</name>
+	<description>OAuth2.0 Authorization Server</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
@@ -18,23 +19,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-panel</artifactId>
-			<version>1.0.0</version>
+			<artifactId>panel</artifactId>
 		</dependency>
-		<!-- Spring Cloud -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+			<artifactId>spring-cloud-security</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

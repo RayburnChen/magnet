@@ -2,36 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>magnet-lucia-model</artifactId>
+
+	<artifactId>athena</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-lucia-model</name>
-	<description>Api for Spring Boot</description>
+	<name>athena</name>
+	<description>Athena project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>magnet</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../service-parent</relativePath>
 	</parent>
 	
 	<dependencies>
+		<!-- Magnet Api -->
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-base</artifactId>
-			<version>1.0.0</version>
+			<artifactId>athena-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>panel</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

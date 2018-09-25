@@ -3,30 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>magnet-athena</artifactId>
+	<artifactId>config</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-athena</name>
-	<description>Athena project for Spring Boot</description>
+	<name>config</name>
+	<description>Config Server for magnet</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
 		<artifactId>magnet</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	
+
 	<dependencies>
-		<!-- Magnet Api -->
 		<dependency>
-			<groupId>org.nfa</groupId>
-			<artifactId>magnet-athena-model</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nfa</groupId>
-			<artifactId>magnet-panel</artifactId>
-			<version>1.0.0</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
 	</dependencies>
+
 
 </project>

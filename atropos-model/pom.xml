@@ -2,28 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>magnet-base</artifactId>
+	<artifactId>atropos-model</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-base</name>
-	<description>Base for Spring Boot</description>
+	<name>atropos-model</name>
+	<description>Api for Spring Boot</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>magnet</artifactId>
+		<artifactId>model-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../model-parent</relativePath>
 	</parent>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.nfa</groupId>
+			<artifactId>base</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>

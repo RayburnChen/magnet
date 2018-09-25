@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>magnet-panel</artifactId>
+	<artifactId>panel</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-panel</name>
+	<name>panel</name>
 	<description>Panel for Spring Boot</description>
 
 	<parent>
@@ -17,8 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-base</artifactId>
-			<version>1.0.0</version>
+			<artifactId>base</artifactId>
 		</dependency>
 		<!-- Swagger -->
 		<dependency>

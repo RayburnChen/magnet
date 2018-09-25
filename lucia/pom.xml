@@ -3,34 +3,32 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>magnet-lucia</artifactId>
+	<artifactId>lucia</artifactId>
 	<packaging>jar</packaging>
 
-	<name>magnet-lucia</name>
-	<description>magnet-lucia</description>
+	<name>lucia</name>
+	<description>lucia</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>magnet</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../service-parent</relativePath>
 	</parent>
 
 	<dependencies>
 		<!-- Magnet Api -->
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-lucia-model</artifactId>
-			<version>1.0.0</version>
+			<artifactId>lucia-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-athena-model</artifactId>
-			<version>1.0.0</version>
+			<artifactId>athena-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.nfa</groupId>
-			<artifactId>magnet-panel</artifactId>
-			<version>1.0.0</version>
+			<artifactId>panel</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
