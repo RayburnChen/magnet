@@ -1,4 +1,4 @@
-package org.nfa.base;
+package org.nfa.base.model;
 
 import java.time.Instant;
 import java.util.ArrayList;

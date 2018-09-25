@@ -1,4 +1,4 @@
-package org.nfa.base;
+package org.nfa.base.model;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;

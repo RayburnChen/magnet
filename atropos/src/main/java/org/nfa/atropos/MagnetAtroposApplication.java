@@ -1,6 +1,6 @@
 package org.nfa.atropos;
 
-import org.nfa.panel.config.GlobalExceptionHandler;
+import org.nfa.base.service.config.GlobalExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;

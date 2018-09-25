@@ -3,7 +3,7 @@ package org.nfa.athena.spring;
 import java.util.ServiceLoader;
 
 import org.junit.Test;
-import org.nfa.panel.config.EnableMagnetService;
+import org.nfa.base.service.config.EnableMagnetService;
 
 import com.fasterxml.jackson.databind.Module;
 

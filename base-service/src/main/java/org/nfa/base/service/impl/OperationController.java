@@ -1,4 +1,4 @@
-package org.nfa.panel.service;
+package org.nfa.base.service.impl;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.nfa.base.ApplicationException;
-import org.nfa.base.Holder;
+import org.nfa.base.model.ApplicationException;
+import org.nfa.base.model.Holder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

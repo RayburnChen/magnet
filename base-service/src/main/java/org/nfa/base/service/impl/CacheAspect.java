@@ -1,4 +1,4 @@
-package org.nfa.panel.service;
+package org.nfa.base.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.nfa.base.ApplicationException;
-import org.nfa.base.Priority;
+import org.nfa.base.model.ApplicationException;
+import org.nfa.base.model.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

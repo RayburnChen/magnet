@@ -1,4 +1,4 @@
-package org.nfa.panel.service;
+package org.nfa.base.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.nfa.base.ApplicationException;
-import org.nfa.base.Priority;
+import org.nfa.base.model.ApplicationException;
+import org.nfa.base.model.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

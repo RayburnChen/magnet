@@ -1,6 +1,6 @@
 package org.nfa.athena;
 
-import org.nfa.panel.config.EnableMagnetService;
+import org.nfa.base.service.config.EnableMagnetService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cache.annotation.EnableCaching;
 

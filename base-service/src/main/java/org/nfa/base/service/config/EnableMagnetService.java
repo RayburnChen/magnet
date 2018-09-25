@@ -1,4 +1,4 @@
-package org.nfa.panel.config;
+package org.nfa.base.service.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,9 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.nfa.panel.service.AuditEventRepositoryImpl;
-import org.nfa.panel.service.OperationController;
-import org.nfa.panel.service.TraceRepositoryImpl;
+import org.nfa.base.service.impl.AuditEventRepositoryImpl;
+import org.nfa.base.service.impl.OperationController;
+import org.nfa.base.service.impl.TraceRepositoryImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;

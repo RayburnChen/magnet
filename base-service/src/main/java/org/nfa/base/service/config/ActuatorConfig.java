@@ -1,4 +1,4 @@
-package org.nfa.panel.config;
+package org.nfa.base.service.config;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -1,6 +1,6 @@
 package org.nfa.lucia;
 
-import org.nfa.panel.config.EnableMagnetService;
+import org.nfa.base.service.config.EnableMagnetService;
 import org.springframework.boot.SpringApplication;
 
 @EnableMagnetService

@@ -1,10 +1,10 @@
-package org.nfa.panel.config;
+package org.nfa.base.service.config;
 
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 
-import org.nfa.base.ApplicationException;
+import org.nfa.base.model.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;

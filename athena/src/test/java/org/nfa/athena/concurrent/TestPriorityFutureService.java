@@ -7,7 +7,7 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.nfa.panel.service.PriorityFutureService;
+import org.nfa.base.service.impl.PriorityFutureService;
 
 public class TestPriorityFutureService {
 

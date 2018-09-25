@@ -1,4 +1,4 @@
-package org.nfa.base;
+package org.nfa.base.model;
 
 import java.util.ArrayList;
 import java.util.List;

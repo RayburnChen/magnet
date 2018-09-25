@@ -1,4 +1,4 @@
-package org.nfa.panel.config;
+package org.nfa.base.service.config;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.nfa.base.ApplicationException;
-import org.nfa.base.ErrorDetail;
-import org.nfa.base.ErrorResponse;
-import org.nfa.base.Priority;
+import org.nfa.base.model.ApplicationException;
+import org.nfa.base.model.ErrorDetail;
+import org.nfa.base.model.ErrorResponse;
+import org.nfa.base.model.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

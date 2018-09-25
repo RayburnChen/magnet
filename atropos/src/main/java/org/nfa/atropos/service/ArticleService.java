@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.nfa.atropos.model.Article;
-import org.nfa.base.ApplicationException;
+import org.nfa.base.model.ApplicationException;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;

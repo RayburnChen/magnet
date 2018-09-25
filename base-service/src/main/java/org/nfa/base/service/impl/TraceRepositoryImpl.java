@@ -1,4 +1,4 @@
-package org.nfa.panel.service;
+package org.nfa.base.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.trace.http.HttpTrace;

@@ -1,4 +1,4 @@
-package org.nfa.panel.config;
+package org.nfa.base.service.config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package org.nfa.base;
+package org.nfa.base.model;
 
 public class ErrorDetail {
 

@@ -1,6 +1,6 @@
 package org.nfa.atropos.model;
 
-import org.nfa.base.BaseEntity;
+import org.nfa.base.model.BaseEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "articles")

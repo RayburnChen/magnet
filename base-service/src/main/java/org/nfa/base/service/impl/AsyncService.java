@@ -1,4 +1,4 @@
-package org.nfa.panel.service;
+package org.nfa.base.service.impl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-import org.nfa.base.ApplicationException;
-import org.nfa.base.Priority;
+import org.nfa.base.model.ApplicationException;
+import org.nfa.base.model.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,8 @@ public class AsyncService<T> {
 	private static final int POOL_SIZE = PROCESSORS * 2 > 8 ? PROCESSORS * 2 : 8;
 	private static final int QUEUE_SIZE = 10000;
 	private static final Comparator<Runnable> COMP = initComp();
-	private static final ExecutorService EXECUTOR = new CustomThreadPoolExecutor(POOL_SIZE, POOL_SIZE, 0L, TimeUnit.MILLISECONDS, new PriorityBlockingQueue<Runnable>(QUEUE_SIZE, COMP));
+	private static final ExecutorService EXECUTOR = new CustomThreadPoolExecutor(POOL_SIZE, POOL_SIZE, 0L, TimeUnit.MILLISECONDS,
+			new PriorityBlockingQueue<Runnable>(QUEUE_SIZE, COMP));
 
 	private final long timeoutSeconds;
 	private List<Future<T>> results = new ArrayList<>();
