@@ -11,40 +11,17 @@
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>magnet</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../service-parent</relativePath>
 	</parent>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.nfa</groupId>
-			<artifactId>panel</artifactId>
-		</dependency>
 		<!-- Spring Cloud -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
 		</dependency>
-		<!-- Swagger -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

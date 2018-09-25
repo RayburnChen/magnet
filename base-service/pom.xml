@@ -3,11 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>lucia-model</artifactId>
+	<artifactId>base-service</artifactId>
 	<packaging>jar</packaging>
 
-	<name>lucia-model</name>
-	<description>Api for Spring Boot</description>
+	<name>base-service</name>
+	<description>base-service for Spring Boot</description>
 
 	<parent>
 		<groupId>org.nfa</groupId>
@@ -20,6 +20,17 @@
 		<dependency>
 			<groupId>org.nfa</groupId>
 			<artifactId>base-model</artifactId>
+		</dependency>
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 

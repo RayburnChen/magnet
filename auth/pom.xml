@@ -12,15 +12,12 @@
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>magnet</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../service-parent</relativePath>
 	</parent>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.nfa</groupId>
-			<artifactId>panel</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-security</artifactId>

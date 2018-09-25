@@ -23,8 +23,10 @@
 	</properties>
 
 	<modules>
-		<module>base</module>
-		<module>panel</module>
+		<module>magnet-dependencies</module>
+		<module>service-parent</module>
+		<module>base-model</module>
+		<module>base-service</module>
 		<module>athena</module>
 		<module>athena-model</module>
 		<module>atropos</module>
@@ -37,9 +39,6 @@
 		<module>gateway</module>
 		<module>zuul</module>
 		<module>auth</module>
-		<module>magnet-dependencies</module>
-		<module>model-parent</module>
-		<module>service-parent</module>
 	</modules>
 
 	<dependencyManagement>
@@ -162,25 +161,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

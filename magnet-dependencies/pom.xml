@@ -9,8 +9,8 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<base.version>1.0.0</base.version>
-		<panel.version>1.0.0</panel.version>
+		<base-model.version>1.0.0</base-model.version>
+		<base-service.version>1.0.0</base-service.version>
 		<athena-model.version>1.0.0</athena-model.version>
 		<atropos-model.version>1.0.0</atropos-model.version>
 		<lucia-model.version>1.0.0</lucia-model.version>
@@ -20,13 +20,13 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.nfa</groupId>
-				<artifactId>base</artifactId>
-				<version>${base.version}</version>
+				<artifactId>base-model</artifactId>
+				<version>${base-model.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
-				<artifactId>panel</artifactId>
-				<version>${panel.version}</version>
+				<artifactId>base-service</artifactId>
+				<version>${base-service.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
