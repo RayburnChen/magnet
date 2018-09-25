@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nfa</groupId>
+	<artifactId>magnet-dependencies</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<base-model.version>1.0.0</base-model.version>
+		<base-service.version>1.0.0</base-service.version>
+		<athena-model.version>1.0.0</athena-model.version>
+		<atropos-model.version>1.0.0</atropos-model.version>
+		<lucia-model.version>1.0.0</lucia-model.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>base-model</artifactId>
+				<version>${base-model.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>base-service</artifactId>
+				<version>${base-service.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>athena-model</artifactId>
+				<version>${athena-model.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>atropos-model</artifactId>
+				<version>${atropos-model.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>lucia-model</artifactId>
+				<version>${lucia-model.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

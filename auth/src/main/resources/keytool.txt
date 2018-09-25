@@ -1,0 +1,11 @@
+keytool -genkey -alias auth-server -keypass CBPSW%OGXLdSzw0W -keyalg RSA -keysize 2048 -validity 3650 -keystore C:\Users\userX\auth-server.jks -storepass Y4M9ti#jrSN@1T@X
+keytool -list -v -keystore C:\Users\userX\auth-server.jks -storepass Y4M9ti#jrSN@1T@X
+keytool -export -alias auth-server -keystore C:\Users\userX\auth-server.jks -file auth-server-dev.cer
+
+JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("auth-server.jks"), "Y4M9ti#jrSN@1T@X".toCharArray()).getKeyPair("auth-server", "CBPSW%OGXLdSzw0W".toCharArray());
+converter.setKeyPair(keyPair);
+
+jrunscript -e 'exit (javax.crypto.Cipher.getMaxAllowedKeyLength("RC5") >= 256 ? 0 : 1);'; echo $?
+
+curl -q -L -C - -b "oraclelicense=accept-securebackup-cookie" -o C:\Users\userX\jce_policy-8.zip -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
