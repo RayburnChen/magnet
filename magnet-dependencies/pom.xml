@@ -9,39 +9,47 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<base-model.version>1.0.0</base-model.version>
-		<base-service.version>1.0.0</base-service.version>
-		<athena-model.version>1.0.0</athena-model.version>
-		<atropos-model.version>1.0.0</atropos-model.version>
-		<lucia-model.version>1.0.0</lucia-model.version>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- magnet -->
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>base-model</artifactId>
-				<version>${base-model.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>base-service</artifactId>
-				<version>${base-service.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>athena-model</artifactId>
-				<version>${athena-model.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>atropos-model</artifactId>
-				<version>${atropos-model.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>lucia-model</artifactId>
-				<version>${lucia-model.version}</version>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- swagger -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
