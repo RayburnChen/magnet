@@ -8,8 +8,13 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<swagger.version>2.9.2</swagger.version>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
+			<!-- magnet -->
 			<dependency>
 				<groupId>org.nfa</groupId>
 				<artifactId>base-model</artifactId>
@@ -34,6 +39,17 @@
 				<groupId>org.nfa</groupId>
 				<artifactId>lucia-model</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<!-- swagger -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
