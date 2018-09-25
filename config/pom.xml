@@ -12,9 +12,9 @@
 
 	<parent>
 		<groupId>org.nfa</groupId>
-		<artifactId>service-parent</artifactId>
+		<artifactId>magnet</artifactId>
 		<version>1.0.0</version>
-		<relativePath>../service-parent</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
