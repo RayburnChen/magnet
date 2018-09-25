@@ -1,0 +1,10 @@
+encrypt:
+  rsa:
+    strong: true
+    salt: lD3VzmUiTjsy7poU
+    algorithm: oaep
+  keyStore:
+    location: classpath:/config-server.jks
+    password: fjEOEVHL6mTvX0lp
+    alias: config-server
+    secret: 9iS6vyfrwfA4e4FL

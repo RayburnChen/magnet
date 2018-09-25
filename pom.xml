@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.4.RELEASE</version>
+		<version>2.0.5.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -23,24 +23,33 @@
 	</properties>
 
 	<modules>
-		<module>magnet-base</module>
-		<module>magnet-panel</module>
-		<module>magnet-athena</module>
-		<module>magnet-athena-model</module>
-		<module>magnet-atropos</module>
-		<module>magnet-atropos-model</module>
-		<module>magnet-lucia</module>
-		<module>magnet-lucia-model</module>
-		<module>magnet-config</module>
-		<module>magnet-eureka</module>
-		<module>magnet-zipkin</module>
-		<module>magnet-gateway</module>
-		<module>magnet-zuul</module>
-		<module>magnet-auth</module>
+		<module>magnet-dependencies</module>
+		<module>service-parent</module>
+		<module>base-model</module>
+		<module>base-service</module>
+		<module>athena</module>
+		<module>athena-model</module>
+		<module>atropos</module>
+		<module>atropos-model</module>
+		<module>lucia</module>
+		<module>lucia-model</module>
+		<module>config</module>
+		<module>eureka</module>
+		<module>zipkin</module>
+		<module>gateway</module>
+		<module>zuul</module>
+		<module>auth</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.nfa</groupId>
+				<artifactId>magnet-dependencies</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -51,7 +60,7 @@
 			<dependency>
 				<groupId>io.spring.platform</groupId>
 				<artifactId>platform-bom</artifactId>
-				<version>Cairo-SR3</version>
+				<version>Cairo-SR4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -160,25 +169,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
