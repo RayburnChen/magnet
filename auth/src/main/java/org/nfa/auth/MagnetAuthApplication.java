@@ -28,6 +28,8 @@ public class MagnetAuthApplication {
 	// Call Authorization Server to Check Token
 	// curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=67e195e9-89bf-41c3-a107-fc0b24a6674a
 	// org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint
+	// org.springframework.security.oauth2.provider.token.RemoteTokenServices
+	// org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter
 	
 	// Resource Server Sample Request
 	// curl localhost:8110/greeting/oneUser -H "Authorization: Bearer 67e195e9-89bf-41c3-a107-fc0b24a6674a"
@@ -96,6 +98,12 @@ public class MagnetAuthApplication {
 	
 	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
 	// org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter
+	
+	
+	// ResourceServer JWT token configuration
+	// org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerTokenServicesConfiguration
+	// ResourceServerTokenServicesConfiguration.RemoteTokenServicesConfiguration
+	// ResourceServerTokenServicesConfiguration.JwtTokenServicesConfiguration
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MagnetAuthApplication.class, args);
