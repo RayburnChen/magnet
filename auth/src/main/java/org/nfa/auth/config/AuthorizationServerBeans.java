@@ -3,6 +3,7 @@ package org.nfa.auth.config;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 
+import org.nfa.base.service.impl.CustomAccessTokenConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
