@@ -38,6 +38,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.client.ClientException;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 
 import feign.FeignException;
@@ -183,6 +184,10 @@ public class GlobalExceptionHandler {
 		if (cause instanceof FeignException) {
 			FeignException feignException = (FeignException) cause;
 			return initNestedErrorResponse(feignException);
+		} else if (cause instanceof RuntimeException) {
+			return defaultErrorResponse(cause);
+		} else if (cause instanceof ClientException) {
+			return defaultErrorResponse(cause);
 		} else {
 			return defaultErrorResponse(exception);
 		}
