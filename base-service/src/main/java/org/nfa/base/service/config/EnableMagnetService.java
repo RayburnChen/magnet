@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -33,6 +34,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoRepositories
 @EnableScheduling
 @EnableResourceServer
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @Import(value = { JsonConfig.class, GlobalErrorController.class, GlobalExceptionHandler.class, WebMvcConfigurerInitializer.class, HttpClientConfig.class,
 		ThreadPoolConfigurer.class, AuditEventRepositoryImpl.class, TraceRepositoryImpl.class, OperationController.class, ActuatorConfig.class, ResourceServerTokenConfig.class })
 public @interface EnableMagnetService {
