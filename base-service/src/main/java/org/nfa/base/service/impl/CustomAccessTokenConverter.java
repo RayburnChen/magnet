@@ -1,5 +1,6 @@
 package org.nfa.base.service.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -31,7 +32,13 @@ public class CustomAccessTokenConverter implements AccessTokenConverter {
 	@Override
 	public OAuth2Authentication extractAuthentication(Map<String, ?> map) {
 		OAuth2Authentication oAuth2Authentication = tokenConverter.extractAuthentication(map);
-		oAuth2Authentication.setDetails(map);
+		Map<String, Object> info = new HashMap<String, Object>(map);
+		info.remove(EXP);
+		info.remove(AUD);
+		info.remove(CLIENT_ID);
+		info.remove(SCOPE);
+		info.remove(JTI);
+		oAuth2Authentication.setDetails(info);
 		return oAuth2Authentication;
 	}
 
