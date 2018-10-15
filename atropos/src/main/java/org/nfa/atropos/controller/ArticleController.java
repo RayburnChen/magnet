@@ -71,18 +71,18 @@ public class ArticleController {
 		return articleService.delete(id);
 	}
 
-	@GetMapping(value = "/randomNumbers", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/random/number", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<ServerSentEvent<Integer>> randomNumbers() {
-		// curl localhost:8120/article/randomNumbers
+		// curl localhost:8120/article/random/number
 		return Flux.interval(Duration.ofSeconds(1)).log().map(seq -> Tuples.of(seq, ThreadLocalRandom.current().nextInt())).map(data -> {
 			log.info("Thread:" + Thread.currentThread().toString());
 			return ServerSentEvent.<Integer>builder().event("random").id(Long.toString(data.getT1())).data(data.getT2()).build();
 		});
 	}
 
-	@GetMapping(value = "/randomArticles", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	@GetMapping(value = "/random/article", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<Article> randomArticles() {
-		// curl localhost:8120/article/randomNumbers
+		// curl localhost:8120/article/random/article
 		return Flux.interval(Duration.ofSeconds(1)).log().map(data -> {
 			log.info("Thread:" + Thread.currentThread().toString());
 			Article article = new Article();

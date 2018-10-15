@@ -1,31 +1,33 @@
 package org.nfa.atropos;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nfa.atropos.model.Article;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = MagnetAtroposApplication.class)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = MagnetAtroposApplication.class)
 public class TestWebClient {
 
 	@Test
 	public void testHttpClient() {
 		final Article article = new Article();
+		article.setId(UUID.randomUUID().toString());
         article.setName("Test");
-        final WebClient client = WebClient.create("http://localhost:8080/article");
+        article.setEnabled(true);
+        final WebClient client = WebClient.create("http://localhost:8120");
         final Mono<Article> createdArticle = client.post()
-                .uri("")
+                .uri("/article")
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(article), Article.class)
                 .exchange()
@@ -36,8 +38,8 @@ public class TestWebClient {
 	@Test
 	public void testSeverSentEvent() {
 		final WebClient client = WebClient.create();
-        client.get()
-                .uri("http://localhost:8080/sse/randomNumbers")
+        Flux<List<String>> reponse = client.get()
+                .uri("http://localhost:8120/article/random/number")
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .exchange()
                 .flatMapMany(response -> response.body(BodyExtractors.toFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {
@@ -45,8 +47,8 @@ public class TestWebClient {
                 .filter(sse -> Objects.nonNull(sse.data()))
                 .map(ServerSentEvent::data)
                 .buffer(10)
-                .doOnNext(System.out::println)
-                .blockFirst();
+                .doOnNext(System.out::println);
+        System.out.println(reponse.blockFirst());
 	}
 
 }
