@@ -5,12 +5,58 @@ import java.util.concurrent.locks.StampedLock;
 import org.junit.Test;
 
 public class TestStampedLock {
-	
+
+	private double x, y;
+	private final StampedLock sl = new StampedLock();
+
 	@Test
-	public void testExchanger() {
-		StampedLock stampedLock = new StampedLock();
-		stampedLock.readLock();
-		stampedLock.writeLock();
+	public void testStampedLock() {
 	}
-	
+
+	private void move(double deltaX, double deltaY) { 
+		long stamp = sl.writeLock();// an exclusively locked method
+		try {
+			x += deltaX;
+			y += deltaY;
+		} finally {
+			sl.unlockWrite(stamp);
+		}
+	}
+
+	private double distanceFromOrigin() {
+		long stamp = sl.tryOptimisticRead();
+		double currentX = x, currentY = y;
+		if (!sl.validate(stamp)) {
+			stamp = sl.readLock();
+			try {
+				currentX = x;
+				currentY = y;
+			} finally {
+				sl.unlockRead(stamp);
+			}
+		}
+		return Math.sqrt(currentX * currentX + currentY * currentY);
+	}
+
+	private void moveIfAtOrigin(double newX, double newY) {
+		// Could instead start with optimistic, not read mode
+		long stamp = sl.readLock();
+		try {
+			while (x == 0.0 && y == 0.0) {
+				long ws = sl.tryConvertToWriteLock(stamp); // upgrade
+				if (ws != 0L) {
+					stamp = ws;
+					x = newX;
+					y = newY;
+					break;
+				} else {
+					sl.unlockRead(stamp);
+					stamp = sl.writeLock();
+				}
+			}
+		} finally {
+			sl.unlock(stamp);
+		}
+	}
+
 }
