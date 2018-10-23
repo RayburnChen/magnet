@@ -22,6 +22,11 @@ public class TestStampedLock {
 	// 0000,1111,1111 ABITS check writeLock ((s = state) & ABITS) == 0L
 	// 1111,0111,1111 SBITS validate OptimisticRead (stamp & SBITS) == (state & SBITS)
 
+	// readLock() block can't interrupt
+	// tryReadLock() lock immediately return 0L if failed
+	// tryReadLock(long time, TimeUnit unit) lock with time limit may interrupt
+	// readLockInterruptibly() block and may interrupt
+
 	@Test
 	public void testStampedLock() {
 		List<CompletableFuture<Void>> futures = new ArrayList<>();
