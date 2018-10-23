@@ -34,35 +34,36 @@ public class TestDijkstra {
 			weights[i] = Integer.MAX_VALUE;
 		}
 		boolean[] visited = new boolean[n];
+		visited[start] = true;
 		weights[start] = 0;
-		nested(graph, visited, weights, routes, start, graph[start][start]);
+		nested(graph, visited, weights, routes, start);
 		for (int i = 0; i < n; i++) {
 			System.out.println("从" + start + "出发到" + i + "的最短路径为：" + routes[i]);
 		}
 		return weights;
 	}
 
-	private void nested(int[][] graph, boolean[] visited, int[] weights, String[] routes, int start, int last) {
-		visited[start] = true;
+	private void nested(int[][] graph, boolean[] visited, int[] weights, String[] routes, int start) {
 		int n = graph.length;
 		for (int i = 0; i < n; i++) {
-			if (!visited[i] && (last + graph[start][i]) < weights[i]) {
-				weights[i] = last + graph[start][i];
+			if (!visited[i] && weights[start] < weights[i] && graph[start][i] < weights[i]
+					&& (weights[start] + graph[start][i]) < weights[i]) {
+				weights[i] = weights[start] + graph[start][i];
 				routes[i] = routes[start] + "-->" + i;
 			}
 		}
-		int min = Integer.MAX_VALUE, wei, poi = start;
+		int min = Integer.MAX_VALUE, poi = start;
 		for (int i = 0; i < n; i++) {
-			wei = graph[start][i];// weight from start to i
-			if (!visited[i] && wei < min) {
-				min = wei;// minimum weight
+			if (!visited[i] && graph[start][i] < min) {
+				min = graph[start][i];// minimum weight from start to i
 				poi = i;// minimum weight point
 			}
 		}
+		visited[poi] = true;
 		if (poi == start) {
 			return;
 		}
-		nested(graph, visited, weights, routes, poi, min);
+		nested(graph, visited, weights, routes, poi);
 	}
 
 }
