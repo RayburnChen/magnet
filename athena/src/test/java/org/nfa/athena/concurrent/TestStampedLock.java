@@ -17,10 +17,10 @@ public class TestStampedLock {
 	private double x, y;
 	private final StampedLock sl = new StampedLock();
 
-	// 0000,0000,0001 RUNIT
-	// 0000,1000,0000 WBIT
-	// 0000,1111,1111 ABITS
-	// 1111,0111,1111 SBITS
+	// 0000,0000,0001 RUNIT readLock increment
+	// 0000,1000,0000 WBIT writeLock increment
+	// 0000,1111,1111 ABITS check writeLock ((s = state) & ABITS) == 0L
+	// 1111,0111,1111 SBITS validate OptimisticRead (stamp & SBITS) == (state & SBITS)
 
 	@Test
 	public void testStampedLock() {
