@@ -3,20 +3,17 @@ package org.nfa.athena.algorithm;
 import org.junit.Test;
 
 public class TestDijkstra {
-
+	
 	@Test
 	public void testDijkstra() {
-		int m = Integer.MAX_VALUE - 1, start = 0;
+		int m = Integer.MAX_VALUE, start = 0;
 		int[][] graph = { 
 				{ 0, 4, m, 2, m }, 
 				{ 4, 0, 4, 1, m }, 
 				{ m, 4, 0, 1, 3 }, 
-				{ 2, 1, 1, 0, 7 },
+				{ 2, 1, 1, 0, 7 }, 
 				{ m, m, 3, 7, 0 } };
-		int[] weights = dijkstra(graph, start);
-		for (int i = 0; i < weights.length; i++) {
-			System.out.println("Weight from " + start + " to " + i + " is " + weights[i]);
-		}
+		dijkstra(graph, start);
 	}
 
 	/**
@@ -26,44 +23,60 @@ public class TestDijkstra {
 	 * @return
 	 */
 	private int[] dijkstra(int[][] graph, int start) {
-		int n = graph.length;
-		int[] weights = new int[n];// result
-		String[] routes = new String[n];
-		for (int i = 0; i < n; i++) {
-			routes[i] = new String(start + "-->" + i);
-			weights[i] = Integer.MAX_VALUE;
+		GraphContext context = nested(new GraphContext(graph, start));
+		for (int i = 0; i < context.size; i++) {
+			System.out.println("From " + start + " to " + i + " Weight " + context.weights[i] + " Routes " + context.routes[i]);
 		}
-		boolean[] visited = new boolean[n];
-		visited[start] = true;
-		weights[start] = 0;
-		nested(graph, visited, weights, routes, start);
-		for (int i = 0; i < n; i++) {
-			System.out.println("从" + start + "出发到" + i + "的最短路径为：" + routes[i]);
-		}
-		return weights;
+		return context.weights;
 	}
 
-	private void nested(int[][] graph, boolean[] visited, int[] weights, String[] routes, int start) {
-		int n = graph.length;
-		for (int i = 0; i < n; i++) {
-			if (!visited[i] && weights[start] < weights[i] && graph[start][i] < weights[i]
-					&& (weights[start] + graph[start][i]) < weights[i]) {
-				weights[i] = weights[start] + graph[start][i];
-				routes[i] = routes[start] + "-->" + i;
+	private GraphContext nested(GraphContext c) {
+		int[][] graph = c.graph;
+		int start = c.start;
+		for (int i = 0; i < c.size; i++) {
+			int wei = c.weights[start] + graph[start][i];// may overflow
+			if (!c.visited[i] && 0 < wei && wei < c.weights[i]) {
+				c.weights[i] = wei;
+				c.routes[i] = c.routes[start] + "-->" + i;
 			}
 		}
-		int min = Integer.MAX_VALUE, poi = start;
-		for (int i = 0; i < n; i++) {
-			if (!visited[i] && graph[start][i] < min) {
+		int min = Integer.MAX_VALUE, next = start;
+		for (int i = 0; i < c.size; i++) {
+			if (!c.visited[i] && graph[start][i] < min) {
 				min = graph[start][i];// minimum weight from start to i
-				poi = i;// minimum weight point
+				next = i;// minimum weight point
 			}
 		}
-		visited[poi] = true;
-		if (poi == start) {
-			return;
+		c.visited[next] = true;
+		c.start = next;
+		if (next == start) {
+			return c;
 		}
-		nested(graph, visited, weights, routes, poi);
+		return nested(c);
+	}
+
+	private class GraphContext {
+		private int start;
+		private final int[][] graph;
+		private final int size;
+		private final boolean[] visited;
+		private final int[] weights;
+		private final String[] routes;
+
+		private GraphContext(int[][] graph, int start) {
+			super();
+			int n = graph.length;
+			this.graph = graph;
+			this.start = start;
+			this.size = n;
+			this.visited = new boolean[n];
+			this.weights = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE };
+			this.routes = new String[n];
+			this.routes[start] = String.valueOf(start);
+			this.visited[start] = true;
+			this.weights[start] = 0;
+		}
+
 	}
 
 }
