@@ -4,16 +4,29 @@ import org.junit.Test;
 
 public class TestDijkstra {
 	
+//	From 0 to 0 Weight 0 Routes 0
+//	From 0 to 1 Weight 3 Routes 0-->3-->1
+//	From 0 to 2 Weight 3 Routes 0-->3-->2
+//	From 0 to 3 Weight 2 Routes 0-->3
+//	From 0 to 4 Weight 6 Routes 0-->3-->2-->4
+	
 	@Test
 	public void testDijkstra() {
 		int m = Integer.MAX_VALUE, start = 0;
 		int[][] graph = { 
+				{ 0, m, 10, m,  30, 100 }, 
+				{ m, 5, m,  m,  m,  m }, 
+				{ m, m, m,  50, m,  m }, 
+				{ m, m, m,  m,  m,  10 }, 
+				{ m, m, m,  20, 60, m }, 
+				{ m, m, m,  m,  m,  m } };
+		int[][] graph2 = { 
 				{ 0, 4, m, 2, m }, 
 				{ 4, 0, 4, 1, m }, 
 				{ m, 4, 0, 1, 3 }, 
-				{ 2, 1, 1, 0, 7 }, 
+				{ 2, 1, 1, 0, 7 },
 				{ m, m, 3, 7, 0 } };
-		dijkstra(graph, start);
+		dijkstra(graph2, start);
 	}
 
 	/**
