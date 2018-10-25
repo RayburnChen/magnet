@@ -60,7 +60,7 @@ public class TestDijkstra {
 				{ m, m, 0,  m, 5,  m }, 
 				{ m, m, 4,  0, 13, 15 }, 
 				{ m, m, m,  m, 0,  4 }, 
-				{ m, m, m,  m, m,  m } };
+				{ m, m, m,  m, m,  0 } };
 		dijkstra(graph, start);
 	}
 
