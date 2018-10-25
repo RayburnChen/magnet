@@ -14,27 +14,54 @@ public class TestDijkstra {
 	
 	@Test
 	public void testGraph1() {
-		int m = Integer.MAX_VALUE - 1, start = 0;
-		int[][] graph1 = { 
+		int m = Integer.MAX_VALUE, start = 0;
+		int[][] graph = { 
 				{ 0, 4, m, 2, m }, 
 				{ 4, 0, 4, 1, m }, 
 				{ m, 4, 0, 1, 3 }, 
 				{ 2, 1, 1, 0, 7 },
 				{ m, m, 3, 7, 0 } };
-		dijkstra(graph1, start);
+		dijkstra(graph, start);
 	}
+	
+//	From 0 to 0 Weight 0 Routes 0->0
+//	From 0 to 1 Weight 2147483647 Routes 0->1
+//	From 0 to 2 Weight 10 Routes 0->2
+//	From 0 to 3 Weight 50 Routes 0->4->3
+//	From 0 to 4 Weight 30 Routes 0->4
+//	From 0 to 5 Weight 60 Routes 0->4->3->5
 	
 	@Test
 	public void testGraph2() {
-		int m = Integer.MAX_VALUE - 1, start = 0;
-		int[][] graph2 = { 
+		int m = Integer.MAX_VALUE, start = 0;
+		int[][] graph = { 
 				{ 0, m, 10, m,  30, 100 }, 
-				{ m, 5, m,  m,  m,  m }, 
-				{ m, m, m,  50, m,  m }, 
-				{ m, m, m,  m,  m,  10 }, 
-				{ m, m, m,  20, 60, m }, 
-				{ m, m, m,  m,  m,  m } };
-		dijkstra(graph2, start);
+				{ m, 0, 5,  m,  m,  m }, 
+				{ m, m, 0,  50, m,  m }, 
+				{ m, m, m,  0,  m,  10 }, 
+				{ m, m, m,  20, 0,  60 }, 
+				{ m, m, m,  m,  m,  0 } };
+		dijkstra(graph, start);
+	}
+	
+//	From 0 to 0 Weight 0 Routes 0->0
+//	From 0 to 1 Weight 1 Routes 0->1
+//	From 0 to 2 Weight 8 Routes 0->1->3->2
+//	From 0 to 3 Weight 4 Routes 0->1->3
+//	From 0 to 4 Weight 13 Routes 0->1->3->2->4
+//	From 0 to 5 Weight 17 Routes 0->1->3->2->4->5
+	
+	@Test
+	public void testGraph3() {
+		int m = Integer.MAX_VALUE, start = 0;
+		int[][] graph = { 
+				{ 0, 1, 12, m, m,  m }, 
+				{ m, 0, 9,  3, m,  m }, 
+				{ m, m, 0,  m, 5,  m }, 
+				{ m, m, 4,  0, 13, 15 }, 
+				{ m, m, m,  m, 0,  4 }, 
+				{ m, m, m,  m, m,  m } };
+		dijkstra(graph, start);
 	}
 
 	/**
@@ -52,9 +79,9 @@ public class TestDijkstra {
 	}
 
 	private GraphContext nested(GraphContext c) {
-		int min = Integer.MAX_VALUE, next = c.start;
+		int min = -1, next = c.start;
 		for (int i = 0; i < c.size; i++) {
-			if (!c.visited[i] && c.weights[i] < min) {
+			if (!c.visited[i] && (min < 0 || c.weights[i] < min)) {
 				min = c.weights[i];// minimum weight unvisited
 				next = i;// minimum weight point
 			}
