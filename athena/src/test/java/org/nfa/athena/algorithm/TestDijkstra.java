@@ -2,6 +2,7 @@ package org.nfa.athena.algorithm;
 
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestDijkstra {
@@ -21,7 +22,7 @@ public class TestDijkstra {
 				{ m, 4, 0, 1, 3 }, 
 				{ 2, 1, 1, 0, 7 },
 				{ m, m, 3, 7, 0 } };
-		dijkstra(graph, start);
+		Assert.assertArrayEquals(new int[] { 0, 3, 3, 2, 6 }, dijkstra(graph, start));
 	}
 	
 //	From 0 to 0 Weight 0 Routes 0->0
@@ -41,7 +42,7 @@ public class TestDijkstra {
 				{ m, m, m,  0,  m,  10 }, 
 				{ m, m, m,  20, 0,  60 }, 
 				{ m, m, m,  m,  m,  0 } };
-		dijkstra(graph, start);
+		Assert.assertArrayEquals(new int[] { 0, Integer.MAX_VALUE, 10, 50, 30, 60 }, dijkstra(graph, start));
 	}
 	
 //	From 0 to 0 Weight 0 Routes 0->0
@@ -61,7 +62,7 @@ public class TestDijkstra {
 				{ m, m, 4,  0, 13, 15 }, 
 				{ m, m, m,  m, 0,  4 }, 
 				{ m, m, m,  m, m,  0 } };
-		dijkstra(graph, start);
+		Assert.assertArrayEquals(new int[] { 0, 1, 8, 4, 13, 17 }, dijkstra(graph, start));
 	}
 
 	/**
@@ -79,9 +80,9 @@ public class TestDijkstra {
 	}
 
 	private GraphContext nested(GraphContext c) {
-		int min = -1, next = c.start;
+		Integer min = null, next = c.start;
 		for (int i = 0; i < c.size; i++) {
-			if (!c.visited[i] && (min < 0 || c.weights[i] < min)) {
+			if (!c.visited[i] && (null == min || c.weights[i] < min)) {
 				min = c.weights[i];// minimum weight unvisited
 				next = i;// minimum weight point
 			}
