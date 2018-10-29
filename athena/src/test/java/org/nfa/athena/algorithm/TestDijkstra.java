@@ -5,6 +5,11 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * 
+ * @author OwenChen 时间复杂度是O(VLogV)(V为顶点数，假设使用最小堆)
+ *
+ */
 public class TestDijkstra {
 	
 //	From 0 to 0 Weight 0 Routes 0->0

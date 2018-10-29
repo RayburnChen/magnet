@@ -2,6 +2,11 @@ package org.nfa.athena.algorithm;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author OwenChen 时间复杂度是O(V^3) (V为顶点数)
+ *
+ */
 public class TestFloyd {
 
 	@Test

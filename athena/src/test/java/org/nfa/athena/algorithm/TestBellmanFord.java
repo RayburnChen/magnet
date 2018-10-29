@@ -3,6 +3,11 @@ package org.nfa.athena.algorithm;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * 
+ * @author OwenChen 时间复杂度是O(VE) (V为顶点的个数 E为边的个数)
+ *
+ */
 public class TestBellmanFord {
 	
 //	From 0 to 0 Weight 0 Routes 0
@@ -75,6 +80,7 @@ public class TestBellmanFord {
 					if (i == j || c.graph[i][j] == Integer.MAX_VALUE / 10) {
 						continue;// skip
 					}
+					// go through times is actually E
 					int wei = weights[i] + c.graph[i][j];
 					if (wei < weights[j]) {
 						weights[j] = wei;
