@@ -49,8 +49,8 @@ public class AthenaController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/oneUser" })
-	public User oneUser(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
-		log.info("HttpHeaders ", headers);
+	public User oneUser(@RequestHeader HttpHeaders headers, User user) throws JsonProcessingException {
+		log.info("HttpHeaders {}, User {}", headers, user);
 		log.info(tracer.currentSpan().context().toString());
 		return athenaService.oneUser();
 	}
