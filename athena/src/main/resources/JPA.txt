@@ -1,0 +1,34 @@
+
+@Entity
+@Table(name="t_classroom")
+public class ClassRoom {
+
+    private int id;
+    private String className;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="room")　　
+    // OneToMany指定了一对多的关系，mappedBy="room"指定了由多的那一方来维护关联关系，mappedBy指的是多的一方对一的这一方的依赖的属性，
+	// (注意：如果没有指定由谁来维护关联关系，则系统会给我们创建一张中间表)
+    @LazyCollection(LazyCollectionOption.EXTRA)　　
+    // LazyCollection属性设置成EXTRA指定了当如果查询数据的个数时候，只会发出一条 count(*)的语句，提高性能
+    private Set<Student> students;
+   
+}
+
+
+@Entity
+@Table(name="t_student")
+public class Student {
+
+    private int id;
+    private String name;
+    private int age;
+    
+    @ManyToOne(fetch=FetchType.LAZY)　　
+	// ManyToOne指定了多对一的关系，fetch=FetchType.LAZY属性表示在多的那一方通过延迟加载的方式加载对象(默认不是延迟加载)
+    @JoinColumn(name="rid")　　
+	// 通过 JoinColumn 的name属性指定了外键的名称 rid　(注意：如果我们不通过JoinColum来指定外键的名称，系统会给我们声明一个名称)
+    private ClassRoom room;
+    
+}
+
