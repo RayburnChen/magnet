@@ -1,8 +1,31 @@
+jps		打印Hotspot VM进程	VMID、JVM参数、main()函数参数、主类名/Jar路径
+jstat	查看Hotspot VM 运行时信息	类加载、内存、GC[可分代查看]、JIT编译
+jinfo	查看和修改虚拟机各项配置	-flag name=value
+jmap	heapdump: 生成VM堆转储快照、查询finalize执行队列、Java堆和永久代详细信息	jmap -dump:live,format=b,file=heap.bin [VMID]
+jstack	查看VM当前时刻的线程快照: 当前VM内每一条线程正在执行的方法堆栈集合	Thread.getAllStackTraces()提供了类似的功能
+javap	查看经javac之后产生的JVM字节码代码	自动解析.class文件, 避免了去理解class文件格式以及手动解析class文件内容
+jcmd	一个多功能工具, 可以用来导出堆, 查看Java进程、导出线程信息、 执行GC、查看性能相关数据等	几乎集合了jps、jstat、jinfo、jmap、jstack所有功能
+jconsole	基于JMX的可视化监视、管理工具	可以查看内存、线程、类、CPU信息, 以及对JMX MBean进行管理
+jvisualvm	JDK中最强大运行监视和故障处理工具	可以监控内存泄露、跟踪垃圾回收、执行时内存分析、CPU分析、线程分析…
+
 -Xms40m
 -Xmx1200m
 -Xloggc:gc.log
 -XX:+PrintGCDateStamps
 -XX:+PrintGCDetails
+
+-Xms	最小堆大小
+-Xmx	最大堆大小
+-Xmn	新生代大小
+-XX:PermSize	永久代大小
+-XX:MaxPermSize	永久代最大大小
+-XX:+PrintGC	输出GC日志
+-verbose:gc	-
+-XX:+PrintGCDetails	输出GC的详细日志
+-XX:+PrintGCTimeStamps	输出GC时间戳(以基准时间的形式)
+-XX:+PrintHeapAtGC	在进行GC的前后打印出堆的信息
+-Xloggc:/path/gc.log	日志文件的输出路径
+-XX:+PrintGCApplicationStoppedTime	打印由GC产生的停顿时间
 
 Java HotSpot(TM) 64-Bit Server VM (25.191-b12) for windows-amd64 JRE (1.8.0_191-b12), built on Oct  6 2018 09:29:03 by "java_re" with MS VC++ 10.0 (VS2010)
 Memory: 4k page, physical 12455024k(6513192k free), swap 16911472k(9426520k free)
