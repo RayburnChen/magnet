@@ -56,6 +56,8 @@ security:
         key-uri: http://localhost:8090/oauth/token_key
 logging:
   file: log/${spring.application.name}.log
+  max-size: 1MB
+  max-history: 100
 management:
   endpoints:
     web:
