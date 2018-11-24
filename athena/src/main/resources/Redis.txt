@@ -42,3 +42,32 @@ sentinel auth-pass mymaster 123456
 一个redis无论是master还是slave，都必须在配置中指定一个slave优先级。
 要注意到master也是有可能通过failover变成slave的。
 如果一个redis的slave优先级配置为0，那么它将永远不会被选为master，但是它依然会从master哪里复制数据。
+
+
+3466:X 09 Jun 00:30:29.067 # +sdown master T1 127.0.0.1 10086                      ##进入主观不可用(SDOWN)
+3466:X 09 Jun 00:30:29.169 # +odown master T1 127.0.0.1 10086 #quorum 2/2          ##投票好了，达到了quorum，进入客观不可用(ODOWN)
+3466:X 09 Jun 00:30:29.169 # +new-epoch 1                                          ##当前配置版本被更新
+3466:X 09 Jun 00:30:29.169 # +try-failover master T1 127.0.0.1 10086               ##达到failover条件，正等待其他sentinel的选举
+3466:X 09 Jun 00:30:29.179 # +vote-for-leader e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.183 # 127.0.0.1:20088 voted for e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.184 # 127.0.0.1:20086 voted for e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.241 # +elected-leader master T1 127.0.0.1 10086             ##执行failover
+3466:X 09 Jun 00:30:29.242 # +failover-state-select-slave master T1 127.0.0.1 10086 ##开始要选择一个slave当选新master
+3466:X 09 Jun 00:30:29.344 # +selected-slave slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086 ##找到了一个适合的slave来担当新master
+3466:X 09 Jun 00:30:29.344 * +failover-state-send-slaveof-noone slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086 ##当把选择为新master的slave的身份进行切换
+3466:X 09 Jun 00:30:29.447 * +failover-state-wait-promotion slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086
+3466:X 09 Jun 00:30:30.206 # +promoted-slave slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086
+3466:X 09 Jun 00:30:30.207 # +failover-state-reconf-slaves master T1 127.0.0.1 10086  ##Failover状态变为reconf-slaves
+3466:X 09 Jun 00:30:30.273 * +slave-reconf-sent slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##sentinel发送SLAVEOF命令把它重新配置，重新配置到新主
+3466:X 09 Jun 00:30:31.250 * +slave-reconf-inprog slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##slave被重新配置为另外一个master的slave，但数据复制还未发生
+3466:X 09 Jun 00:30:31.251 * +slave-reconf-done slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##slave被重新配置为另外一个master的slave并且数据复制已经与master同步
+3466:X 09 Jun 00:30:31.340 # -odown master T1 127.0.0.1 10086  ##离开客观不可用（ODOWN）
+3466:X 09 Jun 00:30:31.340 # +failover-end master T1 127.0.0.1 10086  ##failover成功完成
+3466:X 09 Jun 00:30:31.341 # +switch-master T1 127.0.0.1 10086 127.0.0.1 10088 ##master的地址发生变化
+3466:X 09 Jun 00:30:31.341 * +slave slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10088 ##检测到一个slave并添加进slave列表
+3466:X 09 Jun 00:30:31.351 * +slave slave 127.0.0.1:10086 127.0.0.1 10086 @ T1 127.0.0.1 10088
+3466:X 09 Jun 00:30:46.362 # +sdown slave 127.0.0.1:10086 127.0.0.1 10086 @ T1 127.0.0.1 10088 ##原主进入主观不可用状态
+
+
+https://www.cnblogs.com/zhoujinyi/p/5569462.html
+https://www.cnblogs.com/zhoujinyi/p/5570024.html
