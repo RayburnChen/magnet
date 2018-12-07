@@ -40,3 +40,42 @@ public class Student {
     
 }
 
+@Entity
+@Table(name="t_teacher")
+public class Teacher implements PersistentAttributeInterceptable {
+
+	@Id
+	private String id;
+	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private byte[] content;
+	
+	public byte[] getContent() {
+		if (interceptor != null) {
+			return (byte[]) interceptor.readObject(this, "content", content);
+		}
+		return null;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
+	}
+	
+	@Transient
+	@JsonIgnore
+	private PersistentAttributeInterceptor interceptor;
+	
+	@Override
+	public PersistentAttributeInterceptor $$_hibernate_getInterceptor() {
+		return this.interceptor;
+	}
+
+	@Override
+	public void $$_hibernate_setInterceptor(PersistentAttributeInterceptor interceptor) {
+		this.interceptor = interceptor;
+	}
+
+}
+
