@@ -2,6 +2,8 @@ cd /usr/redis/bin
 ./redis-cli shutdown
 nohup ./redis-server /usr/redis/redis/redis.conf &
 nohup ./redis-server /usr/redis/redis/sentinel.conf --sentinel &
+./redis-cli -h 127.0.0.1 -p 26379 -a 'password'
+info
 
 redis master
 
