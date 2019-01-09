@@ -18,10 +18,10 @@ public class ApplicationService implements ApplicationListener<ContextRefreshedE
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		log.info("ApplicationService onApplicationEvent ContextRefreshedEvent" + event.getSource().getClass());
+		log.info("ApplicationService onApplicationEvent ContextRefreshedEvent {}", event.getSource().getClass());
 		// org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext
 		Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(RestController.class);
-		// {athenaController : org.nfa.athena.controller.AthenaController}
+		// athenaController : org.nfa.athena.controller.AthenaController
 		beans.forEach((k, v) -> {
 			log.info("ApplicationService name:{}, value:{}", k, v);
 			for (Method m : v.getClass().getDeclaredMethods()) {

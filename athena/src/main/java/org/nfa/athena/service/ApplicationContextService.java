@@ -1,6 +1,5 @@
-package org.nfa.athena.util;
+package org.nfa.athena.service;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -25,21 +24,21 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class ApplicationContextUtils implements ApplicationContextAware {
+public class ApplicationContextService implements ApplicationContextAware {
 
-	private static ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
-	private ApplicationContextUtils() {
+	private ApplicationContextService() {
 		super();
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		// org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
-		ApplicationContextUtils.applicationContext = applicationContext;
+		this.applicationContext = applicationContext;
 	}
 
-	public static Object getBean(String name) {
+	public Object getBean(String name) {
 		return applicationContext.getBean(name);
 	}
 

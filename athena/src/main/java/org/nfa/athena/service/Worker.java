@@ -2,13 +2,20 @@ package org.nfa.athena.service;
 
 import java.util.Random;
 
+import org.nfa.athena.util.ThreadLocalUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Worker implements Runnable {
+
+	private static final Logger log = LoggerFactory.getLogger(Worker.class);
 
 	private static final ThreadLocal<String> semaphore = new ThreadLocal<String>() {
 
+		private Random ran = new Random();
+
 		@Override
 		protected String initialValue() {
-			Random ran = new Random();
 			return String.valueOf(ran.nextInt());
 		}
 
@@ -16,9 +23,9 @@ public class Worker implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(Thread.currentThread().getName() + "-Id-" + Thread.currentThread().getId() + " semaphore " + semaphore.get());
-		System.out.println(Thread.currentThread().getName() + "-Id-" + Thread.currentThread().getId() + " inherit " + ThreadLocalService.inherit.get());
-		System.out.println(Thread.currentThread().getName() + "-Id-" + Thread.currentThread().getId() + " mainThreadLocal " + ThreadLocalService.mainThreadLocal.get());
+		log.info("{}-Id-{} semaphore {}", Thread.currentThread().getName(), Thread.currentThread().getId(), semaphore.get());
+		log.info("{}-Id-{} inherit {}", Thread.currentThread().getName(), Thread.currentThread().getId(), ThreadLocalUtils.inherit.get());
+		log.info("{}-Id-{} mainThreadLocal {}", Thread.currentThread().getName(), Thread.currentThread().getId(), ThreadLocalUtils.mainThreadLocal.get());
 	}
 
 }
