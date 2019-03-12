@@ -26,8 +26,8 @@ public class PriorityFutureService<T> {
 	private static final int POOL_SIZE = PROCESSORS * 2 > 8 ? PROCESSORS * 2 : 8;
 	private static final int QUEUE_SIZE = 10000;
 	private static final Comparator<Runnable> COMP = initComp();
-	private static final ExecutorService EXECUTOR = new PriorityThreadPoolExecutor(POOL_SIZE, POOL_SIZE, 0L, TimeUnit.MILLISECONDS,
-			new PriorityBlockingQueue<Runnable>(QUEUE_SIZE, COMP));
+	private static final ExecutorService EXECUTOR = new PriorityThreadPoolExecutor(POOL_SIZE, POOL_SIZE, 0L,
+			TimeUnit.MILLISECONDS, new PriorityBlockingQueue<Runnable>(QUEUE_SIZE, COMP));
 
 	private List<CompletableFuture<T>> objectFutureList = new ArrayList<>();
 	private List<CompletableFuture<Void>> voidFutureList = new ArrayList<>();
@@ -103,7 +103,12 @@ public class PriorityFutureService<T> {
 
 		@Override
 		public void run() {
-			runnable.run();
+			try {
+				runnable.run();
+			} catch (Exception e) {
+				LOGGER.error("PriorityRunnable error ", e);
+				throw e;
+			}
 		}
 
 	}
@@ -125,14 +130,20 @@ public class PriorityFutureService<T> {
 
 		@Override
 		public T get() {
-			return supplier.get();
+			try {
+				return supplier.get();
+			} catch (Exception e) {
+				LOGGER.error("PrioritySupplier error ", e);
+				throw e;
+			}
 		}
 
 	}
 
 	private static class PriorityThreadPoolExecutor extends ThreadPoolExecutor {
 
-		public PriorityThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+		public PriorityThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
+				BlockingQueue<Runnable> workQueue) {
 			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 		}
 
