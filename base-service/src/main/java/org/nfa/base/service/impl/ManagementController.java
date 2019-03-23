@@ -12,6 +12,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.logging.LogFile;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -41,10 +46,11 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.mongodb.client.result.DeleteResult;
 
 @RestController
-@RequestMapping(value = "/operation")
-public class OperationController {
+@RequestMapping(value = "/management")
+public class ManagementController {
 
-	private static final Logger log = LoggerFactory.getLogger(OperationController.class);
+	private static final Logger log = LoggerFactory.getLogger(ManagementController.class);
+	private final String sep = System.getProperty("line.separator");
 
 	@Autowired(required = false)
 	private PasswordEncoder passwordEncoder;
@@ -52,6 +58,8 @@ public class OperationController {
 	private MongoOperations mongoOperations;
 	@Value("${logging.file}")
 	private String path;
+	@Autowired
+	private Environment environment;
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/encode" })
 	public String encode(@RequestParam String rawPassword) {
@@ -79,14 +87,17 @@ public class OperationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/collection" })
-	public Holder<Object> getCollection(@RequestParam String collectionName, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "50") int size) {
+	public Holder<Object> getCollection(@RequestParam String collectionName, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "50") int size) {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by(new Order(Direction.DESC, "createdBy.time")));
-		return new Holder<Object>(PageableExecutionUtils.getPage(mongoOperations.find(new Query().with(pageable), Object.class, collectionName), pageable,
+		return new Holder<Object>(PageableExecutionUtils.getPage(
+				mongoOperations.find(new Query().with(pageable), Object.class, collectionName), pageable,
 				() -> mongoOperations.count(new Query(), collectionName)));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/file" })
-	public Holder<Path> searchFile(HttpServletRequest request, @RequestParam(required = false) String path) throws IOException {
+	public Holder<Path> searchFile(HttpServletRequest request, @RequestParam(required = false) String path)
+			throws IOException {
 		Path root = StringUtils.isBlank(path) ? Paths.get(System.getProperty("user.dir")) : Paths.get(URI.create(path));
 		List<Path> paths = new ArrayList<>();
 		Files.walkFileTree(root, getFileVisitor(paths));
@@ -95,7 +106,8 @@ public class OperationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/file/download" })
-	public StreamingResponseBody downloadFile(HttpServletResponse response, @RequestParam String path) throws IOException {
+	public StreamingResponseBody downloadFile(HttpServletResponse response, @RequestParam String path)
+			throws IOException {
 		Path filePath = Paths.get(URI.create(path));
 		String fileName = filePath.getFileName().toString();
 		fileName = URLEncoder.encode(fileName, "UTF-8");
@@ -151,6 +163,89 @@ public class OperationController {
 				return FileVisitResult.CONTINUE;
 			}
 		};
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/logging/block" })
+	public String loggingBlock(@RequestParam String pattern, @RequestParam(required = false) String thread,
+			@RequestParam(defaultValue = "1000") int limit, @RequestParam(defaultValue = "0") int skip) {
+		return scan(scanner -> searchBlock(scanner, pattern, thread, limit, skip));
+	}
+
+	private String searchBlock(Scanner scanner, String pattern, String thread, int limit, int skip) {
+		StringBuilder builder = new StringBuilder();
+		int s = skip < 0 ? 0 : skip;
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (hit(line, pattern, thread)) {
+				if (0 == s) {
+					builder.append(line);
+					builder.append(sep);
+					break;
+				} else {
+					s = s - 1;
+				}
+			}
+		}
+		if (0 != s) {
+			return builder.toString();
+		}
+		int l = limit;
+		while (scanner.hasNextLine() && l > 0) {
+			String line = scanner.nextLine();
+			if (StringUtils.isBlank(thread) || line.contains(thread)) {
+				builder.append(line);
+				builder.append(sep);
+				l = l - 1;
+			}
+		}
+		return builder.toString();
+	}
+
+	private boolean hit(String line, String pattern, String thread) {
+		boolean contains = line.contains(pattern);
+		if (!contains) {
+			return false;
+		}
+		if (StringUtils.isBlank(thread)) {
+			return true;
+		}
+		return line.contains(thread);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = { "/logging/search" })
+	public String loggingSearch(@RequestParam String pattern) {
+		return scan(scanner -> searchAll(scanner, pattern));
+	}
+
+	private String searchAll(Scanner scanner, String pattern) {
+		StringBuilder builder = new StringBuilder();
+		int row = 0;
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (line.contains(pattern)) {
+				builder.append("[" + row + "]");
+				builder.append(line);
+				builder.append(sep);
+				row = row + 1;
+			}
+		}
+		return builder.toString();
+	}
+
+	private <T> T scan(Function<Scanner, T> function) {
+		LogFile logFile = LogFile.get(this.environment);
+		if (logFile == null) {
+			log.debug("Missing 'logging.file' or 'logging.path' properties");
+			return null;
+		}
+		FileSystemResource resource = new FileSystemResource(logFile.toString());
+		try {
+			Scanner scanner = new Scanner(resource.getInputStream(), "UTF-8");
+			return function.apply(scanner);
+		} catch (IOException e) {
+			log.error("Failed to create Scanner", e);
+			return null;
+		}
 	}
 
 }
