@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -166,17 +167,18 @@ public class ManagementController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/logging/block" })
-	public String loggingBlock(@RequestParam String pattern, @RequestParam(required = false) String thread,
+	public String loggingBlock(@RequestParam List<String> patterns,
+			@RequestParam(defaultValue = "OR") Connector connector, @RequestParam(required = false) String thread,
 			@RequestParam(defaultValue = "1000") int limit, @RequestParam(defaultValue = "0") int skip) {
-		return scan(scanner -> searchBlock(scanner, pattern, thread, limit, skip));
+		return scan(scanner -> searchBlock(scanner, hitLine(patterns, connector), thread, limit, skip));
 	}
 
-	private String searchBlock(Scanner scanner, String pattern, String thread, int limit, int skip) {
+	private String searchBlock(Scanner scanner, Predicate<String> hitLine, String thread, int limit, int skip) {
 		StringBuilder builder = new StringBuilder();
 		int s = skip < 0 ? 0 : skip;
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			if (!hit(line, pattern, thread)) {
+			if (hitLine.negate().test(line)) {
 				continue;
 			}
 			if (s > 0) {
@@ -193,7 +195,7 @@ public class ManagementController {
 		int l = limit - 1;
 		while (scanner.hasNextLine() && l > 0) {
 			String line = scanner.nextLine();
-			if (StringUtils.isNotBlank(thread) && !line.contains(thread)) {
+			if (!hitThread(line, thread)) {
 				continue;
 			}
 			builder.append(line);
@@ -203,31 +205,41 @@ public class ManagementController {
 		return toString(builder);
 	}
 
-	private boolean hit(String line, String pattern, String thread) {
-		boolean contains = line.contains(pattern);
-		if (!contains) {
+	private Predicate<String> hitLine(List<String> patterns, Connector connector) {
+		return line -> {
+			if (Connector.OR.equals(connector)) {
+				return patterns.stream().anyMatch(p -> hitPattern(line, p));
+			}
+			if (Connector.AND.equals(connector)) {
+				return patterns.stream().allMatch(p -> hitPattern(line, p));
+			}
 			return false;
-		}
-		if (StringUtils.isBlank(thread)) {
-			return true;
-		}
-		return line.contains(thread);
+		};
+	}
+
+	private boolean hitPattern(String line, String pattern) {
+		return line.contains(pattern);
+	}
+
+	private boolean hitThread(String line, String thread) {
+		return StringUtils.isBlank(thread) || line.contains(thread);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/logging/search" })
-	public String loggingSearch(@RequestParam String pattern, @RequestParam(defaultValue = "1000") int limit,
+	public String loggingSearch(@RequestParam List<String> patterns,
+			@RequestParam(defaultValue = "OR") Connector connector, @RequestParam(defaultValue = "1000") int limit,
 			@RequestParam(defaultValue = "0") int skip) {
-		return scan(scanner -> searchAll(scanner, pattern, limit, skip));
+		return scan(scanner -> searchAll(scanner, hitLine(patterns, connector), limit, skip));
 	}
 
-	private String searchAll(Scanner scanner, String pattern, int limit, int skip) {
+	private String searchAll(Scanner scanner, Predicate<String> hitLine, int limit, int skip) {
 		StringBuilder builder = new StringBuilder();
 		int row = -1;
 		int l = limit;
 		int s = skip < 0 ? 0 : skip;
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			if (!line.contains(pattern)) {
+			if (hitLine.negate().test(line)) {
 				continue;
 			}
 			row = row + 1;
@@ -267,6 +279,10 @@ public class ManagementController {
 			log.error("Failed to create Scanner", e);
 			return null;
 		}
+	}
+
+	public static enum Connector {
+		AND, OR;
 	}
 
 }
