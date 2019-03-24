@@ -176,29 +176,31 @@ public class ManagementController {
 		int s = skip < 0 ? 0 : skip;
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			if (hit(line, pattern, thread)) {
-				if (0 == s) {
-					builder.append(line);
-					builder.append(sep);
-					break;
-				} else {
-					s = s - 1;
-				}
+			if (!hit(line, pattern, thread)) {
+				continue;
 			}
+			if (s > 0) {
+				s = s - 1;
+				continue;
+			}
+			builder.append(line);
+			builder.append(sep);
+			break;
 		}
 		if (0 != s) {
-			return builder.toString();
+			return toString(builder);
 		}
-		int l = limit;
+		int l = limit - 1;
 		while (scanner.hasNextLine() && l > 0) {
 			String line = scanner.nextLine();
-			if (StringUtils.isBlank(thread) || line.contains(thread)) {
-				builder.append(line);
-				builder.append(sep);
-				l = l - 1;
+			if (StringUtils.isNotBlank(thread) && !line.contains(thread)) {
+				continue;
 			}
+			builder.append(line);
+			builder.append(sep);
+			l = l - 1;
 		}
-		return builder.toString();
+		return toString(builder);
 	}
 
 	private boolean hit(String line, String pattern, String thread) {
@@ -213,21 +215,40 @@ public class ManagementController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = { "/logging/search" })
-	public String loggingSearch(@RequestParam String pattern) {
-		return scan(scanner -> searchAll(scanner, pattern));
+	public String loggingSearch(@RequestParam String pattern, @RequestParam(defaultValue = "1000") int limit,
+			@RequestParam(defaultValue = "0") int skip) {
+		return scan(scanner -> searchAll(scanner, pattern, limit, skip));
 	}
 
-	private String searchAll(Scanner scanner, String pattern) {
+	private String searchAll(Scanner scanner, String pattern, int limit, int skip) {
 		StringBuilder builder = new StringBuilder();
-		int row = 0;
+		int row = -1;
+		int l = limit;
+		int s = skip < 0 ? 0 : skip;
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			if (line.contains(pattern)) {
-				builder.append("[" + row + "]");
-				builder.append(line);
-				builder.append(sep);
-				row = row + 1;
+			if (!line.contains(pattern)) {
+				continue;
 			}
+			row = row + 1;
+			if (s > 0) {
+				s = s - 1;
+				continue;
+			}
+			builder.append("[" + row + "]");
+			builder.append(line);
+			builder.append(sep);
+			l = l - 1;
+			if (l <= 0) {
+				break;
+			}
+		}
+		return toString(builder);
+	}
+
+	private String toString(StringBuilder builder) {
+		if (0 == builder.length()) {
+			return "not found";
 		}
 		return builder.toString();
 	}
