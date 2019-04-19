@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoRepositories
 @EnableDiscoveryClient
 @EnableAuthorizationServer
-@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
+//@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
 public class MagnetAuthApplication {
 	
 	// Spring Boot Authorization Server Configuration

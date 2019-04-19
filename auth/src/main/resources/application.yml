@@ -4,19 +4,6 @@ server:
     session:
       cookie:
         name: ${spring.application.name}
-security:
-  oauth2:
-    client:
-      client-id: magnet-client
-      client-secret: passw0rd
-      scope: read, write
-      auto-approve-scopes: read, write
-      registered-redirect-uri:
-      - http://www.baidu.com
-      - http://localhost:8080/login
-    authorization:
-      check-token-access: fullyAuthenticated
-      token-key-access: fullyAuthenticated
 spring:
   application:
     name: magnet-auth
@@ -33,6 +20,28 @@ spring:
     view:
       prefix: /pages/
       suffix: .html
+  security:
+    oauth2:
+      client:
+        registration:
+          my-client-1:
+            client-name: Magnet Client
+            client-id: magnet-client
+            client-secret: passw0rd
+            scope: read, write
+            provider: my-oauth-provider
+            client-authentication-method: basic
+            authorization-grant-type: password
+            redirect-uri: http://localhost:8080/login
+        provider:
+          my-oauth-provider: 
+            authorization-uri: http://localhost:8090/oauth/authorize
+            token-uri: http://localhost:8090/oauth/token
+            user-info-uri: http://localhost:8090/oauth/check_token
+            jwk-set-uri: http://localhost:8090/oauth/token_key
+#      authorization:
+#        check-token-access: fullyAuthenticated
+#        token-key-access: fullyAuthenticated
 eureka:
   instance:
     preferIpAddress: true

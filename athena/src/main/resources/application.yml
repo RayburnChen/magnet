@@ -15,6 +15,28 @@ spring:
   sleuth:
     sampler:
       probability: 0.0
+  security:
+    oauth2:
+      client:
+        registration:
+          my-client-1:
+            client-name: Magnet Client
+            client-id: magnet-client
+            client-secret: passw0rd
+            provider: my-oauth-provider
+            client-authentication-method: basic
+            authorization-grant-type: password
+        provider:
+          my-oauth-provider: 
+            authorization-uri: http://localhost:8090/oauth/authorize
+            token-uri: http://localhost:8090/oauth/token
+            user-info-uri: http://localhost:8090/oauth/check_token
+            jwk-set-uri: http://localhost:8090/oauth/token_key
+      resourceserver:
+#        token-info-uri: http://localhost:8090/oauth/check_token
+#        preferTokenInfo: true
+        jwt:
+          jwk-set-uri: http://localhost:8090/oauth/token_key
 eureka:
   instance:
     preferIpAddress: true
@@ -52,19 +74,6 @@ ribbon:
     enabled: true
   httpclient:
     enabled: false
-security:
-  oauth2:
-    client:
-      client-id: magnet-client
-      client-secret: passw0rd
-      grant-type: implicit
-      access-token-uri: http://localhost:8090/oauth/token
-      user-authorization-uri: http://localhost:8090/oauth/authorize
-    resource:
-#      token-info-uri: http://localhost:8090/oauth/check_token
-#      preferTokenInfo: true
-      jwt:
-        key-uri: http://localhost:8090/oauth/token_key
 logging:
   file: log/${spring.application.name}.log
   max-size: 1MB
