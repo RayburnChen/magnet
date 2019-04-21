@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoRepositories
 @EnableDiscoveryClient
 @EnableAuthorizationServer
-//@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
+@Import(value = { GlobalErrorController.class, GlobalExceptionHandler.class })
 public class MagnetAuthApplication {
 	
 	// Spring Boot Authorization Server Configuration
@@ -26,7 +26,7 @@ public class MagnetAuthApplication {
 	
 	// Resource Server
 	// Call Authorization Server to Check Token
-	// curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=67e195e9-89bf-41c3-a107-fc0b24a6674a
+	// curl magnet-client:passw0rd@localhost:8090/oauth/check_token -d token=eb706dfd-2406-4e24-88db-a574b84218f0
 	// org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint
 	// org.springframework.security.oauth2.provider.token.RemoteTokenServices
 	// org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter
@@ -94,7 +94,7 @@ public class MagnetAuthApplication {
 	// Refresh Token Credentials
 	// When access token is about to expire, use the refresh token to get the new access token
 	// Step 5.1
-	// curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=refresh_token -d refresh_token=632ba621-540f-41bb-8989-46a22e2702c3
+	// curl magnet-client:passw0rd@localhost:8090/oauth/token -d grant_type=refresh_token -d refresh_token=3ff135c6-2846-4039-a536-4f9232fcc5b2
 	
 	// org.springframework.security.oauth2.provider.endpoint.TokenEndpoint
 	// org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter

@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerSecurityConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-@Configuration
-@Order(SecurityProperties.DEFAULT_FILTER_ORDER)
+//@Configuration
+//@Order(SecurityProperties.DEFAULT_FILTER_ORDER)
 public class AuthorizationServerConfiguration extends AuthorizationServerSecurityConfiguration {
 	
 	@Autowired
