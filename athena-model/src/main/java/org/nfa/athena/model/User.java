@@ -3,7 +3,6 @@ package org.nfa.athena.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -70,8 +69,6 @@ public class User implements Serializable, Measurable<User> {
 	private Date createdDate;
 
 	private LocalDateTime localDateTime = LocalDateTime.now();
-
-	private ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
 	@Version
 	private Long version;
@@ -162,14 +159,6 @@ public class User implements Serializable, Measurable<User> {
 
 	public void setLocalDateTime(LocalDateTime localDateTime) {
 		this.localDateTime = localDateTime;
-	}
-
-	public ZonedDateTime getZonedDateTime() {
-		return zonedDateTime;
-	}
-
-	public void setZonedDateTime(ZonedDateTime zonedDateTime) {
-		this.zonedDateTime = zonedDateTime;
 	}
 
 	@Override
