@@ -3,6 +3,7 @@ package org.nfa.athena.concurrent;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class TestFuture {
 		}
 		System.out.println(result);
 		try {
-			Thread.sleep(30000L);
+			TimeUnit.SECONDS.sleep(30L);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +51,7 @@ public class TestFuture {
 
 		@Override
 		public String call() throws Exception {
-			Thread.sleep(3000L);
+			TimeUnit.SECONDS.sleep(3L);
 			System.out.println("MinorThread Done");
 			return "MinorThread Result";
 		}

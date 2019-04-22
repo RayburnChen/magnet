@@ -1,0 +1,75 @@
+cd /usr/redis/bin
+./redis-cli shutdown
+nohup ./redis-server /usr/redis/redis/redis.conf &
+nohup ./redis-server /usr/redis/redis/sentinel.conf --sentinel &
+./redis-cli -h 127.0.0.1 -p 26379 -a 'password'
+info
+
+redis master
+
+requirepass 123456
+masterauth 123456
+
+redis slave
+
+requirepass 123456
+masterauth 123456
+slaveof 192.168.0.1 6379
+
+redis sentinel
+
+sentinel monitor mymaster 192.168.0.1 6379 2
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+sentinel auth-pass mymaster 123456
+
+1 sentinel集群通过给定的配置文件发现master，启动时会监控master。通过向master发送info信息获得该服务器下面的所有从服务器。
+2 sentinel集群通过命令连接向被监视的主从服务器发送hello信息(每秒一次)，该信息包括sentinel本身的ip、端口、id等内容，以此来向其他sentinel宣告自己的存在。
+3 sentinel集群通过订阅连接接收其他sentinel发送的hello信息，以此来发现监视同一个主服务器的其他sentinel；集群之间会互相创建命令连接用于通信，因为已经有主从服务器作为发送和接收hello信息的中介，sentinel之间不会创建订阅连接。
+4 sentinel集群使用ping命令来检测实例的状态，如果在指定的时间内（down-after-milliseconds）没有回复或则返回错误的回复，那么该实例被判为下线。 
+5 当failover主备切换被触发后，failover并不会马上进行，还需要sentinel中的大多数sentinel授权后才可以进行failover，即进行failover的sentinel会去获得指定quorum个的sentinel的授权，成功后进入ODOWN状态。如在5个sentinel中配置了2个quorum，等到2个sentinel认为master死了就执行failover。
+6 sentinel向选为master的slave发送SLAVEOF NO ONE命令，选择slave的条件是sentinel首先会根据slaves的优先级来进行排序，优先级越小排名越靠前。如果优先级相同，则查看复制的下标，哪个从master接收的复制数据多，哪个就靠前。如果优先级和下标都相同，就选择进程ID较小的。
+7 sentinel被授权后，它将会获得宕掉的master的一份最新配置版本号(config-epoch)，当failover执行结束以后，这个版本号将会被用于最新的配置，通过广播形式通知其它sentinel，其它的sentinel则更新对应master的配置。
+
+1到3是自动发现机制:
+
+以10秒一次的频率，向被监视的master发送info命令，根据回复获取master当前信息。
+以1秒一次的频率，向所有redis服务器、包含sentinel在内发送PING命令，通过回复判断服务器是否在线。
+以2秒一次的频率，通过向所有被监视的master，slave服务器发送当前sentinel，master信息的消息。
+4是检测机制，5和6是failover机制，7是更新配置机制。
+
+注意：因为redis采用的是异步复制，没有办法避免数据的丢失。
+但可以通过以下配置来使得数据不会丢失：min-slaves-to-write 1 、 min-slaves-max-lag 10。
+一个redis无论是master还是slave，都必须在配置中指定一个slave优先级。
+要注意到master也是有可能通过failover变成slave的。
+如果一个redis的slave优先级配置为0，那么它将永远不会被选为master，但是它依然会从master哪里复制数据。
+
+
+3466:X 09 Jun 00:30:29.067 # +sdown master T1 127.0.0.1 10086                      ##进入主观不可用(SDOWN)
+3466:X 09 Jun 00:30:29.169 # +odown master T1 127.0.0.1 10086 #quorum 2/2          ##投票好了，达到了quorum，进入客观不可用(ODOWN)
+3466:X 09 Jun 00:30:29.169 # +new-epoch 1                                          ##当前配置版本被更新
+3466:X 09 Jun 00:30:29.169 # +try-failover master T1 127.0.0.1 10086               ##达到failover条件，正等待其他sentinel的选举
+3466:X 09 Jun 00:30:29.179 # +vote-for-leader e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.183 # 127.0.0.1:20088 voted for e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.184 # 127.0.0.1:20086 voted for e106f1eaffdaa10babef3f5858a7cb8d05ffe9ea 1 ##选举
+3466:X 09 Jun 00:30:29.241 # +elected-leader master T1 127.0.0.1 10086             ##执行failover
+3466:X 09 Jun 00:30:29.242 # +failover-state-select-slave master T1 127.0.0.1 10086 ##开始要选择一个slave当选新master
+3466:X 09 Jun 00:30:29.344 # +selected-slave slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086 ##找到了一个适合的slave来担当新master
+3466:X 09 Jun 00:30:29.344 * +failover-state-send-slaveof-noone slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086 ##当把选择为新master的slave的身份进行切换
+3466:X 09 Jun 00:30:29.447 * +failover-state-wait-promotion slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086
+3466:X 09 Jun 00:30:30.206 # +promoted-slave slave 127.0.0.1:10088 127.0.0.1 10088 @ T1 127.0.0.1 10086
+3466:X 09 Jun 00:30:30.207 # +failover-state-reconf-slaves master T1 127.0.0.1 10086  ##Failover状态变为reconf-slaves
+3466:X 09 Jun 00:30:30.273 * +slave-reconf-sent slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##sentinel发送SLAVEOF命令把它重新配置，重新配置到新主
+3466:X 09 Jun 00:30:31.250 * +slave-reconf-inprog slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##slave被重新配置为另外一个master的slave，但数据复制还未发生
+3466:X 09 Jun 00:30:31.251 * +slave-reconf-done slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10086 ##slave被重新配置为另外一个master的slave并且数据复制已经与master同步
+3466:X 09 Jun 00:30:31.340 # -odown master T1 127.0.0.1 10086  ##离开客观不可用（ODOWN）
+3466:X 09 Jun 00:30:31.340 # +failover-end master T1 127.0.0.1 10086  ##failover成功完成
+3466:X 09 Jun 00:30:31.341 # +switch-master T1 127.0.0.1 10086 127.0.0.1 10088 ##master的地址发生变化
+3466:X 09 Jun 00:30:31.341 * +slave slave 127.0.0.1:10087 127.0.0.1 10087 @ T1 127.0.0.1 10088 ##检测到一个slave并添加进slave列表
+3466:X 09 Jun 00:30:31.351 * +slave slave 127.0.0.1:10086 127.0.0.1 10086 @ T1 127.0.0.1 10088
+3466:X 09 Jun 00:30:46.362 # +sdown slave 127.0.0.1:10086 127.0.0.1 10086 @ T1 127.0.0.1 10088 ##原主进入主观不可用状态
+
+
+https://www.cnblogs.com/zhoujinyi/p/5569462.html
+https://www.cnblogs.com/zhoujinyi/p/5570024.html

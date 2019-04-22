@@ -16,7 +16,7 @@ public class AthenaService {
 	private UserRepository userRepository;
 
 	public User oneUser() {
-		return Optional.of(userRepository.findAll()).filter(l -> l.size() > 0).map(l -> l.get(0)).orElse(new User());
+		return Optional.of(userRepository.findAll()).filter(l -> !l.isEmpty()).map(l -> l.get(0)).orElse(new User());
 	}
 
 	public User insert(User user) {

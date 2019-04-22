@@ -17,6 +17,9 @@
 		<swagger.version>2.9.2</swagger.version>
 		<lucene.version>7.4.0</lucene.version>
 		<zipkin.version>2.11.1</zipkin.version>
+		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
+		<spring-security-jwt.version>1.0.10.RELEASE</spring-security-jwt.version>
 	</properties>
 
 	<dependencyManagement>
@@ -84,6 +87,23 @@
 				<groupId>io.zipkin.java</groupId>
 				<artifactId>zipkin-server</artifactId>
 				<version>${zipkin.version}</version>
+			</dependency>
+			<!-- apache -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commons-beanutils.version}</version>
+			</dependency>
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${spring-security-oauth2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-jwt</artifactId>
+				<version>${spring-security-jwt.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

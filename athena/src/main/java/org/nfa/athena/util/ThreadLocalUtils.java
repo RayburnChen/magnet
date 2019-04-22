@@ -1,16 +1,22 @@
-package org.nfa.athena.service;
+package org.nfa.athena.util;
 
 import java.util.Random;
 
-public class ThreadLocalService {
+public class ThreadLocalUtils {
+
+	private ThreadLocalUtils() {
+		super();
+	}
 
 	public static final InheritableThreadLocal<String> inherit = new InheritableThreadLocal<String>() {
+		private Random ran = new Random();
+
 		@Override
 		protected String initialValue() {
-			Random ran = new Random();
 			return String.valueOf(ran.nextInt());
 		}
 	};
-	public static final ThreadLocal<String> mainThreadLocal = new ThreadLocal<String>();
+
+	public static final ThreadLocal<String> mainThreadLocal = new ThreadLocal<>();
 
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.nfa.base.model.ApplicationException;
 import org.nfa.base.model.ErrorDetail;
 import org.nfa.base.model.ErrorResponse;
@@ -38,6 +39,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.client.ClientException;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 
 import feign.FeignException;
@@ -68,41 +70,47 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(FeignException.class)
 	public ResponseEntity<ErrorResponse> handleFeignException(FeignException e) {
+		log(e);
 		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(HystrixRuntimeException.class)
 	public ResponseEntity<ErrorResponse> handleHystrixRuntimeException(HystrixRuntimeException e) {
+		log(e);
 		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(RestClientResponseException.class)
 	public ResponseEntity<ErrorResponse> handleRestClientException(RestClientResponseException e) {
+		log(e);
 		return handleException(e, Priority.MINOR, UnaryOperator.identity(), initNestedErrorResponse(e));
 	}
 
 	@ExceptionHandler(ApplicationException.class)
 	public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
+		log(e);
 		return handleException(e, Priority.LOWEST, populate(e.getCode(), e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		log(e);
 		return handleException(e, Priority.LOWEST, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(ValidationException.class)
 	public ResponseEntity<ErrorResponse> handleValidationException(ValidationException e) {
+		log(e);
 		return handleException(e, Priority.LOWEST, populate(DEFAULT_ERROR_CODE, e.getMessage(), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	@ExceptionHandler(Throwable.class)
 	public ResponseEntity<ErrorResponse> handleThrowable(Throwable e) {
+		log(e);
 		return handleException(e, Priority.HIGHEST, populate(DEFAULT_ERROR_CODE, initErrorMsg(e), e.getClass().getSimpleName()), defaultErrorResponse(e));
 	}
 
 	private ResponseEntity<ErrorResponse> handleException(Throwable e, int priority, UnaryOperator<ErrorResponse> operator, ErrorResponse defaultErrorResponse) {
-		log(e);
 		ExceptionLog exceptionLog = initExceptionLog(e, priority, defaultErrorResponse);
 		ErrorResponse errorResponse = populate(exceptionLog).andThen(operator).apply(defaultErrorResponse);
 		return buildResponse(errorResponse);
@@ -168,9 +176,19 @@ public class GlobalExceptionHandler {
 	private String initErrorMsg(Throwable e) {
 		StringJoiner sj = new StringJoiner(" ");
 		sj.add(e.getClass().getSimpleName());
-		sj.add(e.getMessage());
-		sj.add(String.valueOf(e.getStackTrace()[0]));
+		sj.add(initCause(e));
+		if (ArrayUtils.isNotEmpty(e.getStackTrace())) {
+			sj.add(String.valueOf(e.getStackTrace()[0]));
+		}
 		return sj.toString();
+	}
+
+	private String initCause(Throwable e) {
+		if (null == e.getCause()) {
+			return e.getMessage();
+		} else {
+			return initCause(e.getCause());
+		}
 	}
 
 	private String initErrorMsg(MethodArgumentNotValidException e) {
@@ -183,6 +201,10 @@ public class GlobalExceptionHandler {
 		if (cause instanceof FeignException) {
 			FeignException feignException = (FeignException) cause;
 			return initNestedErrorResponse(feignException);
+		} else if (cause instanceof RuntimeException) {
+			return defaultErrorResponse(cause);
+		} else if (cause instanceof ClientException) {
+			return defaultErrorResponse(cause);
 		} else {
 			return defaultErrorResponse(exception);
 		}
