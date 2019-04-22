@@ -8,7 +8,7 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class CacheConfig {
 
 	public static final String USER_CACHE = "USER_CACHE";
