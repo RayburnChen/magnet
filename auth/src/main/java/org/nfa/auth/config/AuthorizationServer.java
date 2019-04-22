@@ -23,8 +23,8 @@ public class AuthorizationServer implements AuthorizationServerConfigurer {
 	private UserDetailsService userDetailsService;
 	@Autowired
 	private TokenStore tokenStore;
-//	@Autowired
-//	private AccessTokenConverter accessTokenConverter;
+	@Autowired
+	private AccessTokenConverter accessTokenConverter;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -50,7 +50,7 @@ public class AuthorizationServer implements AuthorizationServerConfigurer {
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
 			.tokenStore(tokenStore)
-//			.accessTokenConverter(accessTokenConverter)
+			.accessTokenConverter(accessTokenConverter)
 			.authenticationManager(authenticationConfiguration.getAuthenticationManager())
 			.userDetailsService(userDetailsService);
 	}
