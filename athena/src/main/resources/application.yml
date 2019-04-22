@@ -43,8 +43,8 @@ spring:
     timeout: 20000
   cache:
     redis:
-      time-to-live: 20000
-      key-prefix: 'app:'
+      time-to-live: 60000
+      key-prefix: 'athena:'
 eureka:
   instance:
     preferIpAddress: true
