@@ -28,7 +28,7 @@ public class JsonConfig {
 		objectMapper.configure(Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 		objectMapper.registerModules(new JavaTimeModule(), new Jdk8Module(), new SimpleModule());
 		objectMapper.enableDefaultTyping(DefaultTyping.JAVA_LANG_OBJECT, As.PROPERTY);
-		TimeZone.setDefault(TimeZone.getTimeZone("GMT+:08:00"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 		objectMapper.setTimeZone(TimeZone.getDefault());
 		objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
