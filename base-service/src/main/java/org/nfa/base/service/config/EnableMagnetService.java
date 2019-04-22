@@ -32,7 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableMongoRepositories
 @EnableScheduling
 @Import(value = { JsonConfig.class, GlobalErrorController.class, GlobalExceptionHandler.class, WebMvcConfigurerInitializer.class, HttpClientConfig.class,
-		ThreadPoolConfigurer.class, AuditEventRepositoryImpl.class, TraceRepositoryImpl.class, ManagementController.class, ActuatorConfig.class })
+		ThreadPoolConfigurer.class, AuditEventRepositoryImpl.class, TraceRepositoryImpl.class, ManagementController.class, ActuatorConfig.class, RedisConfig.class })
 public @interface EnableMagnetService {
 
 	String value() default "";
