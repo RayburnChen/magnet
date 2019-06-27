@@ -16,12 +16,21 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Document(collection = "users")
 @CompoundIndexes({
 		@CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
 public class User implements Serializable, Measurable<User> {
 
 	private static final long serialVersionUID = 2157443368101050157L;
+	private static final ObjectMapper MAPPER = new ObjectMapper();
+	private static final TypeReference<List<String>> TYPE = new TypeReference<List<String>>() {
+	};
 
 	public User() {
 		super();
@@ -37,6 +46,12 @@ public class User implements Serializable, Measurable<User> {
 		super();
 		this.amount = amount;
 		this.tag = tag;
+	}
+
+	@JsonCreator
+	public User(@JsonProperty("values") JsonNode values) {
+		super();
+		this.values = MAPPER.convertValue(values, TYPE);
 	}
 
 	@Id
