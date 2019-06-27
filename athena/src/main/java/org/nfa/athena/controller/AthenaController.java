@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Max;
 
+import org.nfa.athena.dao.ProxyInterface;
 import org.nfa.athena.model.User;
 import org.nfa.athena.model.UserDTO;
 import org.nfa.athena.service.AthenaService;
@@ -45,9 +46,12 @@ public class AthenaController {
 	private Tracer tracer;
 	@Autowired
 	private BeanFactory beanFactory;// DefaultListableBeanFactory
+	@Autowired
+	private ProxyInterface myProxyInterface;
 
 	@PostConstruct
 	public void init() {
+		myProxyInterface.call();
 		log.info("BeanFactory class is {}", beanFactory.getClass().getName());
 	}
 
