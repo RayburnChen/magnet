@@ -13,9 +13,9 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BeanConfig implements BeanFactoryPostProcessor {
+public class BeanFactoryPostConfig implements BeanFactoryPostProcessor {
 
-	private static final Logger log = LoggerFactory.getLogger(BeanConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(BeanFactoryPostConfig.class);
 
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 //		org.springframework.beans.factory.support.DefaultListableBeanFactory
