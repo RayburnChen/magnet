@@ -3,8 +3,8 @@ package org.nfa.athena.service;
 import java.util.Optional;
 
 import org.nfa.athena.config.CacheConfig;
-import org.nfa.athena.dao.UserRepository;
 import org.nfa.athena.model.User;
+import org.nfa.athena.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

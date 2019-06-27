@@ -1,4 +1,4 @@
-package org.nfa.athena.dao;
+package org.nfa.athena.repository;
 
 public interface ProxyInterface {
 	

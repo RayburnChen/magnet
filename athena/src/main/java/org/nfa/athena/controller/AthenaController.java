@@ -9,9 +9,9 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Max;
 
-import org.nfa.athena.dao.ProxyInterface;
 import org.nfa.athena.model.User;
 import org.nfa.athena.model.UserDTO;
+import org.nfa.athena.repository.ProxyInterface;
 import org.nfa.athena.service.AthenaService;
 import org.nfa.base.model.ApplicationException;
 import org.slf4j.Logger;
