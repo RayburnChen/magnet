@@ -1,3 +1,51 @@
+16. 如何正确建立 @OneToMany 双向关系
+
+实现 `@OneToMany` 双向关系有几个陷阱，相信你也希望一开始就能实现正确。
+
+
+"描述："下面的示例应用展示了如何正确实现 `@OneToMany` 双向关联。
+
+
+技术要点
+
+
+    "总是"建立父子级联
+
+    对父亲标记 `mappedBy`
+
+    对父亲使用 `orphanRemoval`，移除没有引用的子对象
+
+    在父节点上使用 helper 方法实现关联同步
+
+    "总是"使用延迟加载
+
+    使用业务主键或实体标识符，参考[这篇介绍][23]覆写 `equals()` 和 `hashCode()` 方法。
+
+
+[示例代码][24]
+
+
+[23]:https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
+
+[24]:https://github.com/AnghelLeonard/Hibernate-SpringBoot/tree/master/HibernateSpringBootOneToManyBidirectional
+
+
+23. 如何使用 JPA 回调
+
+
+为实体绑定事件处理时，记得使用 JPA 内建回调，不要重新发明轮子。
+
+
+"描述："下面的示例展示了如何启用 JPA 回调（`Pre/PostPersist`、`Pre/PostUpdate`、`Pre/PostRemove` 和 `PostLoad`）。
+
+
+技术要点
+
+
+    在实体中编写回调方法并挑选合适的注解
+
+    Bean Class 中带注解的回调方法返回类型必须为 `void` 且不带参数
+    
 
 @Entity
 @Table(name="t_classroom")

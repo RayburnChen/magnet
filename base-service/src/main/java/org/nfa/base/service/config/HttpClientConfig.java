@@ -14,6 +14,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import feign.RequestInterceptor;
@@ -26,13 +27,16 @@ public class HttpClientConfig {
 	@Bean
 	@LoadBalanced
 	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.additionalInterceptors(new RestClientInterceptor()).build();
+		return restTemplateBuilder.additionalInterceptors(new RestClientInterceptor())
+				.requestFactory(OkHttp3ClientHttpRequestFactory.class).build();
+		// use OkHttp3 for RestTemplate
 	}
 
 	private class RestClientInterceptor implements ClientHttpRequestInterceptor {
 
 		@Override
-		public ClientHttpResponse intercept(HttpRequest req, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+		public ClientHttpResponse intercept(HttpRequest req, byte[] body, ClientHttpRequestExecution execution)
+				throws IOException {
 
 			addHeaderIfNotExist(req, "Headers.G2_USER_ID", "id");
 			addHeaderIfNotExist(req, "Headers.G2_USER_ROLES", "roles");

@@ -47,6 +47,10 @@ zuul:
 ribbon:
   ReadTimeout: 3000
   SocketTimeout: 3000
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
 proxy:
   auth:
     loadBalanced: true

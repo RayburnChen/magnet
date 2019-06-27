@@ -30,6 +30,11 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 		</dependency>
+		<!-- OkHttp -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

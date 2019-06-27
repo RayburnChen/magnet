@@ -2,6 +2,7 @@ package org.nfa.athena.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Document(collection = "users")
-@CompoundIndexes({ @CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
+@CompoundIndexes({
+		@CompoundIndex(background = true, name = "user_name_amount_idx", def = "{ 'name':1, 'amount':-1 }") })
 public class User implements Serializable, Measurable<User> {
 
 	private static final long serialVersionUID = 2157443368101050157L;
@@ -80,6 +82,8 @@ public class User implements Serializable, Measurable<User> {
 
 	@CreatedDate
 	private Date createdDate;
+
+	private LocalDateTime localDateTime = LocalDateTime.now();
 
 	@Version
 	private Long version;
@@ -164,10 +168,19 @@ public class User implements Serializable, Measurable<User> {
 		this.tag = tag;
 	}
 
+	public LocalDateTime getLocalDateTime() {
+		return localDateTime;
+	}
+
+	public void setLocalDateTime(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password + ", values=" + values + ", userType=" + userType
-				+ ", createdDate=" + createdDate + ", version=" + version + "]";
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", amount=" + amount + ", password=" + password
+				+ ", values=" + values + ", userType=" + userType + ", createdDate=" + createdDate + ", version="
+				+ version + "]";
 	}
 
 	@Override
