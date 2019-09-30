@@ -17,6 +17,7 @@ public class ArticleService {
 	private final Map<String, Article> data = new ConcurrentHashMap<>();
 
 	public Flux<Article> list() {
+		Mono.create(callback -> callback.success("response"));
 		return Flux.fromIterable(data.values());
 	}
 
