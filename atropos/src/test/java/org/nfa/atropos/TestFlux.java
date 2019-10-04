@@ -9,6 +9,7 @@ import org.junit.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public class TestFlux {
 
@@ -47,6 +48,24 @@ public class TestFlux {
 
 		).subscribe();
 		TimeUnit.SECONDS.sleep(3L);
+	}
+
+	@Test
+	public void testDelayElements() {
+		// delayElements 有些操作符本身会需要调度器来进行多线程的处理，当你不明确指定调度器的时候，那些操作符会自行使用内置的单例调度器来执行。例如，Flux.delayElements(Duration)使用的是 Schedulers.parallel()调度器对象
+		Flux.range(0, 10).delayElements(Duration.ofMillis(10)).log().blockLast();
+	}
+	
+	@Test
+	public void testParallelFluxPublishOn() throws InterruptedException {
+		Flux.range(1, 10).publishOn(Schedulers.parallel()).log().subscribe();
+		TimeUnit.MILLISECONDS.sleep(10);
+	}
+	
+	@Test
+	public void testParallelFluxRunOn() throws InterruptedException {
+		Flux.range(1, 10).parallel(2).runOn(Schedulers.parallel()).log().subscribe();
+		TimeUnit.MILLISECONDS.sleep(10);
 	}
 
 }
