@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -66,6 +67,21 @@ public class TestFlux {
 	public void testParallelFluxRunOn() throws InterruptedException {
 		Flux.range(1, 10).parallel(2).runOn(Schedulers.parallel()).log().subscribe();
 		TimeUnit.MILLISECONDS.sleep(10);
+	}
+	
+	@Test
+	public void testOperatorDebug() {
+		Hooks.onOperatorDebug();
+		getMonoWithException().subscribe();
+	}
+
+	@Test
+	public void testCheckpoint() {
+		getMonoWithException().checkpoint().subscribe();
+	}
+
+	private Mono<String> getMonoWithException() {
+		return Flux.just("a", "b", "c").filter(s -> false).single();
 	}
 
 }
