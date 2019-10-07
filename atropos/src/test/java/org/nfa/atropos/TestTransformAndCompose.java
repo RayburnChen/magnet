@@ -27,7 +27,8 @@ public class TestTransformAndCompose {
                 Flux.just("blue", "green", "orange", "purple")
                         .doOnNext(System.out::println)
                         .compose(filterAndMap);
-
+        // Defer the transformation of this Flux in order to generate a target Flux type. 
+        // A transformation will occur for each Subscriber
         flux.subscribe(d -> System.out.println("Subscriber 1 get: " + d));
         flux.subscribe(d -> System.out.println("Subscriber 2 get: " + d));
     }
@@ -66,7 +67,8 @@ public class TestTransformAndCompose {
                 Flux.just("blue", "green", "orange", "purple")
                         .doOnNext(System.out::println)
                         .transform(filterAndMap);
-
+        // Transform this Flux in order to generate a target Flux. 
+        // Unlike compose(Function), the provided function is executed as part of assembly. 
         flux.subscribe(d -> System.out.println("Subscriber 1 get: " + d));
         flux.subscribe(d -> System.out.println("Subscriber 2 get: " + d));
     }
