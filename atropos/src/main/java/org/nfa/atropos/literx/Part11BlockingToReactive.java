@@ -23,6 +23,9 @@ import reactor.core.scheduler.Schedulers;
  * @see Schedulers
  */
 public class Part11BlockingToReactive {
+	
+	// 两者的区别在于影响范围。publishOn 影响在其之后的 operator 执行的线程池，而 subscribeOn 则会从源头影响整个执行过程。
+	// 所以，publishOn 的影响范围和它的位置有关，而 subscribeOn 的影响范围则和位置无关。
 
 //========================================================================================
 
