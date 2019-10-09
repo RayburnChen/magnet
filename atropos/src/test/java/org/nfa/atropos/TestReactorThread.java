@@ -25,6 +25,7 @@ public class TestReactorThread {
 	
 	// 两者的区别在于影响范围。publishOn 影响在其之后的 operator 执行的线程池，而 subscribeOn 则会从源头影响整个执行过程。
 	// 所以，publishOn 的影响范围和它的位置有关，而 subscribeOn 的影响范围则和位置无关。
+	// 默认情况下， 操作链使用的线程是调用subscribe()的线程
 
 	@Test
 	public void testPublishOn() throws InterruptedException {
