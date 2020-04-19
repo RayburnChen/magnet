@@ -9,6 +9,7 @@ public class TestTime {
 
 	@Test
 	public void test() {
+
 		ZoneId zoneId = ZoneId.of("Asia/Shanghai");
 		System.out.println(Instant.now().atZone(zoneId));
 	}
