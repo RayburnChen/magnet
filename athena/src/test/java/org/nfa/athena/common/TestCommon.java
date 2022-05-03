@@ -3,13 +3,11 @@ package org.nfa.athena.common;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+import org.nfa.athena.model.User;
 import org.springframework.util.StopWatch;
 
 public class TestCommon {
@@ -76,6 +74,17 @@ public class TestCommon {
 		TimeUnit.SECONDS.sleep(2L);
 		sw.stop();
 		System.out.println(sw.prettyPrint());
+	}
+
+	@Test
+	public void testIfElseShorthand() {
+		User user = new User();
+		String str = (user.getName() != null) ? user.getName().toLowerCase(Locale.ROOT) : nested();
+		System.out.println(str);
+	}
+
+	private String nested() {
+		throw new RuntimeException("nested");
 	}
 
 }
